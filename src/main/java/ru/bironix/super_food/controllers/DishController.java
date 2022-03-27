@@ -22,7 +22,7 @@ public class DishController {
     @Autowired
     DishService dishService;
 
-    @Operation(summary = "Получение блюда")
+    @Operation(summary = "Получение блюда", description = "Пока возвращает один захардкоженный объект")
     @GetMapping("/dish/{id}")
     @ResponseBody
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") int id) {
