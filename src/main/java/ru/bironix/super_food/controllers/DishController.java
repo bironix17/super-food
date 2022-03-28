@@ -14,7 +14,7 @@ import ru.bironix.super_food.services.DishService;
 
 import java.util.List;
 
-@Tag(name = "Блюда")
+@Tag(name = "Блюдо")
 @RestController
 public class DishController {
 

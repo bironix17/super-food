@@ -1,10 +1,12 @@
 package ru.bironix.super_food;
 
 import ru.bironix.super_food.models.PicturePathsDto;
-import ru.bironix.super_food.models.action.SmallActionDto;
-import ru.bironix.super_food.models.dish.CategoryDto;
+import ru.bironix.super_food.models.UserDto;
+import ru.bironix.super_food.models.dish.CategoryTypeDto;
 import ru.bironix.super_food.models.dish.PortionDto;
 import ru.bironix.super_food.models.dish.SmallDishDto;
+
+import java.util.List;
 
 public class Utils {
 
@@ -23,8 +25,18 @@ public class Utils {
                         .size("1 кг")
                         .price(100)
                         .build())
-                .category(CategoryDto.BURGERS)
+                .category(CategoryTypeDto.BURGERS)
                 .description("Уткастая утка")
+                .build();
+    }
+
+    public static UserDto getMockUser() {
+        return UserDto.builder()
+                .id(0)
+                .name("Виктори")
+                .email("rnosov@sfedu.ru")
+                .password("katia4size")
+                .addresses(List.of("Москва, ква ква"))
                 .build();
     }
 }
