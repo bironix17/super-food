@@ -1,9 +1,11 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.models.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.NonNull;
 
-@Schema(description = "Сущность добавки")
+@Schema(description = "Добавка к блюду")
+@Data
 public class AddonsDto {
 
     @NonNull

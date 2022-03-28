@@ -14,7 +14,7 @@ import ru.bironix.super_food.services.DishService;
 
 import java.util.List;
 
-@Tag(name = "Блюдо")
+@Tag(name = "Блюда")
 @RestController
 public class DishController {
 
@@ -29,9 +29,9 @@ public class DishController {
     }
 
     @Operation(summary = "Получение общего списка блюд ", description = "**Пока возвращает один захардкоженный объект!!!!!**")
-    @GetMapping("/dishesList")
+    @GetMapping("/dishes")
     @ResponseBody
-    List<SmallDishDto> getDishesList() {
+    List<SmallDishDto> getDishes() {
         return dishService.getDishes();
     }
 }

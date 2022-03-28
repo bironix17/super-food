@@ -1,11 +1,11 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.models.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-@Schema(description = "Сущность порции блюда")
+@Schema(description = "Порция блюда")
 @Data
 @Builder
 public class PortionDto {

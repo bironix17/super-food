@@ -1,8 +1,9 @@
 package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.models.CategoryDto;
-import ru.bironix.super_food.models.PortionDto;
+import ru.bironix.super_food.Utils;
+import ru.bironix.super_food.models.dish.CategoryDto;
+import ru.bironix.super_food.models.dish.PortionDto;
 import ru.bironix.super_food.models.dish.FullDishDto;
 import ru.bironix.super_food.models.PicturePathsDto;
 import ru.bironix.super_food.models.dish.SmallDishDto;
@@ -15,7 +16,7 @@ public class DishService {
     public FullDishDto getFullDish(int id) {
         return FullDishDto.builder()
                 .id(0)
-                .picturePaths(new PicturePathsDto("https://friendfunction.ru/upload/resize_cache/iblock/8c4/600_600_13a38aab6457ec8a192e49fcdfc20568a/8c408497cf5c337bcba9b69412ee4e8b.jpg"))
+                .picturePaths(Utils.getMockPicturesDto())
                 .name("Утка")
                 .description("Уткастая утка")
                 .composition("нога, нога, крыло, крыло, голова")
@@ -23,7 +24,7 @@ public class DishService {
                 .baseIndexPortion(1)
                 .category(CategoryDto.BURGERS)
                 .portions(List.of(PortionDto.builder()
-                                .id(0)
+                                .id(id)
                                 .price(100)
                                 .size("1 килограмм")
                                 .build(),
@@ -39,14 +40,24 @@ public class DishService {
 
         return List.of(SmallDishDto.builder()
                         .id(0)
-                        .picturePaths(new PicturePathsDto("https://friendfunction.ru/upload/resize_cache/iblock/8c4/600_600_13a38aab6457ec8a192e49fcdfc20568a/8c408497cf5c337bcba9b69412ee4e8b.jpg"))
+                        .picturePaths(Utils.getMockPicturesDto())
                         .name("Утка")
+                        .basePortion(PortionDto.builder()
+                                .id(0)
+                                .size("1 кг")
+                                .price(100)
+                                .build())
                         .category(CategoryDto.BURGERS)
                         .description("Уткастая утка")
                         .build(),
                 SmallDishDto.builder()
                         .id(1)
-                        .picturePaths(new PicturePathsDto("https://friendfunction.ru/upload/resize_cache/iblock/8c4/600_600_13a38aab6457ec8a192e49fcdfc20568a/8c408497cf5c337bcba9b69412ee4e8b.jpg"))
+                        .picturePaths(Utils.getMockPicturesDto())
+                        .basePortion(PortionDto.builder()
+                                .id(1)
+                                .size("10 см")
+                                .price(200)
+                                .build())
                         .category(CategoryDto.PIZZA)
                         .name("Утка")
                         .description("Уткастая утка")

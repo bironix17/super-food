@@ -46,6 +46,14 @@
             <version>2.1.13</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.kongchen/swagger-maven-plugin -->
+        <dependency>
+            <groupId>com.github.kongchen</groupId>
+            <artifactId>swagger-maven-plugin</artifactId>
+            <version>3.1.8</version>
+        </dependency>
+
+
 
 
     </dependencies>

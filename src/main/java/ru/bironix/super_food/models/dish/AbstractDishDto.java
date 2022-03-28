@@ -1,11 +1,10 @@
 package ru.bironix.super_food.models.dish;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.models.CategoryDto;
 import ru.bironix.super_food.models.PicturePathsDto;
 
 @Data
@@ -27,6 +26,7 @@ public abstract class AbstractDishDto {
     @NonNull
     String description;
 
+    @ApiModelProperty
     @Schema(description = "Категория")
     @NonNull
     CategoryDto category;

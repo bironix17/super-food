@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-@Schema(description = "Сущность ссылок на картинки разного формата")
+@Schema(description = "Ссылки на картинки разного формата")
 @RequiredArgsConstructor
 @Data
 public class PicturePathsDto {
