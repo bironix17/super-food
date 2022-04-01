@@ -31,7 +31,7 @@ public class ActionController {
     @Operation(summary = "Получение конкретной акции", description = "**3 захардкоженных объекта с id 0, 1, 2!!!!!**")
     @GetMapping("/action/{id}")
     @ResponseBody
-    FullActionDto getAction(@PathVariable @Parameter(description = "id блюда") int id) {
+    FullActionDto getAction(@PathVariable @Parameter(description = "id") int id) {
         return actionService.getAction(id);
     }
 }

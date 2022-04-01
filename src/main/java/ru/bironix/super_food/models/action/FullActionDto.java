@@ -3,7 +3,7 @@ package ru.bironix.super_food.models.action;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.models.ComboDishesDto;
+import ru.bironix.super_food.models.combo.ComboDishesDto;
 import ru.bironix.super_food.models.dish.SmallDishDto;
 
 import java.util.List;

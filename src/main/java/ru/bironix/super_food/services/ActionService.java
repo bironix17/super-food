@@ -2,16 +2,11 @@ package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
-import ru.bironix.super_food.models.ComboDishesDto;
-import ru.bironix.super_food.models.ComboTypeDto;
-import ru.bironix.super_food.models.PicturePathsDto;
+import ru.bironix.super_food.models.combo.ComboDishesDto;
+import ru.bironix.super_food.models.combo.ComboTypeDto;
 import ru.bironix.super_food.models.action.ActionTypeDto;
 import ru.bironix.super_food.models.action.FullActionDto;
 import ru.bironix.super_food.models.action.SmallActionDto;
-import ru.bironix.super_food.models.dish.CategoryDto;
-import ru.bironix.super_food.models.dish.FullDishDto;
-import ru.bironix.super_food.models.dish.PortionDto;
-import ru.bironix.super_food.models.dish.SmallDishDto;
 
 import java.util.List;
 
