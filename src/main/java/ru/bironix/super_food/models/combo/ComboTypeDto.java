@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.models.combo;
 
 import io.swagger.annotations.ApiModel;
 

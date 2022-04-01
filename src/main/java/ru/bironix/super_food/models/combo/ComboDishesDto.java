@@ -1,11 +1,10 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.models.combo;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import ru.bironix.super_food.models.dish.FullDishDto;
 import ru.bironix.super_food.models.dish.SmallDishDto;
 
 import java.util.List;
