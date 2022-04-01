@@ -2,12 +2,11 @@ package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
-import ru.bironix.super_food.models.CategoryDto;
-import ru.bironix.super_food.models.TempDto;
-import ru.bironix.super_food.models.dish.CategoryTypeDto;
-import ru.bironix.super_food.models.dish.PortionDto;
+import ru.bironix.super_food.models.responses.DishesInCategoriesDto;
+import ru.bironix.super_food.models.dish.CategoryDto;
+import ru.bironix.super_food.models.dish.CategoryType;
 import ru.bironix.super_food.models.dish.FullDishDto;
-import ru.bironix.super_food.models.dish.SmallDishDto;
+import ru.bironix.super_food.models.dish.PortionDto;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class DishService {
                 .composition("нога, нога, крыло, крыло, голова")
                 .allergens("Перья")
                 .baseIndexPortion(1)
-                .category(CategoryTypeDto.BURGERS)
+                .category(CategoryType.BURGERS)
                 .portions(List.of(PortionDto.builder()
                                 .id(id)
                                 .price(100)
@@ -37,162 +36,44 @@ public class DishService {
                 .build();
     }
 
-    public List<SmallDishDto> getDishes() {
-
-        return List.of(SmallDishDto.builder()
-                        .id(0)
-                        .picturePaths(Utils.getMockPicturesDto())
-                        .name("Утка")
-                        .basePortion(PortionDto.builder()
-                                .id(0)
-                                .size("1 кг")
-                                .price(100)
-                                .build())
-                        .category(CategoryTypeDto.BURGERS)
-                        .description("Уткастая утка")
-                        .build(),
-                SmallDishDto.builder()
-                        .id(1)
-                        .picturePaths(Utils.getMockPicturesDto())
-                        .basePortion(PortionDto.builder()
-                                .id(2)
-                                .size("10 см")
-                                .price(200)
-                                .build())
-                        .category(CategoryTypeDto.PIZZA)
-                        .name("Утка")
-                        .description("Уткастая утка")
-                        .build());
-
-    }
-
-    public TempDto getCategories() {
-        return TempDto.builder().categories(List.of(
+    public DishesInCategoriesDto getCategories() {
+        return DishesInCategoriesDto.builder().categories(List.of(
                 CategoryDto.builder()
-                        .categoryType(CategoryTypeDto.BURGERS)
+                        .categoryType(CategoryType.BURGERS)
                         .dishes(
                                 List.of(
-                                        SmallDishDto.builder()
-                                                .id(3)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .name("Утка")
-                                                .basePortion(PortionDto.builder()
-                                                        .id(0)
-                                                        .size("1 кг")
-                                                        .price(100)
-                                                        .build())
-                                                .category(CategoryTypeDto.BURGERS)
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(4)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.BURGERS)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(5)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.BURGERS)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build())
+                                        Utils.getMockSmallDishDto(0, CategoryType.BURGERS),
+                                        Utils.getMockSmallDishDto(1, CategoryType.BURGERS),
+                                        Utils.getMockSmallDishDto(2, CategoryType.BURGERS))
+                        ).build(),
+
+                CategoryDto.builder()
+                        .categoryType(CategoryType.PIZZA)
+                        .dishes(
+                                List.of(
+                                        Utils.getMockSmallDishDto(3, CategoryType.PIZZA),
+                                        Utils.getMockSmallDishDto(4, CategoryType.PIZZA),
+                                        Utils.getMockSmallDishDto(5, CategoryType.PIZZA))
                         ).build(),
 
 
                 CategoryDto.builder()
-                        .categoryType(CategoryTypeDto.PIZZA)
+                        .categoryType(CategoryType.ROLLS)
                         .dishes(
                                 List.of(
-                                        SmallDishDto.builder()
-                                                .id(6)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .name("Утка")
-                                                .basePortion(PortionDto.builder()
-                                                        .id(0)
-                                                        .size("1 кг")
-                                                        .price(100)
-                                                        .build())
-                                                .category(CategoryTypeDto.PIZZA)
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(7)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.PIZZA)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(8)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.PIZZA)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build())
+                                        Utils.getMockSmallDishDto(6, CategoryType.ROLLS),
+                                        Utils.getMockSmallDishDto(7, CategoryType.ROLLS),
+                                        Utils.getMockSmallDishDto(8, CategoryType.ROLLS))
                         ).build(),
 
                 CategoryDto.builder()
-                        .categoryType(CategoryTypeDto.ROLLS)
+                        .categoryType(CategoryType.COMBO)
                         .dishes(
                                 List.of(
-                                        SmallDishDto.builder()
-                                                .id(9)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .name("Утка")
-                                                .basePortion(PortionDto.builder()
-                                                        .id(0)
-                                                        .size("1 кг")
-                                                        .price(100)
-                                                        .build())
-                                                .category(CategoryTypeDto.ROLLS)
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(10)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.ROLLS)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build(),
-                                        SmallDishDto.builder()
-                                                .id(11)
-                                                .picturePaths(Utils.getMockPicturesDto())
-                                                .basePortion(PortionDto.builder()
-                                                        .id(1)
-                                                        .size("10 см")
-                                                        .price(200)
-                                                        .build())
-                                                .category(CategoryTypeDto.ROLLS)
-                                                .name("Утка")
-                                                .description("Уткастая утка")
-                                                .build())
+                                        Utils.getMockSmallDishComboDto(9),
+                                        Utils.getMockSmallDishComboDto(10),
+                                        Utils.getMockSmallDishComboDto(11)
+                                        )
                         ).build()
         )).build();
     }

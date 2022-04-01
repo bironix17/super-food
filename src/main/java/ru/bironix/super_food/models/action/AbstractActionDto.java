@@ -24,5 +24,5 @@ public class AbstractActionDto {
     @Schema(description = "Тип акции")
     @ApiModelProperty
     @NonNull
-    ActionTypeDto actionType;
+    ActionType actionType;
 }

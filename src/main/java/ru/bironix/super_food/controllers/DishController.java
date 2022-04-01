@@ -8,13 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.models.CategoryDto;
-import ru.bironix.super_food.models.TempDto;
+import ru.bironix.super_food.models.responses.DishesInCategoriesDto;
 import ru.bironix.super_food.models.dish.FullDishDto;
-import ru.bironix.super_food.models.dish.SmallDishDto;
 import ru.bironix.super_food.services.DishService;
 
-import java.util.List;
 @Tag(name = "Блюдо")
 @RestController
 public class DishController {
@@ -29,10 +26,10 @@ public class DishController {
         return dishService.getFullDish(id);
     }
 
-    @Operation(summary = "Получение общего списка категорий ", description = "**Пока возвращает один захардкоженный объект!!!!!**")
+    @Operation(summary = "Получение общего списка блюд по категориям", description = "**Пока возвращает один захардкоженный объект!!!!!**")
     @GetMapping("/dishes")
     @ResponseBody
-    TempDto getDishes() {
+    DishesInCategoriesDto getDishes() {
         return dishService.getCategories();
     }
 }

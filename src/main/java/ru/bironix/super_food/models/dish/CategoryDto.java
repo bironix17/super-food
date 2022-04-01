@@ -1,10 +1,9 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.models.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-import ru.bironix.super_food.models.dish.CategoryTypeDto;
-import ru.bironix.super_food.models.dish.SmallDishDto;
+import lombok.NonNull;
 
 import java.util.List;
 
@@ -13,7 +12,9 @@ import java.util.List;
 @Schema(description = "Категория")
 public class CategoryDto {
 
-    CategoryTypeDto categoryType;
+    @NonNull
+    CategoryType categoryType;
 
+    @Schema(nullable = true)
     List<SmallDishDto> dishes;
 }

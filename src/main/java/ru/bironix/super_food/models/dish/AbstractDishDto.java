@@ -7,6 +7,8 @@ import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.models.PicturePathsDto;
 
+import java.util.List;
+
 @Data
 @SuperBuilder
 public abstract class AbstractDishDto {
@@ -22,12 +24,15 @@ public abstract class AbstractDishDto {
     @NonNull
     String name;
 
-    @Schema(description = "Описание")
+    @Schema(description = "Состав блюда")
     @NonNull
-    String description;
+    String composition;
 
     @ApiModelProperty
     @Schema(description = "Категория")
     @NonNull
-    CategoryTypeDto category;
+    CategoryType category;
+
+    @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
+    List<SmallDishDto> dishes;
 }
