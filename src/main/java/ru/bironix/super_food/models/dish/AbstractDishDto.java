@@ -29,5 +29,5 @@ public abstract class AbstractDishDto {
     @ApiModelProperty
     @Schema(description = "Категория")
     @NonNull
-    CategoryDto category;
+    CategoryTypeDto category;
 }
