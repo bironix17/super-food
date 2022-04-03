@@ -17,5 +17,8 @@ public class PortionDto {
     String size;
 
     @NonNull
-    Integer price;
+    PriceDto priceNow;
+
+    @Schema(description = "если есть скидка, то не null", nullable = true)
+    PriceDto oldPrice;
 }

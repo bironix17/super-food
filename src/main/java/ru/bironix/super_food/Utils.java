@@ -4,6 +4,7 @@ import ru.bironix.super_food.models.PicturePathsDto;
 import ru.bironix.super_food.models.UserDto;
 import ru.bironix.super_food.models.dish.CategoryType;
 import ru.bironix.super_food.models.dish.PortionDto;
+import ru.bironix.super_food.models.dish.PriceDto;
 import ru.bironix.super_food.models.dish.SmallDishDto;
 
 import java.util.List;
@@ -23,7 +24,16 @@ public class Utils {
                 .basePortion(PortionDto.builder()
                         .id(0)
                         .size("1 кг")
-                        .price(100)
+                        .priceNow(PriceDto.builder()
+                                .id(0)
+                                .price(100)
+                                .build()
+                        )
+                        .oldPrice(PriceDto.builder()
+                                .id(1)
+                                .price(120)
+                                .build()
+                        )
                         .build())
                 .category(categoryType)
                 .composition("нога, клешня, хурма")
@@ -38,7 +48,11 @@ public class Utils {
                 .basePortion(PortionDto.builder()
                         .id(0)
                         .size("2 упаковки")
-                        .price(100)
+                        .priceNow(PriceDto.builder()
+                                .id(0)
+                                .price(100)
+                                .build()
+                        )
                         .build())
                 .category(CategoryType.COMBO)
                 .composition("нога, клешня, хурма")

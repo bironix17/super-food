@@ -2,11 +2,8 @@ package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
+import ru.bironix.super_food.models.dish.*;
 import ru.bironix.super_food.models.responses.DishesInCategoriesDto;
-import ru.bironix.super_food.models.dish.CategoryDto;
-import ru.bironix.super_food.models.dish.CategoryType;
-import ru.bironix.super_food.models.dish.FullDishDto;
-import ru.bironix.super_food.models.dish.PortionDto;
 
 import java.util.List;
 
@@ -25,12 +22,30 @@ public class DishService {
                 .category(CategoryType.BURGERS)
                 .portions(List.of(PortionDto.builder()
                                 .id(id)
-                                .price(100)
+                                .priceNow(PriceDto.builder()
+                                        .id(0)
+                                        .price(100)
+                                        .build()
+                                )
+                                .oldPrice(PriceDto.builder()
+                                        .id(1)
+                                        .price(120)
+                                        .build()
+                                )
                                 .size("1 килограмм")
                                 .build(),
                         PortionDto.builder()
                                 .id(0)
-                                .price(199)
+                                .priceNow(PriceDto.builder()
+                                        .id(2)
+                                        .price(100)
+                                        .build()
+                                )
+                                .oldPrice(PriceDto.builder()
+                                        .id(3)
+                                        .price(120)
+                                        .build()
+                                )
                                 .size("2 килограмма")
                                 .build()))
                 .build();
