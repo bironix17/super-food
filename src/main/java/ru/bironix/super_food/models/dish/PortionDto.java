@@ -13,8 +13,7 @@ public class PortionDto {
     @NonNull
     Integer id;
 
-    @Schema(description = "размер порции", example = "100 грамм")
-    @NonNull
+    @Schema(description = "размер порции, null если category = COMBO", example = "100 грамм", nullable = true)
     String size;
 
     @NonNull
