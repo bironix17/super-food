@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Schema(description = "Полное блюдо")
@@ -31,4 +30,7 @@ public class FullDishDto extends AbstractDishDto {
 
     @Schema(description = "Возможные добавки", nullable = true)
     List<AddonsDto> addons;
+
+    @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
+    List<SmallDishDto> dishes;
 }

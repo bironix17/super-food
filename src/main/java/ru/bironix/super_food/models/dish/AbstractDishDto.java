@@ -33,6 +33,4 @@ public abstract class AbstractDishDto {
     @NonNull
     CategoryType category;
 
-    @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
-    List<SmallDishDto> dishes;
 }

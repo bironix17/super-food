@@ -42,12 +42,6 @@ public class Utils {
                         .build())
                 .category(CategoryType.COMBO)
                 .composition("нога, клешня, хурма")
-                .dishes(
-                        List.of(
-                                getMockSmallDishDto(10, CategoryType.ROLLS),
-                                getMockSmallDishDto(20, CategoryType.ROLLS)
-                        )
-                )
                 .build();
     }
 
