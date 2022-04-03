@@ -28,7 +28,7 @@ public class ActionController {
         return actionService.getActions();
     }
 
-    @Operation(summary = "Получение конкретной акции", description = "**3 захардкоженных объекта с id 0, 1, 2!!!!!**")
+    @Operation(summary = "Получение конкретной акции", description = "**Пока возвращает захардоженный объект !!!!!**")
     @GetMapping("/action/{id}")
     @ResponseBody
     FullActionDto getAction(@PathVariable @Parameter(description = "id") int id) {

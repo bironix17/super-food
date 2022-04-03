@@ -1,6 +1,5 @@
 package ru.bironix.super_food.models.action;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NonNull;
@@ -20,9 +19,4 @@ public class AbstractActionDto {
     @Schema(description = "Картинки")
     @NonNull
     PicturePathsDto picturePaths;
-
-    @Schema(description = "Тип акции")
-    @ApiModelProperty
-    @NonNull
-    ActionType actionType;
 }
