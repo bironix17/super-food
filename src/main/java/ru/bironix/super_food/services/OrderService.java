@@ -2,10 +2,9 @@ package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
-import ru.bironix.super_food.models.dish.CategoryType;
-import ru.bironix.super_food.models.order.OrderDto;
+import ru.bironix.super_food.dtos.dish.CategoryType;
+import ru.bironix.super_food.dtos.order.OrderDto;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models.dish;
+package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.annotations.ApiModel;
 

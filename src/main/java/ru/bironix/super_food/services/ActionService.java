@@ -2,9 +2,9 @@ package ru.bironix.super_food.services;
 
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
-import ru.bironix.super_food.models.action.FullActionDto;
-import ru.bironix.super_food.models.action.SmallActionDto;
-import ru.bironix.super_food.models.dish.CategoryType;
+import ru.bironix.super_food.dtos.action.FullActionDto;
+import ru.bironix.super_food.dtos.action.SmallActionDto;
+import ru.bironix.super_food.dtos.dish.CategoryType;
 
 import java.util.List;
 

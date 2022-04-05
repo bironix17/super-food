@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.models.responses.DishesInCategoriesDto;
-import ru.bironix.super_food.models.dish.FullDishDto;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
+import ru.bironix.super_food.dtos.dish.FullDishDto;
 import ru.bironix.super_food.services.DishService;
 
 @Tag(name = "Блюдо")

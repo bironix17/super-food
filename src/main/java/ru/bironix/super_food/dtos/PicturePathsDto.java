@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models;
+package ru.bironix.super_food.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

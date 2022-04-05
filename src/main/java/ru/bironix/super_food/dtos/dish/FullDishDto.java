@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models.dish;
+package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class FullDishDto extends AbstractDishDto {
     List<PortionDto> portions;
 
     @Schema(description = "Возможные добавки", nullable = true)
-    List<AddonsDto> addons;
+    List<AddonDto> addons;
 
     @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
     List<SmallDishDto> dishes;
