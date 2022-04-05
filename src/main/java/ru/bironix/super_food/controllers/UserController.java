@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.models.UserDto;
+import ru.bironix.super_food.dtos.UserDto;
 import ru.bironix.super_food.services.UserService;
 
 @Tag(name = "Пользователь")

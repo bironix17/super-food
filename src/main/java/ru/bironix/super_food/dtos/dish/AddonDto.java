@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models.dish;
+package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Schema(description = "Добавка к блюду")
 @Data
-public class AddonsDto {
+public class AddonDto {
 
     @NonNull
     Integer id;
@@ -18,5 +18,5 @@ public class AddonsDto {
     String picturePath;
 
     @NonNull
-    Integer price;
+    PriceDto priceNow;
 }

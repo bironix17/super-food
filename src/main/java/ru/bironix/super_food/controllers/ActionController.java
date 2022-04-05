@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.models.action.FullActionDto;
-import ru.bironix.super_food.models.action.SmallActionDto;
+import ru.bironix.super_food.dtos.action.FullActionDto;
+import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.services.ActionService;
 
 import java.util.List;

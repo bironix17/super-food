@@ -1,4 +1,4 @@
-package ru.bironix.super_food.models.order;
+package ru.bironix.super_food.dtos.order;
 
 import io.swagger.annotations.ApiModel;
 

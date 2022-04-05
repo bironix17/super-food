@@ -1,10 +1,10 @@
-package ru.bironix.super_food.models.action;
+package ru.bironix.super_food.dtos.action;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.models.PicturePathsDto;
+import ru.bironix.super_food.dtos.PicturePathsDto;
 
 @Data
 @SuperBuilder

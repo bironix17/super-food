@@ -1,11 +1,11 @@
 package ru.bironix.super_food;
 
-import ru.bironix.super_food.models.PicturePathsDto;
-import ru.bironix.super_food.models.UserDto;
-import ru.bironix.super_food.models.dish.CategoryType;
-import ru.bironix.super_food.models.dish.PortionDto;
-import ru.bironix.super_food.models.dish.PriceDto;
-import ru.bironix.super_food.models.dish.SmallDishDto;
+import ru.bironix.super_food.dtos.PicturePathsDto;
+import ru.bironix.super_food.dtos.UserDto;
+import ru.bironix.super_food.dtos.dish.CategoryType;
+import ru.bironix.super_food.dtos.dish.PortionDto;
+import ru.bironix.super_food.dtos.dish.PriceDto;
+import ru.bironix.super_food.dtos.dish.SmallDishDto;
 
 import java.util.List;
 

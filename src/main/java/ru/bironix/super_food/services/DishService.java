@@ -1,14 +1,22 @@
 package ru.bironix.super_food.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.Utils;
-import ru.bironix.super_food.models.dish.*;
-import ru.bironix.super_food.models.responses.DishesInCategoriesDto;
+import ru.bironix.super_food.converters.DishConverter;
+import ru.bironix.super_food.db.dish.dao.DishDao;
+import ru.bironix.super_food.dtos.dish.*;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
 
 import java.util.List;
 
 @Service
 public class DishService {
+    @Autowired
+    DishConverter dishConverter;
+
+    @Autowired
+    DishDao dishDao;
 
     public FullDishDto getFullDish(int id) {
         return FullDishDto.builder()
