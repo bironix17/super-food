@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bironix.super_food.models.action.FullActionDto;
 import ru.bironix.super_food.models.action.SmallActionDto;
+import ru.bironix.super_food.models.responses.ActionsResponseDto;
 import ru.bironix.super_food.services.ActionService;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ActionController {
     @Operation(summary = "Получение списка акций", description = "**Пока возвращает захардоженный объект !!!!!**")
     @GetMapping("/actions")
     @ResponseBody
-    List<SmallActionDto> getActions() {
+    ActionsResponseDto getActions() {
         return actionService.getActions();
     }
 
