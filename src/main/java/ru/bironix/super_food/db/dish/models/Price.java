@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Entity
 public class Price {
 
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

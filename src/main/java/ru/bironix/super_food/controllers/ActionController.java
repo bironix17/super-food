@@ -4,19 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.models.responses.ActionsResponseDto;
+import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.dtos.action.FullActionDto;
-import ru.bironix.super_food.dtos.action.SmallActionDto;
+import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 import ru.bironix.super_food.services.ActionService;
-
-import java.util.List;
 
 @Tag(name = "Акции")
 @RestController
+@RequestMapping("/api")
 public class ActionController {
 
     @Autowired

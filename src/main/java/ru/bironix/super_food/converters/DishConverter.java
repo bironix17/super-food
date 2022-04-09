@@ -1,6 +1,8 @@
 package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import ru.bironix.super_food.db.dish.models.*;
 import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.dish.*;
@@ -13,7 +15,12 @@ public interface DishConverter {
     Dish fromFullDishDto(FullDishDto dishDto);
 
 
+
     AddonDto toDto(Addon addon);
+//    @Mappings({
+//            @Mapping(target="employeeId", source="entity.id"),
+//            @Mapping(target="employeeName", source="entity.name")
+//    })
     Addon fromDto(AddonDto addonDto);
 
 

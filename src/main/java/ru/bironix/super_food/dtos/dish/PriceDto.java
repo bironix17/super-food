@@ -1,18 +1,23 @@
 package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Schema(description = "Цена, может быть изменчива")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class PriceDto {
 
-    @NonNull
     Integer id;
 
-    @NonNull
-    Integer price;
+    @NotNull()
+    @Min(value = 0)
+    @Builder.Default
+    Integer price = 0;
 }

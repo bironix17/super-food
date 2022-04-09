@@ -1,0 +1,21 @@
+body {
+    margin: 25px;
+    background-color: rgb(240,240,240);
+    font-family: arial, sans-serif;
+    font-size: 24px;
+}
+
+input[type="text"]
+{
+    font-size:24px;
+}
+
+input[type=submit] {
+    font-size:24px;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: normal;
+    margin-top: 5px;
+}

@@ -4,17 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
+import org.springframework.web.bind.annotation.*;
+import ru.bironix.super_food.converters.DishConverter;
+import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
 import ru.bironix.super_food.services.DishService;
 
 @Tag(name = "Блюдо")
 @RestController
+@RequestMapping("/api")
 public class DishController {
+
+    @Autowired
+    DishConverter dishConverter;
 
     @Autowired
     DishService dishService;
@@ -31,5 +34,13 @@ public class DishController {
     @ResponseBody
     DishesInCategoriesDto getDishes() {
         return dishService.getCategories();
+    }
+
+    @Operation(summary = "Создание добавки")
+    @PostMapping("/createAddon")
+    @ResponseBody
+    AddonDto createAddon(@RequestBody AddonDto addon) {
+        var addonEntity = dishService.createAddon(dishConverter.fromDto(addon));
+        return dishConverter.toDto(addonEntity);
     }
 }
