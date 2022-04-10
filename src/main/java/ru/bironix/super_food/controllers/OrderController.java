@@ -10,7 +10,7 @@ import ru.bironix.super_food.services.OrderService;
 
 @Tag(name = "Заказ")
 @RestController
-@RequestMapping("/api")
+
 public class OrderController {
 
     @Autowired

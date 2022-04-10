@@ -12,7 +12,7 @@ import ru.bironix.super_food.services.UserService;
 
 @Tag(name = "Пользователь")
 @RestController
-@RequestMapping("/api")
+
 public class UserController {
 
     @Autowired

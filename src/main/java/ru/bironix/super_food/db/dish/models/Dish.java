@@ -15,7 +15,7 @@ import java.util.List;
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
+//    @NonNull
     Integer id;
 
     @NonNull
@@ -46,7 +46,7 @@ public class Dish {
     Integer baseIndexPortion = 0;
 
     @NonNull
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 
     @OneToMany()
@@ -54,4 +54,6 @@ public class Dish {
 
     @OneToMany()
     List<Dish> dishes;
+
+    Boolean hidden = false;
 }

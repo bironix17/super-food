@@ -9,22 +9,26 @@ import javax.validation.constraints.NotBlank;
 @Schema(description = "Добавка к блюду")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class AddonDto {
 
-    @NonNull
+    public AddonDto(String name, PriceDto price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    //    @NonNull
     Integer id;
 
     @NotBlank
-    @NonNull
+//    @NonNull
     String name;
 
     @NotBlank
-    @NonNull
+//    @NonNull
     String picturePath;
 
     @Valid
-    @NonNull
+//    @NonNull
     PriceDto price;
 }

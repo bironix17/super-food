@@ -11,7 +11,7 @@ import ru.bironix.super_food.services.ActionService;
 
 @Tag(name = "Акции")
 @RestController
-@RequestMapping("/api")
+
 public class ActionController {
 
     @Autowired
