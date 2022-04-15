@@ -15,7 +15,7 @@ public class PicturePaths {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
+//    @NonNull
     Integer id;
 
     String small;

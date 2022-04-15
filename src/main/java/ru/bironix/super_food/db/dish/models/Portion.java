@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 public class Portion {
 
-    @NonNull
+    //    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -21,11 +21,11 @@ public class Portion {
     String size;
 
     @NonNull
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "priceNowId", nullable = false)
     Price priceNow;
 
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, cascade = CascadeType.ALL) //TODO fix
     @JoinColumn(name = "oldPriceId", nullable = true)
     Price oldPrice;
 }

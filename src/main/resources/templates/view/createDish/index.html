@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" , xmlns:th="http://thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавка</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<a th:href="@{/view/}">На главную</a>
+<br/>
+
+<h1>Создание Блюда</h1>
+
+
+<form th:method="Post" th:action="@{/view/createDish}" th:object="${dish}">
+
+    <!-- picturePaths -->
+    <label>Enter picturePaths</label>
+    <br/>
+
+    <label for="picturePaths.small">---Enter picturePaths small</label>
+    <input type="text" th:field="*{picturePaths.small}" id="picturePaths.small"/>
+    <br/>
+
+    <label for="picturePaths.medium">---Enter picturePaths medium</label>
+    <input type="text" th:field="*{picturePaths.medium}" id="picturePaths.medium"/>
+    <br/>
+
+    <label for="picturePaths.large">---Enter picturePaths large</label>
+    <input type="text" th:field="*{picturePaths.large}" id="picturePaths.large"/>
+    <div style="color: red" th:if="${#fields.hasErrors('picturePaths.large')}" th:errors="*{picturePaths.large}">error
+    </div>
+    <br/>
+
+
+    <!--name-->
+    <label for="name">Enter name</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">error</div>
+    <br/>
+
+    <!--composition-->
+    <label for="composition">Enter composition</label>
+    <input type="text" th:field="*{composition}" id="composition"/>
+    <div style="color: red" th:if="${#fields.hasErrors('composition')}" th:errors="*{composition}">error</div>
+    <br/>
+
+    <!--    Категория-->
+    <label for="category">Enter category</label>
+    <select name="category" id="category">
+        <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryType).values()}"
+                th:value="${categoryOpt}"
+                th:text="${categoryOpt}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">error</div>
+    <br/>
+
+
+    <!--description-->
+    <label for="description">Enter description</label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">error</div>
+    <br/>
+
+
+    <!--allergens-->
+    <label for="allergens">Enter allergens</label>
+    <input type="text" th:field="*{allergens}" id="allergens"/>
+    <div style="color: red" th:if="${#fields.hasErrors('allergens')}" th:errors="*{allergens}">error</div>
+    <br/>
+
+
+    <!--addons-->
+    <label for="addons">addons</label>
+    <select class="form-control selectpicker" id="addons" th:field="*{addons}" multiple="multiple">
+        <option th:value="null"
+                th:text="Nothing"></option>
+        <option th:each="addon : ${dish.addons}"
+                th:value="${{addon}}"
+                th:text="${addon.name}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('addons')}" th:errors="*{addons}">error</div>
+    <br/>
+
+
+    <!--dishes-->
+    <label for="dishes">dishes</label>
+    <select class="form-control" id="dishes" th:field="*{dishes}" multiple="multiple">
+        <option th:value="null"
+                th:text="Nothing"></option>
+        <option th:each="dish : ${dish.dishes}"
+                th:value="${{dish}}"
+                th:text="${dish.name}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('dishes')}" th:errors="*{dishes}">error</div>
+    <br/>
+
+
+    <!--portions-->
+    <select class="form-control" id="portions" th:field="*{portions}" multiple="multiple" hidden>
+        <option th:each="portion : ${dish.portions}" th:value="${{portion}}" th:text="${portion.size}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('portions')}" th:errors="*{portions}">error</div>
+    <br/>
+
+
+    <!--baseIndexPortion-->
+    <label for="baseIndexPortion">baseIndexPortion</label>
+    <select id="baseIndexPortion" th:field="${dish.baseIndexPortion}">
+        <option th:each="portion,iterStat  : ${dish.portions}"
+                th:value="${iterStat.index}"
+                th:text="${portion.size} + ${iterStat.index}"
+        ></option>
+    </select>
+    <br/>
+
+
+    <input type="submit" value="Создать">
+
+
+
+    <p style="padding-left: 80px">
+    <form th:method="Post" th:action="@{/view/createDish}" th:object="${newPortion}">
+
+        <h2>Создать порцию для блюда</h2>
+
+        <!--size-->
+        <label for="size">Enter size</label>
+        <input type="text" th:field="*{size}" id="size"/>
+        <div style="color: red" th:if="${#fields.hasErrors('size')}" th:errors="*{size}">error</div>
+        <br/>
+
+
+        <!--priceNow-->
+        <label for="priceNow">Enter priceNow</label>
+        <input type="text" th:field="*{priceNow.price}" id="priceNow"/>
+        <div style="color: red" th:if="${#fields.hasErrors('priceNow.price')}" th:errors="*{priceNow.price}">error</div>
+        <br/>
+
+
+        <!--oldPrice-->
+        <label for="priceNow">Enter oldPrice</label>
+        <input type="text" th:field="*{oldPrice.price}" id="oldPrice"/>
+        <div style="color: red" th:if="${#fields.hasErrors('oldPrice.price')}" th:errors="*{oldPrice.price}">error</div>
+        <br/>
+
+        <input type="submit" value="Создать порцию">
+    </form>
+    </p>
+
+
+
+    <!--Показ portions-->
+    <label style="font-weight: bold" for="showPortions">Созданные portions</label><br/>
+    <tr th:each="portion: ${dish.portions}" id="showPortions">
+        <td th:text="${portion.id}"/>
+        <td th:text="${portion.size}"/>
+        <td th:text="${portion.priceNow.price}"/>
+        <td th:text="${portion.oldPrice.price}"/>
+        <br/>
+    </tr>
+    <br/>
+
+
+
+
+</form>
+
+
+
+
+
+
+<div th:if="${createdDish != null}" th:object="${createdDish}">
+    <br/>
+    <h1>Созданная добавка</h1>
+    <h4 th:utext="${createdDish}"/>
+</div>
+
+
+</body>
+</html>

@@ -5,6 +5,7 @@ import ru.bironix.super_food.Utils;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.CategoryType;
+import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 
 import java.util.List;
 
@@ -12,27 +13,30 @@ import java.util.List;
 public class ActionService {
 
     //TODO
-    public List<SmallActionDto> getActions() {
-        return List.of(
-                SmallActionDto.builder()
-                        .id(0)
-                        .name("Бутеры")
-                        .picturePaths(Utils.getMockPicturesDto())
-                        .build(),
+    public ActionsResponseDto getActions() {
+        return ActionsResponseDto.builder()
+                .actions(
+                        List.of(
+                                SmallActionDto.builder()
+                                        .id(0)
+                                        .name("Бутеры")
+                                        .picturePaths(Utils.getMockPicturesDto())
+                                        .build(),
 
-                SmallActionDto.builder()
-                        .id(1)
-                        .name("Бутеры")
-                        .picturePaths(Utils.getMockPicturesDto())
-                        .build(),
+                                SmallActionDto.builder()
+                                        .id(1)
+                                        .name("Бутеры")
+                                        .picturePaths(Utils.getMockPicturesDto())
+                                        .build(),
 
-                SmallActionDto.builder()
-                        .id(2)
-                        .name("Бутеры")
-                        .picturePaths(Utils.getMockPicturesDto())
-                        .build()
+                                SmallActionDto.builder()
+                                        .id(2)
+                                        .name("Бутеры")
+                                        .picturePaths(Utils.getMockPicturesDto())
+                                        .build()
 
-        );
+                        ))
+                .build();
     }
 
     //TODO

@@ -1,22 +1,34 @@
 package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @Schema(description = "Добавка к блюду")
 @Data
+@NoArgsConstructor
+@ToString
 public class AddonDto {
 
-    @NonNull
+    public AddonDto(String name, PriceDto price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    //    @NonNull
     Integer id;
 
-    @NonNull
+    @NotBlank
+//    @NonNull
     String name;
 
-    @NonNull
+    @NotBlank
+//    @NonNull
     String picturePath;
 
-    @NonNull
-    PriceDto priceNow;
+    @Valid
+//    @NonNull
+    PriceDto price;
 }

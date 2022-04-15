@@ -13,10 +13,11 @@ import javax.persistence.*;
 @Entity
 public class Addon {
 
-    @NonNull
+    //@NonNull  TODO
+    @Builder.Default
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Integer id = 0;
 
     @NonNull
     @Column(nullable = false)
@@ -27,7 +28,7 @@ public class Addon {
     String picturePath;
 
     @NonNull
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "priceId", nullable = false)
-    Price priceNow;
+    Price price;
 }
