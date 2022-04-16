@@ -15,7 +15,6 @@ import java.util.List;
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @NonNull
     Integer id;
 
     @NonNull
@@ -26,17 +25,11 @@ public class Dish {
     @Column(nullable = false)
     String name;
 
-    @NonNull
-    @Column(nullable = false)
     String composition;
 
-    @NonNull
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     CategoryType category;
 
-    @NonNull
-    @Column(nullable = false)
     String description;
 
     String allergens;
@@ -55,5 +48,6 @@ public class Dish {
     @OneToMany()
     List<Dish> dishes;
 
-    Boolean hidden = false;
+    @NonNull
+    Boolean deleted = false;
 }

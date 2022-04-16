@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 public class SmallDishDto extends AbstractDishDto {
 
-
     @Schema(description = "базовая порция блюда, расположена по индексу, хранящейся в baseIndexPortion из portions")
     @NotNull
     PortionDto basePortion;

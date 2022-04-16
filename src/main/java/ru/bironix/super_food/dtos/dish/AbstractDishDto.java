@@ -2,6 +2,7 @@ package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -26,7 +27,6 @@ public abstract class AbstractDishDto {
     @NotNull
     PicturePathsDto picturePaths;
 
-
     @Schema(description = "название")
     @NotBlank
     String name;
@@ -40,4 +40,7 @@ public abstract class AbstractDishDto {
     @NotNull
     CategoryType category;
 
+    @Schema(description = "Флаг удаления блюда")
+    @Builder.Default
+    Boolean deleted = false;
 }
