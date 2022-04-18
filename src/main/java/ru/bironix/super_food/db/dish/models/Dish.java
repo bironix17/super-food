@@ -2,6 +2,8 @@ package ru.bironix.super_food.db.dish.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.db.action.models.Action;
+import ru.bironix.super_food.db.generalModels.PicturePaths;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 @Entity
 public class Dish {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
     @NonNull
@@ -42,12 +44,22 @@ public class Dish {
     @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 
-    @OneToMany()
+    @ManyToMany(cascade = CascadeType.MERGE)
     List<Addon> addons;
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.MERGE)
     List<Dish> dishes;
 
     @NonNull
     Boolean deleted = false;
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    private List<Action> actions;
+
+    @PreRemove
+    private void removeActions() {
+        for (var action : actions) {
+            action.getDishes().remove(this);
+        }
+    }
 }

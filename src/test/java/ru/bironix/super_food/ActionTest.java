@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ActionTest {
 
     @Autowired
+    DishController dishController;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test

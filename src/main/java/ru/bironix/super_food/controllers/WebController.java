@@ -8,14 +8,13 @@ import org.springframework.core.SpringVersion;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.DishConverter;
+import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
 import ru.bironix.super_food.dtos.dish.PortionDto;
+import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
 
 import javax.validation.Valid;
@@ -31,6 +30,8 @@ public class WebController {
 
     @Autowired
     DishService dishService;
+    @Autowired
+    ActionService actionService;
 
     @Autowired
     DishConverter dishConverter;
@@ -96,6 +97,36 @@ public class WebController {
             model.addAttribute("createdDish", createdDishString);
         }
         return "view/createDish/index";
+    }
+
+
+    @GetMapping("/newAction")
+    public String newAction(Model model) {
+        var create = new FullActionDto();
+
+        create.setDishes(dishService.getAllDishes().stream()
+                .map(i -> dishConverter.toSmallDishDto(i))
+                .collect(Collectors.toList()));
+
+        model.addAttribute("action", create);
+        model.addAttribute("newPrice", 0);
+        return "view/createAction/index";
+    }
+
+
+    @PostMapping("/createAction")
+    public String createDish(@ModelAttribute("action") @Valid FullActionDto action, BindingResult actionResult,
+                             @RequestParam(name = "newPrice") Integer newPrice,
+                             Model model) throws JsonProcessingException {
+
+        if (newPrice < 0) return "view/createAction/index";
+        if (actionResult.hasErrors()) return "view/createAction/index";
+
+        var createdAction = actionService.createAction(dishConverter.fromFullDto(action), newPrice);
+        var createdDishString = toHumanReadablePage(dishConverter.toFullDto(createdAction));
+        model.addAttribute("createdAction", createdDishString);
+
+        return "view/createAction/index";
     }
 
 
