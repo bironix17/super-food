@@ -3,9 +3,14 @@ package ru.bironix.super_food.converters;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import ru.bironix.super_food.db.action.models.Action;
 import ru.bironix.super_food.db.dish.models.*;
+import ru.bironix.super_food.db.generalModels.PicturePaths;
 import ru.bironix.super_food.dtos.PicturePathsDto;
+import ru.bironix.super_food.dtos.action.FullActionDto;
+import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
+import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
 
 import java.util.List;
@@ -22,12 +27,9 @@ public interface DishConverter {
 
     PicturePaths fromDto(PicturePathsDto picturePathsDto);
 
-
     PortionDto toDto(Portion portion);
 
     Portion fromDto(PortionDto portionDto);
-
-
     PriceDto toDto(Price price);
 
     Price fromDto(PriceDto priceDto);
@@ -39,6 +41,7 @@ public interface DishConverter {
     @Mapping(target = "basePortion", source = "dish", qualifiedByName= "toSmallDishDtoBasePortion")
     SmallDishDto toSmallDishDto(Dish dish);
 
+    @Mapping(target = "portions", source = "basePortion", qualifiedByName= "toDishBasePortion")
     Dish fromSmallDishDto(SmallDishDto dishDto);
 
     @Mapping(target = "categories", source = "categories") //TODO не работает аннотация
@@ -51,4 +54,23 @@ public interface DishConverter {
         var portion = dish.getPortions().get(dish.getBaseIndexPortion());
         return toDto(portion);
     }
+
+    @Named("toDishBasePortion")
+    default List<Portion> toDishBasePortion(PortionDto portionDto) {
+        return List.of(fromDto(portionDto));
+    }
+
+
+    SmallActionDto toSmallDto(Action action);
+
+    FullActionDto toFullDto(Action action);
+
+    Action fromFullDto(FullActionDto actionDto);
+
+
+    @Mapping(target = "categories", source = "categories")
+    default ActionsResponseDto toActionsResponseDto(List<SmallActionDto> actionDtos) {
+        return new ActionsResponseDto(actionDtos);
+    }
+
 }

@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.generalModels;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,8 +14,7 @@ import javax.persistence.*;
 public class PicturePaths {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @NonNull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
     String small;

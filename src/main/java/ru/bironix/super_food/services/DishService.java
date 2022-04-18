@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.bironix.super_food.db.dish.dao.AddonDao;
 import ru.bironix.super_food.db.dish.dao.DishDao;
 import ru.bironix.super_food.db.dish.dao.PortionDao;
+import ru.bironix.super_food.db.dish.dao.PriceDao;
 import ru.bironix.super_food.db.dish.models.Addon;
 import ru.bironix.super_food.db.dish.models.Dish;
+import ru.bironix.super_food.db.dish.models.Portion;
 import ru.bironix.super_food.db.dish.models.Price;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class DishService {
 
     @Autowired
     PortionDao portionDao;
+
+    @Autowired
+    PriceDao priceDao;
 
     public Dish getFullDish(int id) {
         return dishDao.findById(Integer.valueOf(id)).orElse(null);
@@ -48,16 +54,18 @@ public class DishService {
         return dishDao.save(dish);
     }
 
-    public boolean updatePriceForDishPortion(int portionId, int price) {
-        var portionOpt = portionDao.findById(portionId);
-        if (portionOpt.isEmpty()) return false;
 
-        var portion = portionOpt.get();
+    public boolean updatePriceForDishPortion(Portion portion, int price) {
         portion.setOldPrice(portion.getPriceNow());
-        portion.setPriceNow(new Price(null, price));
+        var newPrice = new Price(null, price);
+        priceDao.save(newPrice); //TODO изучить почему без этого id сам не вставляется
+
+        portion.setPriceNow(newPrice);
         portionDao.save(portion);
         return true;
     }
+
+
 
 
     public boolean deleteDish(int id) {

@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,11 +14,9 @@ import javax.persistence.*;
 @Entity
 public class Addon {
 
-    //@NonNull  TODO
-    @Builder.Default
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id = 0;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    Integer id;
 
     @NonNull
     @Column(nullable = false)
