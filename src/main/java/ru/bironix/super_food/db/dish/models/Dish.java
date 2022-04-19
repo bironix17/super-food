@@ -35,11 +35,9 @@ public class Dish {
     String description;
     String allergens;
 
-    @Builder.Default
-    @Column(columnDefinition = "integer default 0")
-    Integer baseIndexPortion = 0;
+    @OneToOne(optional = false)
+    Portion basePortion;
 
-    @NonNull
     @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 

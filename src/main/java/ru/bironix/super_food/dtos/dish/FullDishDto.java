@@ -28,10 +28,6 @@ public class FullDishDto extends AbstractDishDto {
     @Schema(description = "аллергены в блюде", nullable = true)
     String allergens;
 
-    @Schema(description = "Индекс основной порции", defaultValue = "0")
-    @Builder.Default
-    Integer baseIndexPortion = 0;
-
     @Valid
     @Schema(description = "набор порций блюда")
     @NonNull

@@ -43,4 +43,8 @@ public abstract class AbstractDishDto {
     @Schema(description = "Флаг удаления блюда")
     @Builder.Default
     Boolean deleted = false;
+
+    @Schema(description = "базовая порция блюда")
+    PortionDto basePortion;
+
 }

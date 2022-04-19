@@ -37,7 +37,7 @@ public class ActionService {
     public Action createAction(Action action, int newPrice) {
         action.getDishes()
                 .forEach(dish -> {
-                    var basePortion = dish.getPortions().get(dish.getBaseIndexPortion());
+                    var basePortion = dish.getBasePortion();
                     dishService.updatePriceForDishPortion(basePortion, newPrice);
                     if(dish.getActions() == null) dish.setActions(new ArrayList<>());
                     dish.getActions().add(action);

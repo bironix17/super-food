@@ -38,7 +38,7 @@ public class CreateDish {
         var addon = new Addon(null, "kva", " ", new Price(null, 1));
         var dish = new Dish(null, new PicturePaths(null, null, null, "dsds"),
                 "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                0, List.of(portion), new ArrayList<>(List.of(addon)), null, false, new ArrayList<>());
+                portion, List.of(portion), new ArrayList<>(List.of(addon)), null, false, new ArrayList<>());
 
         dishService.createAddon(addon);
         dishService.createDish(dish);
@@ -46,7 +46,7 @@ public class CreateDish {
         var portion1 = new Portion(null, "medium", new Price(null, 100), null);
         var dish1 = new Dish(null, new PicturePaths(null, null, null, "dsds"),
                 "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                0, List.of(portion1), new ArrayList<>(List.of(addon)) // Вот повторяющиеся addon
+                portion1, List.of(portion1), new ArrayList<>(List.of(addon)) // Вот повторяющиеся addon
                 , List.of(dish), false, new ArrayList<>());
 
         dishService.createDish(dish1); //здесь падает

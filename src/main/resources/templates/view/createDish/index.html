@@ -16,6 +16,7 @@
 
 <form th:method="Post" th:action="@{/view/createDish}" th:object="${dish}">
 
+
     <!-- picturePaths -->
     <label>Enter picturePaths</label>
     <br/>
@@ -106,19 +107,18 @@
     <br/>
 
 
-    <!--baseIndexPortion-->
-    <label for="baseIndexPortion">baseIndexPortion</label>
-    <select id="baseIndexPortion" th:field="${dish.baseIndexPortion}">
-        <option th:each="portion,iterStat  : ${dish.portions}"
-                th:value="${iterStat.index}"
-                th:text="${portion.size} + ${iterStat.index}"
+    <!--basePortion-->
+    <label for="basePortion">basePortion</label>
+    <select id="basePortion" th:field="${dish.basePortion}">
+        <option th:each="portion : ${dish.portions}"
+                th:value="${{portion}}"
+                th:text="${portion.size}"
         ></option>
     </select>
     <br/>
 
 
     <input type="submit" value="Создать">
-
 
 
     <p style="padding-left: 80px">
@@ -140,16 +140,15 @@
         <br/>
 
 
-        <!--oldPrice-->
-        <label for="priceNow">Enter oldPrice</label>
-        <input type="text" th:field="*{oldPrice.price}" id="oldPrice"/>
-        <div style="color: red" th:if="${#fields.hasErrors('oldPrice.price')}" th:errors="*{oldPrice.price}">error</div>
-        <br/>
+<!--        &lt;!&ndash;oldPrice&ndash;&gt;-->
+<!--        <label for="priceNow">Enter oldPrice</label>-->
+<!--        <input type="text" th:field="*{oldPrice.price}" id="oldPrice"/>-->
+<!--        <div style="color: red" th:if="${#fields.hasErrors('oldPrice.price')}" th:errors="*{oldPrice.price}">error</div>-->
+<!--        <br/>-->
 
         <input type="submit" value="Создать порцию">
     </form>
     </p>
-
 
 
     <!--Показ portions-->
@@ -158,19 +157,13 @@
         <td th:text="${portion.id}"/>
         <td th:text="${portion.size}"/>
         <td th:text="${portion.priceNow.price}"/>
-        <td th:text="${portion.oldPrice.price}"/>
+<!--        <td th:text="${portion.oldPrice.price}"/>-->
         <br/>
     </tr>
     <br/>
 
 
-
-
 </form>
-
-
-
-
 
 
 <div th:if="${createdDish != null}" th:object="${createdDish}">

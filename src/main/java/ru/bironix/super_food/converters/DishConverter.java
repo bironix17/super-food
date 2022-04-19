@@ -30,6 +30,7 @@ public interface DishConverter {
     PortionDto toDto(Portion portion);
 
     Portion fromDto(PortionDto portionDto);
+
     PriceDto toDto(Price price);
 
     Price fromDto(PriceDto priceDto);
@@ -38,10 +39,10 @@ public interface DishConverter {
 
     Dish fromFullDishDto(FullDishDto addonDto);
 
-    @Mapping(target = "basePortion", source = "dish", qualifiedByName= "toSmallDishDtoBasePortion")
+//    @Mapping(target = "basePortion", source = "dish", qualifiedByName = "toSmallDishDtoBasePortion")
     SmallDishDto toSmallDishDto(Dish dish);
 
-    @Mapping(target = "portions", source = "basePortion", qualifiedByName= "toDishBasePortion")
+//    @Mapping(target = "portions", source = "basePortion", qualifiedByName = "toDishBasePortion")
     Dish fromSmallDishDto(SmallDishDto dishDto);
 
     @Mapping(target = "categories", source = "categories") //TODO не работает аннотация
@@ -49,16 +50,18 @@ public interface DishConverter {
         return new DishesInCategoriesDto(categories);
     }
 
-    @Named("toSmallDishDtoBasePortion")
-    default PortionDto toSmallDishDtoBasePortion(Dish dish) {
-        var portion = dish.getPortions().get(dish.getBaseIndexPortion());
-        return toDto(portion);
-    }
+//    @Named("toSmallDishDtoBasePortion")
+//    default PortionDto toSmallDishDtoBasePortion(Dish dish) {
+//        var portion = dish.getPortions().stream()
+//                .filter(p -> p.getId() == dish.getBasePortionId())
+//                .findAny().orElse(null);
+//        return toDto(portion);
+//    }
 
-    @Named("toDishBasePortion")
-    default List<Portion> toDishBasePortion(PortionDto portionDto) {
-        return List.of(fromDto(portionDto));
-    }
+//    @Named("toDishBasePortion")
+//    default List<Portion> toDishBasePortion(PortionDto portionDto) {
+//        return List.of(fromDto(portionDto));
+//    }
 
 
     SmallActionDto toSmallDto(Action action);

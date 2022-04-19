@@ -51,6 +51,10 @@ public class DishService {
     }
 
     public Dish createDish(Dish dish) {
+
+        var basePortionIndex = dish.getPortions().indexOf(dish.getBasePortion());
+        portionDao.saveAll(dish.getPortions());
+        dish.setBasePortion(dish.getPortions().get(basePortionIndex));
         return dishDao.save(dish);
     }
 
