@@ -1,18 +1,20 @@
-package ru.bironix.super_food.config;
+package ru.bironix.super_food.config.formatters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.dtos.dish.AddonDto;
+import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.dish.PortionDto;
 
 import java.util.Locale;
 
 @Service
-public class AddonDtoFormatter implements Formatter<AddonDto> {
+public class PortionDtoFormatter implements Formatter<PortionDto> {
+
 
     @Override
-    public String print(AddonDto object, Locale locale) {
+    public String print(PortionDto object, Locale locale) {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -24,11 +26,13 @@ public class AddonDtoFormatter implements Formatter<AddonDto> {
         return null;
     }
 
+
+    // TODO разобраться почему приходит отрывок "{"id":null"
     @Override
-    public AddonDto parse(String text, Locale locale) {
+    public PortionDto parse(String text, Locale locale) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(text, AddonDto.class);
+            return mapper.readValue(text, PortionDto.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

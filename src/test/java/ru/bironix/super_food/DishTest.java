@@ -22,16 +22,28 @@ public class DishTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Список блюд")
-    void getDishes() throws Exception {
+    @DisplayName("Список существующих блюд")
+    void getExistingDishes() throws Exception {
         this.mockMvc.perform(get("/dishes")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("id")));
     }
 
     @Test
-    @DisplayName("Конкретное блюдо")
-    void getDish() throws Exception {
+    @DisplayName("Конкретное существующее блюдо")
+    void getExistingDish() throws Exception {
         this.mockMvc.perform(get("/dish/{id}", 0)).andExpect(status().isOk())
                 .andExpect(content().string(containsString("id")));
+    }
+
+    @Test
+    @DisplayName("Список блюд")
+    void getDishes() throws Exception {
+        this.mockMvc.perform(get("/dishes")).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Конкретное  блюдо")
+    void getDish() throws Exception {
+        this.mockMvc.perform(get("/dish/{id}", 0)).andExpect(status().isOk());
     }
 }

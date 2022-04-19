@@ -44,9 +44,4 @@ public class FullDishDto extends AbstractDishDto {
     @Valid
     @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
     List<SmallDishDto> dishes;
-
-
-    @Schema(description = "Флаг показа этого блюда в списке всех блюд")
-    @Builder.Default
-    Boolean hidden = false;
 }

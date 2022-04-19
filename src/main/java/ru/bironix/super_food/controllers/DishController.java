@@ -26,14 +26,14 @@ public class DishController {
     @Autowired
     DishService dishService;
 
-    @Operation(summary = "Получение блюда", description = "**Пока возвращает один захардкоженный объект!!!!!**")
+    @Operation(summary = "Получение блюда")
     @GetMapping("/dish/{id}")
     @ResponseBody
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") int id) {
         return dishConverter.toFullDishDto(dishService.getFullDish(id));
     }
 
-    @Operation(summary = "Получение общего списка блюд по категориям", description = "**Пока возвращает один захардкоженный объект!!!!!**")
+    @Operation(summary = "Получение общего списка блюд по категориям")
     @GetMapping("/dishes")
     @ResponseBody
     DishesInCategoriesDto getDishes() {
