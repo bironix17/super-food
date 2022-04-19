@@ -33,7 +33,6 @@ public class Dish {
     CategoryType category;
 
     String description;
-
     String allergens;
 
     @Builder.Default
@@ -45,15 +44,27 @@ public class Dish {
     List<Portion> portions;
 
     @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinColumns({
+            @JoinColumn(name = "dish_id", unique = false),
+            @JoinColumn(name = "addon_id", unique = false)
+    })
     List<Addon> addons;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinColumns({
+            @JoinColumn(name = "dish_id", unique = false),
+            @JoinColumn(name = "inner_dish_id", unique = false)
+    })
     List<Dish> dishes;
 
     @NonNull
     Boolean deleted = false;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinColumns({
+            @JoinColumn(name = "dish_id", unique = false),
+            @JoinColumn(name = "action_id", unique = false)
+    })
     private List<Action> actions;
 
     @PreRemove

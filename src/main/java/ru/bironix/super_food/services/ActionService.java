@@ -12,6 +12,7 @@ import ru.bironix.super_food.dtos.dish.CategoryType;
 import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,6 +39,7 @@ public class ActionService {
                 .forEach(dish -> {
                     var basePortion = dish.getPortions().get(dish.getBaseIndexPortion());
                     dishService.updatePriceForDishPortion(basePortion, newPrice);
+                    if(dish.getActions() == null) dish.setActions(new ArrayList<>());
                     dish.getActions().add(action);
                 });
 

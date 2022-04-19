@@ -90,12 +90,28 @@ public class WebController {
             if (dish.getPortions() == null) dish.setPortions(new ArrayList<>());
             dish.getPortions().add(newPortion);
             model.addAttribute("newPortion", new PortionDto());
-        } else if (!dishResult.hasErrors()) {
+            return "view/createDish/index";
+        } else if (dishResult.hasErrors()) return "view/createDish/index";
 
-            var createdDish = dishService.createDish(dishConverter.fromFullDishDto(dish));
-            var createdDishString = toHumanReadablePage(dishConverter.toFullDishDto(createdDish));
-            model.addAttribute("createdDish", createdDishString);
-        }
+        var createdDish = dishService.createDish(dishConverter.fromFullDishDto(dish));
+        var createdDishString = toHumanReadablePage(dishConverter.toFullDishDto(createdDish));
+        model.addAttribute("createdDish", createdDishString);
+
+        //TODO вынести в отдельный метод
+        dish = new FullDishDto();
+        dish.setAddons(dishService.getAllAddons().stream()
+                .map(i -> dishConverter.toDto(i))
+                .collect(Collectors.toList()));
+
+        dish.setDishes(dishService.getAllDishes().stream()
+                .map(i -> dishConverter.toSmallDishDto(i))
+                .collect(Collectors.toList()));
+
+        newPortion = new PortionDto();
+
+        model.addAttribute("dish", dish);
+        model.addAttribute("newPortion", new PortionDto());
+
         return "view/createDish/index";
     }
 
@@ -125,6 +141,16 @@ public class WebController {
         var createdAction = actionService.createAction(dishConverter.fromFullDto(action), newPrice);
         var createdDishString = toHumanReadablePage(dishConverter.toFullDto(createdAction));
         model.addAttribute("createdAction", createdDishString);
+
+        //TODO вынести в отдельный метод
+        var create = new FullActionDto();
+        create.setDishes(dishService.getAllDishes().stream()
+                .map(i -> dishConverter.toSmallDishDto(i))
+                .collect(Collectors.toList()));
+
+        model.addAttribute("action", create);
+        model.addAttribute("newPrice", 0);
+
 
         return "view/createAction/index";
     }

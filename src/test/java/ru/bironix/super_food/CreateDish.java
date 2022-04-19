@@ -38,18 +38,25 @@ public class CreateDish {
         var addon = new Addon(null, "kva", " ", new Price(null, 1));
         var dish = new Dish(null, new PicturePaths(null, null, null, "dsds"),
                 "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                0, List.of(portion), List.of(addon), null, false, new ArrayList<>());
+                0, List.of(portion), new ArrayList<>(List.of(addon)), null, false, new ArrayList<>());
 
         dishService.createAddon(addon);
         dishService.createDish(dish);
 
+        var portion1 = new Portion(null, "medium", new Price(null, 100), null);
         var dish1 = new Dish(null, new PicturePaths(null, null, null, "dsds"),
                 "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                0, List.of(portion), List.of(addon) // Вот повторяющиеся addon
+                0, List.of(portion1), new ArrayList<>(List.of(addon)) // Вот повторяющиеся addon
                 , List.of(dish), false, new ArrayList<>());
 
         dishService.createDish(dish1); //здесь падает
-
+//
+//        var z = dishDao.findAllByAddonsContains(addon);
+//
+//        z.forEach(dish2 -> {
+//            dish2.getAddons().remove(addon);
+//        });
+//        addonDao.delete(addon);
 
         Assert.assertEquals(dish.getId() != null, true);
     }
