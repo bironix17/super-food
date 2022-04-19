@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public abstract class AbstractDishDto {
 
-    @NonNull
     Integer id;
 
     @Schema(description = "Ссылки на картинки")

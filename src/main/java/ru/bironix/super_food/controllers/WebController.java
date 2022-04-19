@@ -10,15 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.DishConverter;
+import ru.bironix.super_food.db.dish.models.Price;
+import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
-import ru.bironix.super_food.dtos.dish.AddonDto;
-import ru.bironix.super_food.dtos.dish.FullDishDto;
-import ru.bironix.super_food.dtos.dish.PortionDto;
+import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -66,7 +67,15 @@ public class WebController {
 
     @GetMapping("/newDish")
     public String newDish(Model model) {
-        var create = new FullDishDto();
+        var create = FullDishDto.builder()
+                .picturePaths(new PicturePathsDto("https://srokigodnosti.ru/wp-content/uploads/2022/01/191-e1620542426741.jpg"))
+                .name("Маргарита")
+                .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
+                .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
+                .allergens("Перец, соус, помидорки")
+                .category(CategoryType.PIZZA)
+                .portions(new ArrayList<>(List.of(new PortionDto(null, "40 см", new PriceDto(null, 800), null))))
+                .build();
 
         create.setAddons(dishService.getAllAddons().stream()
                 .map(i -> dishConverter.toDto(i))
@@ -98,7 +107,16 @@ public class WebController {
         model.addAttribute("createdDish", createdDishString);
 
         //TODO вынести в отдельный метод
-        dish = new FullDishDto();
+        dish = FullDishDto.builder()
+                .picturePaths(new PicturePathsDto("https://srokigodnosti.ru/wp-content/uploads/2022/01/191-e1620542426741.jpg"))
+                .name("Маргарита")
+                .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
+                .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
+                .allergens("Перец, соус, помидорки")
+                .category(CategoryType.PIZZA)
+                .portions(new ArrayList<>(List.of(new PortionDto(null, "40 см", new PriceDto(null, 800), null))))
+                .build();
+
         dish.setAddons(dishService.getAllAddons().stream()
                 .map(i -> dishConverter.toDto(i))
                 .collect(Collectors.toList()));
@@ -116,19 +134,19 @@ public class WebController {
     }
 
 
-
-
-
     @GetMapping("/newAction")
     public String newAction(Model model) {
-        var create = new FullActionDto();
+        var create = FullActionDto.builder()
+                .picturePaths(new PicturePathsDto("https://sun9-34.userapi.com/impg/mKg7k8pedbc7XqJvUTG66AOMgSG-TzVSVLqORQ/2NCmTa9jO-c.jpg?size=604x515&quality=95&sign=d7134a8fda78aec413ad851f4ecd64f5&type=album"))
+                .name("4 пиццы по цене двух роллов, по размерам такие же")
+                .build();
 
         create.setDishes(dishService.getAllDishes().stream()
                 .map(i -> dishConverter.toSmallDishDto(i))
                 .collect(Collectors.toList()));
 
         model.addAttribute("action", create);
-        model.addAttribute("newPrice", 0);
+        model.addAttribute("newPrice", 750);
         return "view/createAction/index";
     }
 
@@ -146,13 +164,18 @@ public class WebController {
         model.addAttribute("createdAction", createdDishString);
 
         //TODO вынести в отдельный метод
-        var create = new FullActionDto();
+        var create = FullActionDto.builder()
+                .picturePaths(new PicturePathsDto("https://sun9-34.userapi.com/impg/mKg7k8pedbc7XqJvUTG66AOMgSG-TzVSVLqORQ/2NCmTa9jO-c.jpg?size=604x515&quality=95&sign=d7134a8fda78aec413ad851f4ecd64f5&type=album"))
+                .name("4 пиццы по цене двух роллов, по размерам такие же")
+                .build();
+
+
         create.setDishes(dishService.getAllDishes().stream()
                 .map(i -> dishConverter.toSmallDishDto(i))
                 .collect(Collectors.toList()));
 
         model.addAttribute("action", create);
-        model.addAttribute("newPrice", 0);
+        model.addAttribute("newPrice", 750);
 
 
         return "view/createAction/index";

@@ -53,7 +53,9 @@
     <select name="category" id="category">
         <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryType).values()}"
                 th:value="${categoryOpt}"
-                th:text="${categoryOpt}"></option>
+                th:text="${categoryOpt}"
+                th:selected=" ${categoryOpt.equals(dish.category)}"
+        ></option>
     </select>
     <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">error</div>
     <br/>
@@ -140,11 +142,11 @@
         <br/>
 
 
-<!--        &lt;!&ndash;oldPrice&ndash;&gt;-->
-<!--        <label for="priceNow">Enter oldPrice</label>-->
-<!--        <input type="text" th:field="*{oldPrice.price}" id="oldPrice"/>-->
-<!--        <div style="color: red" th:if="${#fields.hasErrors('oldPrice.price')}" th:errors="*{oldPrice.price}">error</div>-->
-<!--        <br/>-->
+        <!--        &lt;!&ndash;oldPrice&ndash;&gt;-->
+        <!--        <label for="priceNow">Enter oldPrice</label>-->
+        <!--        <input type="text" th:field="*{oldPrice.price}" id="oldPrice"/>-->
+        <!--        <div style="color: red" th:if="${#fields.hasErrors('oldPrice.price')}" th:errors="*{oldPrice.price}">error</div>-->
+        <!--        <br/>-->
 
         <input type="submit" value="Создать порцию">
     </form>
@@ -157,7 +159,7 @@
         <td th:text="${portion.id}"/>
         <td th:text="${portion.size}"/>
         <td th:text="${portion.priceNow.price}"/>
-<!--        <td th:text="${portion.oldPrice.price}"/>-->
+        <!--        <td th:text="${portion.oldPrice.price}"/>-->
         <br/>
     </tr>
     <br/>
