@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.generalModels;
+package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

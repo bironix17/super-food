@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.models.dish;
 
 
 public enum CategoryType {

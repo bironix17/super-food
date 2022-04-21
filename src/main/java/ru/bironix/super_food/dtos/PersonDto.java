@@ -5,25 +5,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Schema(description = "Пользователь, точно еще поменяется структура")
 @Data
 @Builder
-public class UserDto {
+public class PersonDto {
 
-    @NonNull
     Integer id;
 
-    @NonNull
+    @NotBlank
     String email;
 
-    //TODO сделать через хэш
-    @NonNull
+    @NotBlank
     String password;
 
-    @NonNull
+    @NotBlank
     String name;
 
-    List<String> addresses;
+    @Valid
+//    @NonNull
+    @Builder.Default
+    List<AddressDto> addresses = new ArrayList<>();
 }

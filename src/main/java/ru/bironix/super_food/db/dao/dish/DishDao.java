@@ -1,9 +1,9 @@
-package ru.bironix.super_food.db.dish.dao;
+package ru.bironix.super_food.db.dao.dish;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.bironix.super_food.db.dish.models.Addon;
-import ru.bironix.super_food.db.dish.models.Dish;
+import ru.bironix.super_food.db.models.dish.Addon;
+import ru.bironix.super_food.db.models.dish.Dish;
 
 import java.util.List;
 

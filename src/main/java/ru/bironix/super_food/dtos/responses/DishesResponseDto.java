@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class DishesInCategoriesDto {
+public class DishesResponseDto {
 
     @NonNull
     List<CategoryDto> categories;

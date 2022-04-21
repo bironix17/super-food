@@ -9,19 +9,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.bironix.super_food.converters.DishConverter;
-import ru.bironix.super_food.db.dish.models.Price;
+import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.dtos.AddressDto;
+import ru.bironix.super_food.dtos.PersonDto;
 import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
+import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+//TODO подумать о выборе использования чего то одного. Контроллеров или сервисов.
 @Controller
 @RequestMapping("/view")
 public class WebController {
@@ -31,11 +35,15 @@ public class WebController {
 
     @Autowired
     DishService dishService;
+
     @Autowired
     ActionService actionService;
 
     @Autowired
-    DishConverter dishConverter;
+    PersonService personService;
+
+    @Autowired
+    Converter con;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -56,8 +64,8 @@ public class WebController {
                               BindingResult bindingResult, Model model) throws JsonProcessingException {
 
         if (!bindingResult.hasErrors()) {
-            var createdAddon = dishController.createAddon(addon);
-            var createdAddonString = toHumanReadablePage(createdAddon);
+            var createdAddon = dishService.createAddon(con.fromDto(addon));
+            var createdAddonString = toHumanReadablePage(con.toDto(createdAddon));
             model.addAttribute("createdAddon", createdAddonString);
         }
 
@@ -78,11 +86,11 @@ public class WebController {
                 .build();
 
         create.setAddons(dishService.getAllAddons().stream()
-                .map(i -> dishConverter.toDto(i))
+                .map(i -> con.toDto(i))
                 .collect(Collectors.toList()));
 
         create.setDishes(dishService.getAllDishes().stream()
-                .map(i -> dishConverter.toSmallDishDto(i))
+                .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
 
         model.addAttribute("dish", create);
@@ -102,8 +110,8 @@ public class WebController {
             return "view/createDish/index";
         } else if (dishResult.hasErrors()) return "view/createDish/index";
 
-        var createdDish = dishService.createDish(dishConverter.fromFullDishDto(dish));
-        var createdDishString = toHumanReadablePage(dishConverter.toFullDishDto(createdDish));
+        var createdDish = dishService.createDish(con.fromFullDto(dish));
+        var createdDishString = toHumanReadablePage(con.toFullDto(createdDish));
         model.addAttribute("createdDish", createdDishString);
 
         //TODO вынести в отдельный метод
@@ -118,20 +126,20 @@ public class WebController {
                 .build();
 
         dish.setAddons(dishService.getAllAddons().stream()
-                .map(i -> dishConverter.toDto(i))
+                .map(i -> con.toDto(i))
                 .collect(Collectors.toList()));
 
         dish.setDishes(dishService.getAllDishes().stream()
-                .map(i -> dishConverter.toSmallDishDto(i))
+                .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
-
-        newPortion = new PortionDto();
 
         model.addAttribute("dish", dish);
         model.addAttribute("newPortion", new PortionDto());
 
         return "view/createDish/index";
     }
+
+
 
 
     @GetMapping("/newAction")
@@ -142,7 +150,7 @@ public class WebController {
                 .build();
 
         create.setDishes(dishService.getAllDishes().stream()
-                .map(i -> dishConverter.toSmallDishDto(i))
+                .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
 
         model.addAttribute("action", create);
@@ -159,8 +167,8 @@ public class WebController {
         if (newPrice < 0) return "view/createAction/index";
         if (actionResult.hasErrors()) return "view/createAction/index";
 
-        var createdAction = actionService.createAction(dishConverter.fromFullDto(action), newPrice);
-        var createdDishString = toHumanReadablePage(dishConverter.toFullDto(createdAction));
+        var createdAction = actionService.createAction(con.fromFullDto(action), newPrice);
+        var createdDishString = toHumanReadablePage(con.toFullDto(createdAction));
         model.addAttribute("createdAction", createdDishString);
 
         //TODO вынести в отдельный метод
@@ -171,7 +179,7 @@ public class WebController {
 
 
         create.setDishes(dishService.getAllDishes().stream()
-                .map(i -> dishConverter.toSmallDishDto(i))
+                .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
 
         model.addAttribute("action", create);
@@ -182,9 +190,61 @@ public class WebController {
     }
 
 
+
+
+    @GetMapping("/newPerson")
+    public String newPerson(Model model) {
+        var create = PersonDto.builder()
+                .email("hello@rambler.ru")
+                .password("Kotopes777")
+                .name("Саня")
+                .build();
+
+        model.addAttribute("person", create);
+        model.addAttribute("newAddress", new AddressDto());
+        return "view/createPerson/index";
+    }
+
+
+
+    @PostMapping("/createPerson")
+    public String createUser(@ModelAttribute("person") @Valid PersonDto person, BindingResult personResult,
+                             @ModelAttribute("newAddress") @Valid AddressDto newAddress, BindingResult newAddressResult,
+                             Model model) throws JsonProcessingException {
+
+        if (StringUtils.isNotBlank(newAddress.getAddress())) {
+
+            person.getAddresses().add(newAddress);
+            model.addAttribute("newAddress", new AddressDto());
+            return "view/createPerson/index";
+
+        } else if (personResult.hasErrors()) return "view/createPerson/index";
+
+        var createdPerson = personService.createPerson(con.fromDto(person));
+        var createdPersonString = toHumanReadablePage(con.toDto(createdPerson));
+        model.addAttribute("createdPerson", createdPersonString);
+
+        //TODO вынести в отдельный метод
+        var create = PersonDto.builder()
+                .email("hello@rambler.ru")
+                .password("Kotopes777")
+                .name("Саня")
+                .build();
+
+
+        model.addAttribute("person", create);
+        model.addAttribute("newAddress", new AddressDto());
+
+        return "view/createPerson/index";
+    }
+
+
+
+
     private String toHumanReadablePage(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object)
                 .replace("\n", "<br>");
     }
+
 }

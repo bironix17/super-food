@@ -5,54 +5,45 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.bironix.super_food.converters.DishConverter;
-import ru.bironix.super_food.dtos.dish.AbstractDishDto;
+import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.dish.AddonDto;
-import ru.bironix.super_food.dtos.dish.CategoryDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
-import ru.bironix.super_food.dtos.responses.DishesInCategoriesDto;
+import ru.bironix.super_food.dtos.responses.DishesResponseDto;
 import ru.bironix.super_food.services.DishService;
-
-import java.util.stream.Collectors;
 
 @Tag(name = "Блюдо")
 @RestController
-
 public class DishController {
 
     @Autowired
-    DishConverter dishConverter;
+    public DishController(Converter converter, DishService service) {
+        this.converter = converter;
+        this.service = service;
+    }
 
-    @Autowired
-    DishService dishService;
+    final Converter converter;
+    final DishService service;
 
     @Operation(summary = "Получение блюда")
     @GetMapping("/dish/{id}")
     @ResponseBody
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") int id) {
-        return dishConverter.toFullDishDto(dishService.getFullDish(id));
+        return converter.toFullDto(service.getFullDish(id));
     }
 
     @Operation(summary = "Получение общего списка блюд по категориям")
     @GetMapping("/dishes")
     @ResponseBody
-    DishesInCategoriesDto getDishes() {
-
-        var categories = dishService.getAllDishes().stream()
-                .map(dishConverter::toSmallDishDto)
-                .collect(Collectors.groupingBy(AbstractDishDto::getCategory))
-                .entrySet().stream()
-                .map(i -> new CategoryDto(i.getKey(), i.getValue()))
-                .collect(Collectors.toList());
-
-        return dishConverter.toDishesInCategoriesDto(categories);
+    DishesResponseDto getDishes() {
+        return converter.toDishesResponseDto(service.getAllDishes());
     }
 
-    @Operation(summary = "Создание добавки")
-    @PostMapping("/createAddon")
+
+    @Operation(summary = "Получение общего списка добавок")
+    @GetMapping("/addons")
     @ResponseBody
-    AddonDto createAddon(@RequestBody AddonDto addon) {
-        var addonEntity = dishService.createAddon(dishConverter.fromDto(addon));
-        return dishConverter.toDto(addonEntity);
+    DishesResponseDto getAddons() {
+        return converter.toDishesResponseDto(service.getAllDishes());
     }
+
 }

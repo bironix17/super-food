@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import ru.bironix.super_food.db.dish.dao.AddonDao;
-import ru.bironix.super_food.db.dish.dao.DishDao;
-import ru.bironix.super_food.db.dish.models.*;
-import ru.bironix.super_food.db.generalModels.PicturePaths;
+import ru.bironix.super_food.db.dao.dish.AddonDao;
+import ru.bironix.super_food.db.dao.dish.DishDao;
+import ru.bironix.super_food.db.models.dish.*;
 import ru.bironix.super_food.services.DishService;
 
 import javax.transaction.Transactional;
@@ -46,7 +45,7 @@ public class CreateDish {
         var portion1 = new Portion(null, "medium", new Price(null, 100), null);
         var dish1 = new Dish(null, new PicturePaths(null, null, null, "dsds"),
                 "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                portion1, List.of(portion1), new ArrayList<>(List.of(addon)) // Вот повторяющиеся addon
+                portion1, List.of(portion1), null // Вот повторяющиеся addon
                 , List.of(dish), false, new ArrayList<>());
 
         dishService.createDish(dish1); //здесь падает

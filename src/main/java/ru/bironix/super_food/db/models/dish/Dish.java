@@ -1,9 +1,8 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.db.action.models.Action;
-import ru.bironix.super_food.db.generalModels.PicturePaths;
+import ru.bironix.super_food.db.models.Action;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,33 +34,37 @@ public class Dish {
     String description;
     String allergens;
 
+    @NonNull
     @OneToOne(optional = false)
     Portion basePortion;
 
+    @NonNull
     @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinColumns({
-            @JoinColumn(name = "dish_id", unique = false),
-            @JoinColumn(name = "addon_id", unique = false)
+            @JoinColumn(name = "dish_id"),
+            @JoinColumn(name = "addon_id")
     })
     List<Addon> addons;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinColumns({
-            @JoinColumn(name = "dish_id", unique = false),
-            @JoinColumn(name = "inner_dish_id", unique = false)
+            @JoinColumn(name = "dish_id"),
+            @JoinColumn(name = "inner_dish_id")
     })
     List<Dish> dishes;
 
     @NonNull
     Boolean deleted = false;
 
+
+    //TODO подумать о централизованном подходе к удалению
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinColumns({
-            @JoinColumn(name = "dish_id", unique = false),
-            @JoinColumn(name = "action_id", unique = false)
+            @JoinColumn(name = "dish_id"),
+            @JoinColumn(name = "action_id")
     })
     private List<Action> actions;
 

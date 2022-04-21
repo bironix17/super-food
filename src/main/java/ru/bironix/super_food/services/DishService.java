@@ -3,16 +3,15 @@ package ru.bironix.super_food.services;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.db.dish.dao.AddonDao;
-import ru.bironix.super_food.db.dish.dao.DishDao;
-import ru.bironix.super_food.db.dish.dao.PortionDao;
-import ru.bironix.super_food.db.dish.dao.PriceDao;
-import ru.bironix.super_food.db.dish.models.Addon;
-import ru.bironix.super_food.db.dish.models.Dish;
-import ru.bironix.super_food.db.dish.models.Portion;
-import ru.bironix.super_food.db.dish.models.Price;
+import ru.bironix.super_food.db.dao.dish.AddonDao;
+import ru.bironix.super_food.db.dao.dish.DishDao;
+import ru.bironix.super_food.db.dao.dish.PortionDao;
+import ru.bironix.super_food.db.dao.dish.PriceDao;
+import ru.bironix.super_food.db.models.dish.Addon;
+import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.Portion;
+import ru.bironix.super_food.db.models.dish.Price;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +19,17 @@ import java.util.List;
 public class DishService {
 
     @Autowired
-    DishDao dishDao;
+    public DishService(DishDao dishDao, AddonDao addonDao, PortionDao portionDao, PriceDao priceDao) {
+        this.dishDao = dishDao;
+        this.addonDao = addonDao;
+        this.portionDao = portionDao;
+        this.priceDao = priceDao;
+    }
 
-    @Autowired
-    AddonDao addonDao;
-
-    @Autowired
-    PortionDao portionDao;
-
-    @Autowired
-    PriceDao priceDao;
+    final DishDao dishDao;
+    final AddonDao addonDao;
+    final PortionDao portionDao;
+    final PriceDao priceDao;
 
     public Dish getFullDish(int id) {
         return dishDao.findById(Integer.valueOf(id)).orElse(null);
@@ -68,8 +68,6 @@ public class DishService {
         portionDao.save(portion);
         return true;
     }
-
-
 
 
     public boolean deleteDish(int id) {

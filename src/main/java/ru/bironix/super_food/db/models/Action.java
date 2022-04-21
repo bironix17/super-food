@@ -1,9 +1,9 @@
-package ru.bironix.super_food.db.action.models;
+package ru.bironix.super_food.db.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.db.dish.models.Dish;
-import ru.bironix.super_food.db.generalModels.PicturePaths;
+import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.PicturePaths;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,6 +30,8 @@ public class Action {
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE})
     List<Dish> dishes;
 
+
+    //TODO подумать о централизованном подходе к удалению
     @PreRemove
     private void removeDishes() {
         for (var dish : dishes) {

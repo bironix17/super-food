@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -22,8 +22,6 @@ public class Price {
     @Column(nullable = false)
     Integer price;
 
-
-    //todo
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

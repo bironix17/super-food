@@ -1,7 +1,6 @@
 package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -10,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Schema(description = "Полное блюдо")
@@ -31,6 +29,7 @@ public class FullDishDto extends AbstractDishDto {
     @Valid
     @Schema(description = "набор порций блюда")
     @NonNull
+    @NotEmpty(message = "Добавьте порцию")
     List<PortionDto> portions;
 
     @Valid

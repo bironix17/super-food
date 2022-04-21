@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.models.person;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -6,30 +6,28 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.List;
 
+
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Addon {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
     @NonNull
-    @Column(nullable = false)
+    String email;
+
+    @NonNull
+    String password;
+
+    @NonNull
     String name;
 
-    @NonNull
-    @Column(nullable = false)
-    String picturePath;
-
-    @NonNull
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "priceId", nullable = false)
-    Price price;
-
-
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Address> addresses;
 }

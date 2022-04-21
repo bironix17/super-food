@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.dish.models;
+package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,6 +9,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @SuperBuilder
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,6 +20,7 @@ public class Portion {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
+    @NonNull
     String size;
 
     @NonNull
@@ -25,9 +28,10 @@ public class Portion {
     @JoinColumn(name = "priceNowId", nullable = false)
     Price priceNow;
 
-    @OneToOne(optional = true, cascade = CascadeType.ALL) //TODO fix
-    @JoinColumn(name = "oldPriceId", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "oldPriceId")
     Price oldPrice;
+
 
     @Override
     public boolean equals(Object o) {

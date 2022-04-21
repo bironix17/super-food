@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" , xmlns:th="http://thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователь</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<a th:href="@{/view/}">На главную</a>
+<br/>
+
+<h1>Создание пользователя</h1>
+
+
+<form th:method="Post" th:action="@{/view/createPerson}" th:object="${person}">
+
+    <!--name-->
+    <label for="name">Enter name</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">error</div>
+    <br/>
+
+    <!--email-->
+    <label for="email">Enter email</label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">error</div>
+    <br/>
+
+
+    <!--password-->
+    <label for="password">Enter password</label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error</div>
+    <br/>
+
+
+    <!--addresses  hidden!-->
+    <select class="form-control" id="addresses" th:field="*{addresses}" multiple="multiple" hidden>
+        <option th:each="address : ${person.addresses}" th:value="${{address}}" th:text="${address.address}"></option>
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('addresses')}" th:errors="*{addresses}">error</div>
+    <br/>
+
+
+    <input type="submit" value="Создать">
+
+
+    <p style="padding-left: 80px">
+    <form th:method="Post" th:action="@{/view/createPerson}" th:object="${newAddress}">
+
+        <h2>Создать адрес для пользователя</h2>
+
+        <!--address-->
+        <label for="address">Enter address</label>
+        <input type="text" th:field="*{address}" id="address"/>
+        <div style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">error</div>
+        <br/>
+
+
+        <input type="submit" value="Создать адрес">
+    </form>
+    </p>
+
+
+    <!--Показ addresses-->
+    <label style="font-weight: bold" for="showAddresses">Созданные addresses</label><br/>
+    <tr th:each="address: ${person.addresses}" id="showAddresses">
+        <td th:text="${address.address}"/>
+        <br/>
+    </tr>
+    <br/>
+
+
+</form>
+
+
+<div th:if="${createdPerson != null}" th:object="${createdPerson}">
+    <br/>
+    <h1>Созданный пользователь</h1>
+    <h4 th:utext="${createdPerson}"/>
+</div>
+
+
+</body>
+</html>

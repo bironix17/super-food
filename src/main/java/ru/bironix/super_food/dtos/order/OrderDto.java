@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import ru.bironix.super_food.dtos.UserDto;
+import ru.bironix.super_food.dtos.PersonDto;
 import ru.bironix.super_food.dtos.dish.SmallDishDto;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ public class OrderDto {
     Integer id;
 
     @NonNull
-    UserDto user;
+    PersonDto user;
 
     //TODO
     @Schema(description = "**Еще не знаю правильный формат**")
