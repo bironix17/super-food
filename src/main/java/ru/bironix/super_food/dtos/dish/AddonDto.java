@@ -19,18 +19,14 @@ public class AddonDto {
         this.price = price;
     }
 
-    //    @NonNull
     Integer id;
 
     @NotBlank
-//    @NonNull
     String name;
 
     @NotBlank
-//    @NonNull
     String picturePath;
 
     @Valid
-//    @NonNull
     PriceDto price;
 }

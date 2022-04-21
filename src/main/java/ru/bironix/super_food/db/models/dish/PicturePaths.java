@@ -21,7 +21,6 @@ public class PicturePaths {
 
     String medium;
 
-    @NonNull
     @Column(nullable = false)
     String large;
 }

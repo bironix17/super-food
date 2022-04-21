@@ -10,7 +10,7 @@ import java.util.Objects;
 @Setter
 @SuperBuilder
 @ToString
-@RequiredArgsConstructor
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,10 +20,8 @@ public class Portion {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
-    @NonNull
     String size;
 
-    @NonNull
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "priceNowId", nullable = false)
     Price priceNow;

@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ActionsResponseDto {
 
-    @NonNull
     List<SmallActionDto> actions;
 }
 

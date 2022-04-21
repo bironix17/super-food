@@ -19,7 +19,5 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
-
-    @NonNull
     String address;
 }

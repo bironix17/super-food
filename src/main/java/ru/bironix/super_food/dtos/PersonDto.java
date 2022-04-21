@@ -1,9 +1,7 @@
 package ru.bironix.super_food.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -11,9 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-@Schema(description = "Пользователь, точно еще поменяется структура")
+@Schema(description = "Пользователь, пароль еще поменяется")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonDto {
 
     Integer id;
@@ -28,7 +28,6 @@ public class PersonDto {
     String name;
 
     @Valid
-//    @NonNull
     @Builder.Default
     List<AddressDto> addresses = new ArrayList<>();
 }

@@ -16,23 +16,23 @@ import java.util.List;
 @Builder
 public class OrderDto {
 
-    @NonNull
+
     Integer id;
 
-    @NonNull
+
     PersonDto user;
 
     //TODO
     @Schema(description = "**Еще не знаю правильный формат**")
-    @NonNull
+
     Date dateTime;
 
-    @NonNull
+
     Integer totalPrice;
 
     @ApiModelProperty
     @Builder.Default
-    @NonNull
+
     OrderStatus orderStatus = OrderStatus.ACCEPTED;
 //
 //    @Schema(description = "Заказанные комбы")

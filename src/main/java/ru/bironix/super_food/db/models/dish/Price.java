@@ -18,7 +18,6 @@ public class Price {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
-    @NonNull
     @Column(nullable = false)
     Integer price;
 

@@ -15,6 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class DishesResponseDto {
 
-    @NonNull
+
     List<CategoryDto> categories;
 }

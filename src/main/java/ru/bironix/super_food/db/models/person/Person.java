@@ -4,8 +4,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -19,15 +19,11 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
-    @NonNull
     String email;
-
-    @NonNull
     String password;
-
-    @NonNull
     String name;
 
+    @Valid
     @OneToMany(cascade = CascadeType.ALL)
     List<Address> addresses;
 }

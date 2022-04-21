@@ -19,7 +19,7 @@ public class FullDishDto extends AbstractDishDto {
 
     @NotBlank
     @Schema(description = "Описание")
-    @NonNull
+
     String description;
 
     @NotBlank
@@ -28,7 +28,7 @@ public class FullDishDto extends AbstractDishDto {
 
     @Valid
     @Schema(description = "набор порций блюда")
-    @NonNull
+
     @NotEmpty(message = "Добавьте порцию")
     List<PortionDto> portions;
 

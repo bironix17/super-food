@@ -6,6 +6,7 @@ import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.PicturePaths;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -20,10 +21,8 @@ public class Action {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
-    @NonNull
     String name;
 
-    @NonNull
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     PicturePaths picturePaths;
 

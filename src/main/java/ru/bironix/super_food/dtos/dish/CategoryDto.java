@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
 
-    @NonNull
+
     CategoryType categoryType;
 
     @Schema(nullable = true)
