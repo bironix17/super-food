@@ -6,44 +6,52 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesResponseDto;
 import ru.bironix.super_food.services.DishService;
+
+import java.util.List;
 
 @Tag(name = "Блюдо")
 @RestController
 public class DishController {
 
     @Autowired
-    public DishController(Converter converter, DishService service) {
-        this.converter = converter;
+    public DishController(Converter con, DishService service) {
+        this.con = con;
         this.service = service;
     }
 
-    final Converter converter;
+    final Converter con;
     final DishService service;
 
     @Operation(summary = "Получение блюда")
     @GetMapping("/dish/{id}")
     @ResponseBody
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") int id) {
-        return converter.toFullDto(service.getFullDish(id));
+        return con.toFullDto(service.getFullDish(id));
     }
 
     @Operation(summary = "Получение общего списка блюд по категориям")
     @GetMapping("/dishes")
     @ResponseBody
-    DishesResponseDto getDishes() {
-        return converter.toDishesResponseDto(service.getAllDishes());
+    DishesInCategoriesResponseDto getDishes() {
+        return con.toDishesInCategoriesResponseDto(service.getAllDishes());
     }
 
+    @Operation(summary = "Получение запрошеного списка блюд" )
+    @GetMapping("/specificDishes")
+    @ResponseBody
+    DishesResponseDto getSpecificDishes(@RequestParam("ids[]") @Parameter(description = "Список id блюд") List<Integer> ids) {
+        return con.toDishesResponseDto(service.getDishes(ids));
+    }
 
     @Operation(summary = "Получение общего списка добавок")
     @GetMapping("/addons")
     @ResponseBody
-    DishesResponseDto getAddons() {
-        return converter.toDishesResponseDto(service.getAllDishes());
+    DishesInCategoriesResponseDto getAddons() {
+        return con.toDishesInCategoriesResponseDto(service.getAllDishes());
     }
 
 }

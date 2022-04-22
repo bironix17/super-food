@@ -16,6 +16,7 @@ import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesResponseDto;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public interface Converter {
     Person fromDto(PersonDto personDto);
 
     AddressDto toDto(Address address);
+
     Address fromDto(AddressDto addressDto);
 
 
@@ -65,6 +67,7 @@ public interface Converter {
 
     Action fromFullDto(FullActionDto actionDto);
 
+
     default ActionsResponseDto toActionsResponseDto(List<Action> actions) {
         var actionsDtos = actions.stream()
                 .map(this::toSmallDto)
@@ -72,7 +75,7 @@ public interface Converter {
         return new ActionsResponseDto(actionsDtos);
     }
 
-    default DishesResponseDto toDishesResponseDto(List<Dish> dishes) {
+    default DishesInCategoriesResponseDto toDishesInCategoriesResponseDto(List<Dish> dishes) {
         var categories = dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.groupingBy(AbstractDishDto::getCategory))
@@ -80,6 +83,14 @@ public interface Converter {
                 .map(i -> new CategoryDto(i.getKey(), i.getValue()))
                 .collect(Collectors.toList());
 
-        return new DishesResponseDto(categories);
+        return new DishesInCategoriesResponseDto(categories);
+    }
+
+    default DishesResponseDto toDishesResponseDto(List<Dish> dishes) {
+        var dishesDtos = dishes.stream()
+                .map(this::toSmallDto)
+                .collect(Collectors.toList());
+
+        return new DishesResponseDto(dishesDtos);
     }
 }

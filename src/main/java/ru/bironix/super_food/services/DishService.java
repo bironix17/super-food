@@ -11,6 +11,7 @@ import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.dish.Price;
+import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,5 +85,9 @@ public class DishService {
                 .name(dish.getName())
                 .deleted(true)
                 .build();
+    }
+
+    public List<Dish> getDishes(List<Integer> ids) {//TODO изучить почему пропускает несуществующие id
+        return IteratorUtils.toList(dishDao.findAllById(ids).iterator());
     }
 }

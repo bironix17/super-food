@@ -3,10 +3,7 @@ package ru.bironix.super_food.db.models.person;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,4 +17,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
     String address;
+
+    @ManyToOne
+    Person person;
 }

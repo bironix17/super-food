@@ -24,7 +24,6 @@ public class PersonDto {
     @NotBlank
     String password;
 
-    @NotBlank
     String name;
 
     @Valid

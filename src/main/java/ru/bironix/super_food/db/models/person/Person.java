@@ -24,6 +24,6 @@ public class Person {
     String name;
 
     @Valid
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     List<Address> addresses;
 }

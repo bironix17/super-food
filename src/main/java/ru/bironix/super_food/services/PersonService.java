@@ -20,14 +20,16 @@ public class PersonService {
     }
 
     final PersonDao personDao;
-    final UpdateMapper mapper;
     final AddressDao addressDao;
+    final UpdateMapper mapper;
+
 
     public Person getMe(int id) {
         return personDao.findById(id).orElse(null);
     }
 
     public Person createPerson(Person person) {
+        person.setId(null);
         return personDao.save(person);
     }
 
@@ -41,9 +43,13 @@ public class PersonService {
     @Transactional
     public Address addAddressForPerson(int id, String addressName) {
         var person = personDao.findById(id).get();
-        var newAddress = addressDao.save(new Address(null, addressName));
+        var newAddress = addressDao.save(new Address(null, addressName, person));
         person.getAddresses().add(newAddress);
-        ;
         return newAddress;
+    }
+
+    @Transactional
+    public void deleteAddress(int id) {
+        addressDao.deleteById(id);
     }
 }
