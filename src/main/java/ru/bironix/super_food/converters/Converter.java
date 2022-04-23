@@ -2,11 +2,7 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import ru.bironix.super_food.db.models.Action;
-import ru.bironix.super_food.db.models.dish.Addon;
-import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.dish.Portion;
-import ru.bironix.super_food.db.models.dish.Price;
-import ru.bironix.super_food.db.models.dish.PicturePaths;
+import ru.bironix.super_food.db.models.dish.*;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.AddressDto;
@@ -92,5 +88,12 @@ public interface Converter {
                 .collect(Collectors.toList());
 
         return new DishesResponseDto(dishesDtos);
+    }
+
+
+    default List<SmallDishDto> toDishes(List<Dish> dishes) {
+        return dishes.stream()
+                .map(this::toSmallDto)
+                .collect(Collectors.toList());
     }
 }

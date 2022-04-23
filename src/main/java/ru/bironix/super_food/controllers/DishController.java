@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.dish.SmallDishDto;
 import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesResponseDto;
 import ru.bironix.super_food.services.DishService;
@@ -45,6 +46,13 @@ public class DishController {
     @ResponseBody
     DishesResponseDto getSpecificDishes(@RequestParam("ids[]") @Parameter(description = "Список id блюд") List<Integer> ids) {
         return con.toDishesResponseDto(service.getDishes(ids));
+    }
+
+    @Operation(summary = "Получение запрошеного списка блюд. Возвращает СПИСОК!!!!!!!!!!!!!!" )
+    @GetMapping("/specificDishesTestFront")
+    @ResponseBody
+    List<SmallDishDto> getSpecificDishesTestFront(@RequestParam("ids[]") @Parameter(description = "Список id блюд") List<Integer> ids) {
+        return con.toDishes(service.getDishes(ids));
     }
 
     @Operation(summary = "Получение общего списка добавок")
