@@ -11,7 +11,7 @@ import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.dish.Price;
-import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
+import ru.bironix.super_food.exceptions.NotFoundSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class DishService {
     final PriceDao priceDao;
 
     public Dish getFullDish(int id) {
-        return dishDao.findById(Integer.valueOf(id)).orElse(null);
+        return dishDao.findById(id).orElseThrow(NotFoundSource::new);
     }
 
     public List<Dish> getAllDishes() {
@@ -46,7 +46,7 @@ public class DishService {
     }
 
     public List<Addon> getAllAddons() {
-        List<Addon> result = new ArrayList<Addon>();
+        List<Addon> result = new ArrayList<>();
         addonDao.findAll().forEach(result::add);
         return result;
     }
@@ -61,6 +61,10 @@ public class DishService {
 
 
     public boolean updatePriceForDishPortion(Portion portion, int price) {
+
+        if (!portionDao.existsById(portion.getId()))
+            throw new NotFoundSource();
+
         portion.setOldPrice(portion.getPriceNow());
         var newPrice = new Price(null, price);
         priceDao.save(newPrice); //TODO изучить почему без этого id сам не вставляется
@@ -74,11 +78,11 @@ public class DishService {
     public boolean deleteDish(int id) {
         var dishOpt = dishDao.findById(id);
         if (dishOpt.isEmpty()) return false;
-        dishDao.save(resetFataForDish(dishOpt.get()));
+        dishDao.save(resetDataForDish(dishOpt.get()));
         return true;
     }
 
-    private Dish resetFataForDish(Dish dish) {
+    private Dish resetDataForDish(Dish dish) {
         return Dish.builder()
                 .id(dish.getId())
                 .picturePaths(dish.getPicturePaths())

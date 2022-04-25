@@ -8,9 +8,8 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@SuperBuilder
 @ToString
-
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -30,6 +29,11 @@ public class Portion {
     @JoinColumn(name = "oldPriceId")
     Price oldPrice;
 
+    public Portion(String size, Price priceNow, Price oldPrice) {
+        this.size = size;
+        this.priceNow = priceNow;
+        this.oldPrice = oldPrice;
+    }
 
     @Override
     public boolean equals(Object o) {

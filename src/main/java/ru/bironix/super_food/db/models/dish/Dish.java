@@ -3,6 +3,7 @@ package ru.bironix.super_food.db.models.dish;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.db.models.Action;
+import ru.bironix.super_food.db.models.PicturePaths;
 
 import javax.persistence.*;
 import java.util.List;
@@ -38,14 +39,14 @@ public class Dish {
     @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany()
     @JoinColumns({
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addon_id")
     })
     List<Addon> addons;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany()
     @JoinColumns({
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "inner_dish_id")
@@ -55,12 +56,13 @@ public class Dish {
     Boolean deleted = false;
 
     //TODO подумать о централизованном подходе к удалению
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany()
     @JoinColumns({
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "action_id")
     })
     private List<Action> actions;
+
 
     @PreRemove
     private void removeActions() {

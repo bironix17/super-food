@@ -26,4 +26,5 @@ public class Addon {
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "priceId", nullable = false)
     Price price;
+
 }

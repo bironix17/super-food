@@ -3,10 +3,8 @@ package ru.bironix.super_food.db.models;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.dish.PicturePaths;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter

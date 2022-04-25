@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class PersonDto {
     Integer id;
 
     @NotBlank
+    @Email
     String email;
 
     @NotBlank

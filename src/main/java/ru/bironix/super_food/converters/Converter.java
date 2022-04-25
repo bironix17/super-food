@@ -2,6 +2,7 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import ru.bironix.super_food.db.models.Action;
+import ru.bironix.super_food.db.models.PicturePaths;
 import ru.bironix.super_food.db.models.dish.*;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
