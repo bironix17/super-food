@@ -47,14 +47,14 @@ public class DishController {
     @Operation(summary = "Получение запрошеного списка блюд" )
     @GetMapping("/specificDishes")
     @ResponseBody
-    DishesResponseDto getSpecificDishes(@RequestParam("ids[]") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
+    DishesResponseDto getSpecificDishes(@RequestParam("ids") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
         return con.toDishesResponseDto(service.getDishes(ids));
     }
 
     @Operation(summary = "Получение запрошеного списка блюд. Возвращает СПИСОК!!!!!!!!!!!!!!" )
     @GetMapping("/specificDishesTestFront")
     @ResponseBody
-    List<SmallDishDto> getSpecificDishesTestFront(@RequestParam("ids[]") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
+    List<SmallDishDto> getSpecificDishesTestFront(@RequestParam("ids") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
         return con.toDishes(service.getDishes(ids));
     }
 
