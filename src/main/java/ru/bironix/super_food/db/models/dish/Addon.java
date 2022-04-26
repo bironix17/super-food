@@ -4,10 +4,11 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,4 +28,9 @@ public class Addon {
     @JoinColumn(name = "priceId", nullable = false)
     Price price;
 
+
+    public boolean forOrderEquals(Addon addon) {
+        if (addon == null) return false;
+        return Objects.equals(addon.getId(), getId());
+    }
 }

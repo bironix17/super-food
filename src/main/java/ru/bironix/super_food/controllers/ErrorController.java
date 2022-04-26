@@ -1,17 +1,25 @@
 package ru.bironix.super_food.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.responses.ErrorResponse;
-import ru.bironix.super_food.exceptions.NotFoundSource;
+import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
+import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
+import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ErrorController {
+
+    @Autowired
+    Converter con;
 
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
@@ -19,20 +27,51 @@ public class ErrorController {
     public ErrorResponse onConstraintValidationException(ConstraintViolationException e) {
         return e.getConstraintViolations()
                 .stream()
-                .map(violation -> new ErrorResponse(
-                                violation.getPropertyPath().toString(),
-                                violation.getMessage()
-                        )
+                .map(violation -> ErrorResponse.builder()
+                        .fieldName(violation.getPropertyPath().toString())
+                        .message(violation.getMessage())
+                        .build()
                 ).findAny().get();
     }
 
 
     @ResponseBody
-    @ExceptionHandler(NotFoundSource.class)
+    @ExceptionHandler(NotFoundSourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onConstraintValidationException(NotFoundSource e) {
+    public ErrorResponse onConstraintValidationException(NotFoundSourceException e) {
         return ErrorResponse.builder()
                 .message(e.getMessage())
+                .entityName(e.getEntityName())
+                .ids(e.getNotFoundIds())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidTotalPriceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse onInvalidTotalPriceException(InvalidTotalPriceException e) {
+        return ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(DeletedDishInOrderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse onDeletedDishInOrderException(DeletedDishInOrderException e) {
+        return ErrorResponse.builder()
+                .message(e.getMessage())
+                .ids(e.getDeletedIds())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidDishInOrderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse onInvalidDishInOrderException(InvalidDishInOrderException e) {
+        return ErrorResponse.builder()
+                .message(e.getMessage())
+                .elements(con.toDishes(e.getInvalidDishes()))
                 .build();
     }
 

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,5 +32,11 @@ public class Price {
     @Override
     public int hashCode() {
         return Objects.hash(id, price);
+    }
+
+
+    public boolean forOrderEquals(Price price) {
+        if (price == null) return false;
+        return Objects.equals(price.getId(), getId());
     }
 }

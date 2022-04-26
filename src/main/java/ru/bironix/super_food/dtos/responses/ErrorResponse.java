@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,15 @@ public class ErrorResponse {
 
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     String fieldName;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    String entityName;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    List<Integer> ids;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    List<?> elements;
 
     String message;
 }

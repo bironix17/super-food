@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.db.dao.ActionDao;
 import ru.bironix.super_food.db.models.Action;
-import ru.bironix.super_food.exceptions.NotFoundSource;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ActionService {
     }
 
     public Action getAction(int id) {
-        return actionDao.findById(id).orElseThrow(NotFoundSource::new);
+        return actionDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Action"));
     }
 
     public Action createAction(Action action, int newPrice) {

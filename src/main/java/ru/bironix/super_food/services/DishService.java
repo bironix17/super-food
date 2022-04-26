@@ -11,10 +11,12 @@ import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.dish.Price;
-import ru.bironix.super_food.exceptions.NotFoundSource;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 public class DishService {
@@ -33,7 +35,7 @@ public class DishService {
     final PriceDao priceDao;
 
     public Dish getFullDish(int id) {
-        return dishDao.findById(id).orElseThrow(NotFoundSource::new);
+        return dishDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Dish"));
     }
 
     public List<Dish> getAllDishes() {
@@ -63,7 +65,7 @@ public class DishService {
     public boolean updatePriceForDishPortion(Portion portion, int price) {
 
         if (!portionDao.existsById(portion.getId()))
-            throw new NotFoundSource();
+            throw new NotFoundSourceException(portion.getId(), "Dish");
 
         portion.setOldPrice(portion.getPriceNow());
         var newPrice = new Price(null, price);
@@ -91,7 +93,13 @@ public class DishService {
                 .build();
     }
 
-    public List<Dish> getDishes(List<Integer> ids) {//TODO изучить почему пропускает несуществующие id
-        return IteratorUtils.toList(dishDao.findAllById(ids).iterator());
+    public List<Dish> getDishes(List<Integer> ids) {
+        var dishes = IteratorUtils.toList(dishDao.findAllById(ids).iterator());
+        if (dishes.size() != ids.size()) {
+            var idsFromBd = dishes.stream().map(Dish::getId).collect(toList());
+            var notExistIds = ids.stream().filter(id -> !idsFromBd.contains(id)).collect(toList());
+            throw new NotFoundSourceException(notExistIds, "Dish");
+        }
+        return dishes;
     }
 }

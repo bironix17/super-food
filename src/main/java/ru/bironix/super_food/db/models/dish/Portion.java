@@ -47,4 +47,13 @@ public class Portion {
     public int hashCode() {
         return Objects.hash(id, size, priceNow, oldPrice);
     }
+
+
+    public boolean forOrderEquals(Portion portion) {
+        if (portion == null) return false;
+
+        if (!portion.getPriceNow()
+                .forOrderEquals(this.getPriceNow())) return false;
+        return Objects.equals(portion.getId(), getId());
+    }
 }

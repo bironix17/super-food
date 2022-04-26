@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
 import ru.bironix.super_food.db.models.dish.*;
+import ru.bironix.super_food.db.models.order.Order;
+import ru.bironix.super_food.db.models.order.Status;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.AddressDto;
@@ -12,9 +14,12 @@ import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
+import ru.bironix.super_food.dtos.order.OrderDto;
+import ru.bironix.super_food.dtos.order.StatusDto;
 import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesResponseDto;
+import ru.bironix.super_food.dtos.responses.OrdersResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +69,13 @@ public interface Converter {
 
     Action fromFullDto(FullActionDto actionDto);
 
+    Order fromDto(OrderDto orderDto);
+
+    OrderDto toDto(Order order);
+
+    StatusDto toDto(Status status);
+
+    Status fromDto(StatusDto status);
 
     default ActionsResponseDto toActionsResponseDto(List<Action> actions) {
         var actionsDtos = actions.stream()
@@ -96,5 +108,14 @@ public interface Converter {
         return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.toList());
+    }
+
+
+    default OrdersResponseDto toOrdersResponse(List<Order> orders) {
+        var ordersDtos = orders.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+
+        return new OrdersResponseDto(ordersDtos);
     }
 }

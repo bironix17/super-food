@@ -1,43 +1,41 @@
 package ru.bironix.super_food.dtos.order;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
+import ru.bironix.super_food.dtos.AddressDto;
 import ru.bironix.super_food.dtos.PersonDto;
-import ru.bironix.super_food.dtos.dish.SmallDishDto;
+import ru.bironix.super_food.dtos.dish.FullDishDto;
 
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Schema(description = "Заказ")
 @Data
 @Builder
-public class OrderDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class OrderDto implements Serializable {
+    private Integer id;
 
-
-    Integer id;
-
-
-    PersonDto user;
-
-    //TODO
-    @Schema(description = "**Еще не знаю правильный формат**")
-
-    Date dateTime;
-
-
-    Integer totalPrice;
-
-    @ApiModelProperty
     @Builder.Default
+    private LocalDateTime dateTime = LocalDateTime.now();
 
-    OrderStatus orderStatus = OrderStatus.ACCEPTED;
-//
-//    @Schema(description = "Заказанные комбы")
-//    List<ComboDishesDto> comboDishes;
+    @Builder.Default
+    private StatusDto status = StatusDto.EXPECTS;
 
-    @Schema(description = "Заказанные блюда")
-    List<SmallDishDto> dishes;
+    @NotNull
+    private int totalPrice;
+
+    @NotEmpty
+    private List<FullDishDto> dishes;
+
+    @NotEmpty
+    private PersonDto client;
+
+    @NotEmpty
+    private AddressDto address;
 }

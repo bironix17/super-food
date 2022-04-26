@@ -1,16 +1,16 @@
 package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -69,5 +69,17 @@ public class Dish {
         for (var action : actions) {
             action.getDishes().remove(this);
         }
+    }
+
+    public boolean forOrderEquals(Dish dish) {
+        if (dish == null) return false;
+
+        if (!Objects.equals(dish.getId(), getId())) return false;
+        if (!dish.getBasePortion()
+                .forOrderEquals(this.getBasePortion())) return false;
+
+        return dish.getAddons().stream()
+                .allMatch(a -> getAddons().stream()
+                        .anyMatch(a1 -> a1.forOrderEquals(a)));
     }
 }
