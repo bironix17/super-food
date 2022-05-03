@@ -51,16 +51,16 @@ public class PersonController {
     @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null. Пока что важно присутствие id")
     @PutMapping("/updateMe")
     @ResponseBody
-    PersonDto addAddress(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "сущность пользователя") PersonDto person) {
+    PersonDto updatePerson(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "сущность пользователя") PersonDto person) {
         var updatedPerson = personService.updatePerson(con.fromDto(person));
         return con.toDto(updatedPerson);
     }
 
 
-    @Operation(summary = "Удалить адрес для пользователя")
+    @Operation(summary = "Добавить адрес для пользователя")
     @PutMapping("/addAddress/{id}")
     @ResponseBody
-    AddressDto deleteAddress(@PathVariable @Parameter(description = "id пользователя") @Min(0) int id,
+    AddressDto addAddress(@PathVariable @Parameter(description = "id пользователя") @Min(0) int id,
                              @RequestParam @ApiParam(name = "добавляемый адрес") @NotBlank String address) {
         var newAddress = personService.addAddressForPerson(id, address);
         return con.toDto(newAddress);

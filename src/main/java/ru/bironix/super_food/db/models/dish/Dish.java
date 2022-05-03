@@ -5,6 +5,7 @@ import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class Dish {
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addon_id")
     })
-    List<Addon> addons;
+    List<Addon> addons = new ArrayList<>();
 
     @ManyToMany()
     @JoinColumns({
@@ -77,9 +78,15 @@ public class Dish {
         if (!Objects.equals(dish.getId(), getId())) return false;
         if (!dish.getBasePortion()
                 .forOrderEquals(this.getBasePortion())) return false;
+        if (dish.getAddons() == null) return true;
 
         return dish.getAddons().stream()
                 .allMatch(a -> getAddons().stream()
                         .anyMatch(a1 -> a1.forOrderEquals(a)));
+    }
+
+    public List<Addon> getAddons() {
+        if (addons != null) return addons;
+        else return new ArrayList<>();
     }
 }
