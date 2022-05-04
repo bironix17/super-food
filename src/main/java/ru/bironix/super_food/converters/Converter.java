@@ -9,6 +9,7 @@ import ru.bironix.super_food.db.models.order.Status;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.AddressDto;
+import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.dtos.PersonDto;
 import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
@@ -76,6 +77,8 @@ public interface Converter {
     StatusDto toDto(Status status);
 
     Status fromDto(StatusDto status);
+
+    Person toPerson(AuthRequestDto request);
 
     default ActionsResponseDto toActionsResponseDto(List<Action> actions) {
         var actionsDtos = actions.stream()

@@ -3,8 +3,10 @@ package ru.bironix.super_food.controllers;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -20,6 +22,8 @@ import javax.validation.constraints.NotBlank;
 @Tag(name = "Пользователь")
 @RestController
 @Validated
+@SecurityRequirement(name = "bearerAuth")
+//@PreAuthorize("hasAnyRole('ALL')")
 public class PersonController {
 
     @Autowired
@@ -30,15 +34,6 @@ public class PersonController {
 
     final PersonService personService;
     final Converter con;
-
-    @Operation(summary = "Создать пользователя. Если какие то поля не обязательные по задумке (например name), то указать их null")
-    @PostMapping("/register")
-    @ResponseBody
-    PersonDto register(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "сущность пользователя") PersonDto person) {
-        var newPerson = personService.createPerson(con.fromDto(person));
-        return con.toDto(newPerson);
-    }
-
 
     @Operation(summary = "Получить инфу о себе", description = "пока получает id, для возможности тестирования на фронте." +
             "Потом id передавать не нужно будет.")

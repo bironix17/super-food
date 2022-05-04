@@ -25,7 +25,7 @@ public class FormatConfig extends WebMvcConfigurerAdapter {
     private AddressDtoFormatter addressDtoFormatter;
 
 
-    // TODO Изучить как это сделать через DI
+    //TODO Изучить как это сделать через DI
     @Override
     public void addFormatters(FormatterRegistry registry) {
         super.addFormatters(registry);

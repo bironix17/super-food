@@ -2,16 +2,14 @@ package ru.bironix.super_food.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.responses.ErrorResponse;
-import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
+import ru.bironix.super_food.exceptions.*;
 
 import javax.validation.ConstraintViolationException;
 
@@ -75,4 +73,22 @@ public class ErrorController {
                 .build();
     }
 
+
+    @ResponseBody
+    @ExceptionHandler(JwtAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse onJwtAuthenticationException(JwtAuthenticationException e) {
+        return ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+//    @ResponseBody
+//    @ExceptionHandler(AuthenticationException.class)
+//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    public ErrorResponse onAuthenticationException(AuthenticationException e) {
+//        return ErrorResponse.builder()
+//                .message(e.getMessage())
+//                .build();
+//    }
 }

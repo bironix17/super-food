@@ -3,6 +3,7 @@ package ru.bironix.super_food.db.models.person;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.db.models.dish.Portion;
+import ru.bironix.super_food.security.Role;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -21,9 +22,14 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
+    @Column(unique = true)
     String email;
+
     String password;
     String name;
+
+    @Enumerated(EnumType.STRING)
+    Role role = Role.User;
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
