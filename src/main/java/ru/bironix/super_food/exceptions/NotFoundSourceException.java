@@ -7,23 +7,18 @@ import java.util.List;
 @Getter
 public class NotFoundSourceException extends RuntimeException {
 
-    private List<Integer> notFoundIds;
+    private List<Object> notFoundEntities;
     private String entityName;
 
-//    public NotFoundSourceException(String entityName) {
-//        super("Запрашиваемый элемент не существует");
-//        this.entityName = entityName;
-//    }
-
-    public NotFoundSourceException(List<Integer> notFoundIds, String entityName) {
+    public NotFoundSourceException(List<Object> notFoundEntities, String entityName) {
         super("Запрашиваемый элемент не существует");
-        this.notFoundIds = notFoundIds;
+        this.notFoundEntities = notFoundEntities;
         this.entityName = entityName;
     }
 
-    public NotFoundSourceException(Integer notFoundId, String entityName) {
+    public NotFoundSourceException(Object notFoundEntity, String entityName) {
         super("Запрашиваемый элемент не существует");
-        this.notFoundIds = List.of(notFoundId);
+        this.notFoundEntities = List.of(notFoundEntity);
         this.entityName = entityName;
     }
 }

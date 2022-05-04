@@ -1,7 +1,6 @@
 package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.db.UpdateMapper;
@@ -11,7 +10,6 @@ import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import ru.bironix.super_food.exceptions.UserAlreadyExistAuthenticationException;
-import ru.bironix.super_food.security.Role;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -36,8 +34,8 @@ public class PersonService {
         this.addressDao = addressDao;
     }
 
-    public Person getMe(int id) {
-        return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
+    public Person getByUsername(String email) {
+        return personDao.findByEmail(email).orElseThrow(() -> new NotFoundSourceException(email, "Person"));
     }
 
     @Transactional
@@ -56,21 +54,26 @@ public class PersonService {
 
     private void checkExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
-        if (personBd.isPresent()) throw new UserAlreadyExistAuthenticationException("Пользователь с данным email уже существует");
+        if (personBd.isPresent())
+            throw new UserAlreadyExistAuthenticationException("Пользователь с данным email уже существует");
     }
 
     @Transactional
     public Person updatePerson(Person updatedPerson) {
         var person = personDao.findById(updatedPerson.getId())
                 .orElseThrow(() -> new NotFoundSourceException(updatedPerson.getId(), "Person"));
+
+        if(updatedPerson.getPassword() != null)
+            updatedPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
+
         mapper.map(updatedPerson, person);
         return person;
     }
 
     @Transactional
-    public Address addAddressForPerson(int id, String addressName) {
-        var person = personDao.findById(id)
-                .orElseThrow(() -> new NotFoundSourceException(id, "Person"));
+    public Address addAddressForPerson(String email, String addressName) {
+        var person = personDao.findByEmail(email)
+                .orElseThrow(() -> new NotFoundSourceException(email, "Person"));
         var newAddress = addressDao.save(new Address(null, addressName, person));
         person.getAddresses().add(newAddress);
         return newAddress;
@@ -91,4 +94,7 @@ public class PersonService {
         return personDao.findByEmail(email);
     }
 
+    public Person getById(Integer id) {
+        return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
+    }
 }

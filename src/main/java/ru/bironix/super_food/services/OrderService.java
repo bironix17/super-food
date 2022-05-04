@@ -8,7 +8,7 @@ import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.dish.Price;
 import ru.bironix.super_food.db.models.order.Order;
-import ru.bironix.super_food.db.models.person.Address;
+import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
@@ -45,8 +45,8 @@ OrderService {
         return orderDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Order"));
     }
 
-    public List<Order> getMyOrders(int id) {
-        return orderDao.findAllByClientId(id);
+    public List<Order> getOrdersForPerson(Person person) {
+        return orderDao.findAllByClientId(person.getId());
     }
 
     //TODO изучить
@@ -56,7 +56,7 @@ OrderService {
 
         if (order.getAddress().getId() == null){
             var address =
-                    personService.addAddressForPerson(order.getClient().getId(), order.getAddress().getAddress());
+                    personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
             order.setAddress(address);
         }
 
@@ -85,7 +85,7 @@ OrderService {
 
         if (!invalidDishes.isEmpty()) throw new InvalidDishInOrderException(invalidDishes);
 
-            personService.getMe(order.getClient().getId());
+            personService.getById(order.getClient().getId());
 
 //            personService.getAddress(order.getAddress().getId()); // TODO починить потом
     }

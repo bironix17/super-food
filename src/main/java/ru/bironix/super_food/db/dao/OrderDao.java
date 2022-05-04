@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.bironix.super_food.db.models.order.Order;
+import ru.bironix.super_food.db.models.person.Person;
 
 import java.util.List;
 

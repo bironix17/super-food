@@ -2,7 +2,7 @@ package ru.bironix.super_food.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +40,7 @@ public class ErrorController {
         return ErrorResponse.builder()
                 .message(e.getMessage())
                 .entityName(e.getEntityName())
-                .ids(e.getNotFoundIds())
+                .elements(e.getNotFoundEntities())
                 .build();
     }
 
@@ -80,6 +80,17 @@ public class ErrorController {
     public ErrorResponse onJwtAuthenticationException(JwtAuthenticationException e) {
         return ErrorResponse.builder()
                 .message(e.getMessage())
+                .build();
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ErrorResponse.builder()
+                .message(e.getBindingResult().getFieldError().getDefaultMessage())
+                .fieldName(e.getBindingResult().getFieldError().getField())
                 .build();
     }
 
