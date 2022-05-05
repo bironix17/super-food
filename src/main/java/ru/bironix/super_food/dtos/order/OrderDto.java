@@ -2,8 +2,8 @@ package ru.bironix.super_food.dtos.order;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.bironix.super_food.dtos.AddressDto;
-import ru.bironix.super_food.dtos.PersonDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
 
 import javax.validation.constraints.NotEmpty;

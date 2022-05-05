@@ -11,12 +11,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.dtos.AddressDto;
-import ru.bironix.super_food.dtos.PersonDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.responses.DeleteResponse;
 import ru.bironix.super_food.services.PersonService;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 

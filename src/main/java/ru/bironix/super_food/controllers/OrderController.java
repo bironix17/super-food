@@ -11,11 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.order.OrderDto;
-import ru.bironix.super_food.dtos.responses.OrdersResponseDto;
 import ru.bironix.super_food.services.OrderService;
 import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.constraints.Min;
+import java.util.List;
 
 @Tag(name = "Заказ")
 @RestController
@@ -49,10 +49,10 @@ public class OrderController {
     @Operation(summary = "Получить заказы пользователя. Id указывать id в дальнейшем не придётся")
     @GetMapping("/myOrders")
     @ResponseBody
-    OrdersResponseDto getOrders() {
+    List<OrderDto> getOrders() {
         var username = getUsernameFromSecurityContext();
         var person = personService.getByUsername(username);
-        return con.toOrdersResponse(service.getOrdersForPerson(person));
+        return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
     @Operation(summary = "совершить заказ", description = "пример запроса: " + EXAMPLE_PARAM_CREATE_USER)

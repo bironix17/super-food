@@ -1,8 +1,8 @@
 package ru.bironix.super_food;
 
-import ru.bironix.super_food.dtos.AddressDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.PicturePathsDto;
-import ru.bironix.super_food.dtos.PersonDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.dish.CategoryType;
 import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;

@@ -1,4 +1,4 @@
-package ru.bironix.super_food.dtos;
+package ru.bironix.super_food.dtos.person;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

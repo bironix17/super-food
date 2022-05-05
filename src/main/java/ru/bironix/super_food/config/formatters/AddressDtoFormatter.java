@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.dtos.AddressDto;
-import ru.bironix.super_food.dtos.dish.AddonDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
 
 import java.util.Locale;
 

@@ -69,7 +69,7 @@ public class ErrorController {
     public ErrorResponse onInvalidDishInOrderException(InvalidDishInOrderException e) {
         return ErrorResponse.builder()
                 .message(e.getMessage())
-                .elements(con.toDishes(e.getInvalidDishes()))
+                .elements(con.toDishesDto(e.getInvalidDishes()))
                 .build();
     }
 
@@ -93,13 +93,4 @@ public class ErrorController {
                 .fieldName(e.getBindingResult().getFieldError().getField())
                 .build();
     }
-
-//    @ResponseBody
-//    @ExceptionHandler(AuthenticationException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public ErrorResponse onAuthenticationException(AuthenticationException e) {
-//        return ErrorResponse.builder()
-//                .message(e.getMessage())
-//                .build();
-//    }
 }
