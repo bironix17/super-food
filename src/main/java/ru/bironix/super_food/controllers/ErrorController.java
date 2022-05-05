@@ -86,7 +86,7 @@ public class ErrorController {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ErrorResponse.builder()
                 .message(e.getBindingResult().getFieldError().getDefaultMessage())
