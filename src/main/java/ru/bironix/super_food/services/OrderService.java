@@ -6,9 +6,8 @@ import ru.bironix.super_food.db.dao.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
-import ru.bironix.super_food.db.models.dish.Price;
 import ru.bironix.super_food.db.models.order.Order;
-import ru.bironix.super_food.db.models.person.Address;
+import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
@@ -17,7 +16,6 @@ import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -45,8 +43,8 @@ OrderService {
         return orderDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Order"));
     }
 
-    public List<Order> getMyOrders(int id) {
-        return orderDao.findAllByClientId(id);
+    public List<Order> getOrdersForPerson(Person person) {
+        return orderDao.findAllByClientId(person.getId());
     }
 
     @Transactional
@@ -55,7 +53,7 @@ OrderService {
 
         if (order.getAddress().getId() == null) {
             var address =
-                    personService.addAddressForPerson(order.getClient().getId(), order.getAddress().getAddress());
+                    personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
             order.setAddress(address);
         }
 
@@ -84,7 +82,9 @@ OrderService {
 
         if (!invalidDishes.isEmpty()) throw new InvalidDishInOrderException(invalidDishes);
 
-        personService.getMe(order.getClient().getId());
+            personService.getById(order.getClient().getId());
+
+//            personService.getAddress(order.getAddress().getId()); // TODO починить потом
     }
 
 

@@ -1,7 +1,6 @@
 package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.interfaces.GetTotalPrice;
 
 import javax.persistence.*;

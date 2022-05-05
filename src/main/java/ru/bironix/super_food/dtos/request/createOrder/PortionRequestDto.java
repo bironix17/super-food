@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.bironix.super_food.dtos.dish.PriceDto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Schema(description = "Порция блюда. Версия для указания в заказе")

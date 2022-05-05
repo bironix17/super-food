@@ -1,5 +1,6 @@
 package ru.bironix.super_food.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.zalando.logbook.Logbook;

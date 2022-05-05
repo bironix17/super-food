@@ -1,6 +1,5 @@
 package ru.bironix.super_food.db.models.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.person.Address;

@@ -2,16 +2,14 @@ package ru.bironix.super_food.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.responses.ErrorResponse;
-import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
+import ru.bironix.super_food.exceptions.*;
 
 import javax.validation.ConstraintViolationException;
 
@@ -42,7 +40,7 @@ public class ErrorController {
         return ErrorResponse.builder()
                 .message(e.getMessage())
                 .entityName(e.getEntityName())
-                .ids(e.getNotFoundIds())
+                .elements(e.getNotFoundEntities())
                 .build();
     }
 
@@ -71,8 +69,28 @@ public class ErrorController {
     public ErrorResponse onInvalidDishInOrderException(InvalidDishInOrderException e) {
         return ErrorResponse.builder()
                 .message(e.getMessage())
-                .elements(con.toDishes(e.getInvalidDishes()))
+                .elements(con.toDishesDto(e.getInvalidDishes()))
                 .build();
     }
 
+
+    @ResponseBody
+    @ExceptionHandler(JwtAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse onJwtAuthenticationException(JwtAuthenticationException e) {
+        return ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ErrorResponse.builder()
+                .message(e.getBindingResult().getFieldError().getDefaultMessage())
+                .fieldName(e.getBindingResult().getFieldError().getField())
+                .build();
+    }
 }

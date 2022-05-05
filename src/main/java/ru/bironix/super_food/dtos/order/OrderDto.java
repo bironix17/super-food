@@ -1,11 +1,10 @@
 package ru.bironix.super_food.dtos.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.bironix.super_food.dtos.AddressDto;
-import ru.bironix.super_food.dtos.PersonDto;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

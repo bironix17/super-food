@@ -2,17 +2,18 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
-import ru.bironix.super_food.db.models.dish.*;
+import ru.bironix.super_food.db.models.dish.Addon;
+import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.Portion;
+import ru.bironix.super_food.db.models.dish.Price;
 import ru.bironix.super_food.db.models.order.Order;
 import ru.bironix.super_food.db.models.order.Status;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.dtos.AddressDto;
-import ru.bironix.super_food.dtos.PersonDto;
+import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.dtos.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
@@ -20,11 +21,9 @@ import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.StatusDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
+import ru.bironix.super_food.dtos.person.AddressDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.request.createOrder.*;
-import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
-import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
-import ru.bironix.super_food.dtos.responses.DishesResponseDto;
-import ru.bironix.super_food.dtos.responses.OrdersResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +66,7 @@ public interface Converter {
 
     Dish fromSmallDto(SmallDishDto dishDto);
 
+
     SmallActionDto toSmallDto(Action action);
 
     FullActionDto toFullDto(Action action);
@@ -81,49 +81,37 @@ public interface Converter {
 
     Status fromDto(StatusDto status);
 
+    Person toPerson(AuthRequestDto request);
 
-
-
-    default ActionsResponseDto toActionsResponseDto(List<Action> actions) {
-        var actionsDtos = actions.stream()
+    default List<SmallActionDto> toActionsDto(List<Action> actions) {
+        return actions.stream()
                 .map(this::toSmallDto)
                 .collect(toList());
-        return new ActionsResponseDto(actionsDtos);
+
     }
 
-    default DishesInCategoriesResponseDto toDishesInCategoriesResponseDto(List<Dish> dishes) {
-        var categories = dishes.stream()
+    default List<CategoryDto> toCategoryDto(List<Dish> dishes) {
+        return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.groupingBy(AbstractDishDto::getCategory))
                 .entrySet().stream()
                 .map(i -> new CategoryDto(i.getKey(), i.getValue()))
                 .collect(Collectors.toList());
-
-        return new DishesInCategoriesResponseDto(categories);
-    }
-
-    default DishesResponseDto toDishesResponseDto(List<Dish> dishes) {
-        var dishesDtos = dishes.stream()
-                .map(this::toSmallDto)
-                .collect(Collectors.toList());
-
-        return new DishesResponseDto(dishesDtos);
     }
 
 
-    default List<SmallDishDto> toDishes(List<Dish> dishes) {
+    default List<SmallDishDto> toDishesDto(List<Dish> dishes) {
         return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.toList());
     }
 
 
-    default OrdersResponseDto toOrdersResponse(List<Order> orders) {
-        var ordersDtos = orders.stream()
+    default List<OrderDto> toOrdersDto(List<Order> orders) {
+        return orders.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
 
-        return new OrdersResponseDto(ordersDtos);
     }
 
 
@@ -141,5 +129,6 @@ public interface Converter {
 
     WayToGet fromDto(WayToGetDto status);
 
+    @Mapping(target="client.id", source="orderDto.clientId")
     Order fromDto(OrderRequestDto orderDto);
 }

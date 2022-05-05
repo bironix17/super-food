@@ -1,7 +1,6 @@
 package ru.bironix.super_food.db.models;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.db.models.dish.Dish;
 
 import javax.persistence.*;

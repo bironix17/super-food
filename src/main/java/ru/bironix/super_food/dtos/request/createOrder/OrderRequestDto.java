@@ -37,9 +37,8 @@ public class OrderRequestDto {
     @Schema(description = "Адрес доставки. Должен быть указан если wayToGet == DELIVERY", nullable = true)
     private AddressRequestDto address;
 
-    @Valid
-    @NotNull
-    private PersonRequestDto client;
+    @JsonIgnore
+    private Integer clientId;
 
     @Builder.Default
     @NotNull

@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.dtos.dish.PortionDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
