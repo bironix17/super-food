@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Person;
 
@@ -19,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personDao.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exists"));
+                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_EMAIL_OR_PASSWORD.name()));
         return toSecurityUser(person);
     }
 

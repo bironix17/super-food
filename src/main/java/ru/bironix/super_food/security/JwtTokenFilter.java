@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+import ru.bironix.super_food.constants.ApiError;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,8 +38,9 @@ public class JwtTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (JwtException | IllegalArgumentException e) {
+
             SecurityContextHolder.clearContext();
-            ErrorAuthResponse.addError((HttpServletResponse) response, "Ошибочные данные токена");
+            ErrorAuthResponse.addError((HttpServletResponse) response, ApiError.TOKEN_EXPIRED_OR_INVALID.name());
         }
         filterChain.doFilter(request, response);
     }

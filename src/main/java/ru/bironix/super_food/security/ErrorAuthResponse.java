@@ -2,6 +2,7 @@ package ru.bironix.super_food.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
+import ru.bironix.super_food.dtos.responses.ErrorResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,11 +16,12 @@ public class ErrorAuthResponse {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        final Map<String, Object> body = new HashMap<>();
-        body.put("code", HttpServletResponse.SC_UNAUTHORIZED);
-        body.put("message", message);
+
+        final var errorResponse = ErrorResponse.builder()
+                .message(message)
+                .build();
 
         final ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), body);
+        mapper.writeValue(response.getOutputStream(), errorResponse);
     }
 }

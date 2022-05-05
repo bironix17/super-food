@@ -1,11 +1,12 @@
 package ru.bironix.super_food.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
+import ru.bironix.super_food.constants.ApiError;
 
 public class JwtAuthenticationException extends AuthenticationException {
 
     public JwtAuthenticationException() {
-        super("Ошибка. Токен истёк или не валиден");
+        super(ApiError.TOKEN_EXPIRED_OR_INVALID.name());
     }
 
 }

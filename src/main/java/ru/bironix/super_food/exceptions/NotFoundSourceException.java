@@ -1,24 +1,30 @@
 package ru.bironix.super_food.exceptions;
 
 import lombok.Getter;
+import ru.bironix.super_food.constants.ApiError;
 
 import java.util.List;
 
 @Getter
 public class NotFoundSourceException extends RuntimeException {
 
-    private List<Object> notFoundEntities;
+    private List<Integer> notFoundIds;
     private String entityName;
 
-    public NotFoundSourceException(List<Object> notFoundEntities, String entityName) {
-        super("Запрашиваемый элемент не существует");
-        this.notFoundEntities = notFoundEntities;
+    public NotFoundSourceException(List<Integer> notFoundIds, String entityName) {
+        super(ApiError.RESOURCE_NOT_FOUND.name());
+        this.notFoundIds = notFoundIds;
         this.entityName = entityName;
     }
 
-    public NotFoundSourceException(Object notFoundEntity, String entityName) {
-        super("Запрашиваемый элемент не существует");
-        this.notFoundEntities = List.of(notFoundEntity);
+    public NotFoundSourceException(Integer notFoundId, String entityName) {
+        super(ApiError.RESOURCE_NOT_FOUND.name());
+        this.notFoundIds = List.of(notFoundId);
+        this.entityName = entityName;
+    }
+
+    public NotFoundSourceException(String entityName) {
+        super(ApiError.RESOURCE_NOT_FOUND.name());
         this.entityName = entityName;
     }
 }

@@ -29,18 +29,18 @@ public class ErrorController {
                         .fieldName(violation.getPropertyPath().toString())
                         .message(violation.getMessage())
                         .build()
-                ).findAny().get();
+                ).findAny().orElseThrow();
     }
 
 
     @ResponseBody
     @ExceptionHandler(NotFoundSourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onConstraintValidationException(NotFoundSourceException e) {
+    public ErrorResponse onNotFoundSourceException(NotFoundSourceException e) {
         return ErrorResponse.builder()
                 .message(e.getMessage())
                 .entityName(e.getEntityName())
-                .elements(e.getNotFoundEntities())
+                .ids(e.getNotFoundIds())
                 .build();
     }
 

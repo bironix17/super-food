@@ -1,8 +1,10 @@
 package ru.bironix.super_food.security;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import ru.bironix.super_food.constants.ApiError;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,9 @@ public class AuthenticationEntryPointJwt implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException e) throws IOException {
 
-        ErrorAuthResponse.addError(response, e.getMessage());
+        if (e instanceof BadCredentialsException) {
+            ErrorAuthResponse.addError(response, ApiError.INCORRECT_EMAIL_OR_PASSWORD.name());
+        } else
+            ErrorAuthResponse.addError(response, ApiError.AUTHENTICATION_REQUIRED.name());
     }
 }

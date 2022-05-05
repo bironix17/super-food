@@ -1,6 +1,7 @@
 package ru.bironix.super_food.exceptions;
 
 import lombok.Getter;
+import ru.bironix.super_food.constants.ApiError;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class DeletedDishInOrderException extends RuntimeException {
     private List<Integer> deletedIds;
 
     public DeletedDishInOrderException(List<Integer> deletedIds) {
-        super("Удаленные блюда не могут быть в заказе");
+        super(ApiError.DELETED_DISH_IN_ORDER.name());
         this.deletedIds = deletedIds;
     }
 }

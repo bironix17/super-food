@@ -35,7 +35,8 @@ public class PersonService {
     }
 
     public Person getByUsername(String email) {
-        return personDao.findByEmail(email).orElseThrow(() -> new NotFoundSourceException(email, "Person"));
+        return personDao.findByEmail(email).orElseThrow(() ->
+                new NotFoundSourceException("Person"));
     }
 
     @Transactional
@@ -55,7 +56,7 @@ public class PersonService {
     private void checkExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
         if (personBd.isPresent())
-            throw new UserAlreadyExistAuthenticationException("Пользователь с данным email уже существует");
+            throw new UserAlreadyExistAuthenticationException();
     }
 
     @Transactional
@@ -63,7 +64,7 @@ public class PersonService {
         var person = personDao.findById(updatedPerson.getId())
                 .orElseThrow(() -> new NotFoundSourceException(updatedPerson.getId(), "Person"));
 
-        if(updatedPerson.getPassword() != null)
+        if (updatedPerson.getPassword() != null)
             updatedPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
 
         mapper.map(updatedPerson, person);
@@ -73,7 +74,7 @@ public class PersonService {
     @Transactional
     public Address addAddressForPerson(String email, String addressName) {
         var person = personDao.findByEmail(email)
-                .orElseThrow(() -> new NotFoundSourceException(email, "Person"));
+                .orElseThrow(() -> new NotFoundSourceException("Person"));
         var newAddress = addressDao.save(new Address(null, addressName, person));
         person.getAddresses().add(newAddress);
         return newAddress;

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.bironix.super_food.db.models.person.Person;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -43,9 +44,10 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String username, Role role) {
+    public String createToken(String username, Person person) {
         Claims claims = Jwts.claims().setSubject(username);
 //        claims.put("role", role.name()); //TODO fix me
+        claims.put("id", person.getId());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds * 1000);
 
@@ -70,6 +72,11 @@ public class JwtTokenProvider {
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public Integer getPersonId(String token) {
+        return Jwts.parser().setSigningKey(secret)
+                .parseClaimsJws(token).getBody().get("id", Integer.class);
     }
 
     public String resolveToken(HttpServletRequest request) {

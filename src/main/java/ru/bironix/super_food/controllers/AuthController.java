@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.AuthRequestDto;
@@ -42,7 +43,7 @@ public class AuthController {
 
 
         var person = service.createPerson(con.toPerson(request));
-        String token = jwtTokenProvider.createToken(person.getEmail(), person.getRole());
+        String token = jwtTokenProvider.createToken(person.getEmail(), person);
 
         return new AuthResponseDto(person.getId(), token);
     }
@@ -59,11 +60,9 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         Person person = service.getPersonByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User with email: "
-                        + request.getEmail()
-                        + " not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_EMAIL_OR_PASSWORD.name()));
 
-        String token = jwtTokenProvider.createToken(person.getEmail(), person.getRole());
+        String token = jwtTokenProvider.createToken(person.getEmail(), person);
 
         return new AuthResponseDto(person.getId(), token);
     }
