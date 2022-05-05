@@ -14,7 +14,10 @@ import ru.bironix.super_food.dtos.responses.DishesResponseDto;
 import ru.bironix.super_food.services.DishService;
 
 import javax.validation.constraints.Min;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Tag(name = "Блюдо")
 @RestController
@@ -44,18 +47,18 @@ public class DishController {
         return con.toDishesInCategoriesResponseDto(service.getAllDishes());
     }
 
-    @Operation(summary = "Получение запрошеного списка блюд" )
+    @Operation(summary = "Получение запрошеного списка блюд")
     @GetMapping("/specificDishes")
     @ResponseBody
     DishesResponseDto getSpecificDishes(@RequestParam("ids") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
-        return con.toDishesResponseDto(service.getDishes(ids));
+        return con.toDishesResponseDto(service.getDishes(new HashSet<>(ids)));
     }
 
-    @Operation(summary = "Получение запрошеного списка блюд. Возвращает СПИСОК!!!!!!!!!!!!!!" )
+    @Operation(summary = "Получение запрошеного списка блюд. Возвращает СПИСОК!!!!!!!!!!!!!!")
     @GetMapping("/specificDishesTestFront")
     @ResponseBody
     List<SmallDishDto> getSpecificDishesTestFront(@RequestParam("ids") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
-        return con.toDishes(service.getDishes(ids));
+        return con.toDishes(service.getDishes(new HashSet<>(ids)));
     }
 
     @Operation(summary = "Получение общего списка добавок")

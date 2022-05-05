@@ -14,9 +14,11 @@ import ru.bironix.super_food.db.models.dish.Price;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class DishService {
@@ -93,7 +95,7 @@ public class DishService {
                 .build();
     }
 
-    public List<Dish> getDishes(List<Integer> ids) {
+    public List<Dish> getDishes(Set<Integer> ids) {
         var dishes = IteratorUtils.toList(dishDao.findAllById(ids).iterator());
         if (dishes.size() != ids.size()) {
             var idsFromBd = dishes.stream().map(Dish::getId).collect(toList());

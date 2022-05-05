@@ -1,5 +1,6 @@
 package ru.bironix.super_food.db.models.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.person.Address;
@@ -15,19 +16,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "FoodOrder")
+@Table(name = "food_order")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
 
-    LocalDateTime dateTime;
+    LocalDateTime created;
+    LocalDateTime targetProduction;
 
     int totalPrice;
 
     @Enumerated(EnumType.STRING)
     Status status;
+
+    @Enumerated(EnumType.STRING)
+    WayToGet wayToGet;
 
     //TODO изучить
     @ManyToMany

@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.order.OrderDto;
+import ru.bironix.super_food.dtos.request.createOrder.OrderRequestDto;
 import ru.bironix.super_food.dtos.responses.OrdersResponseDto;
 import ru.bironix.super_food.services.OrderService;
 
@@ -55,7 +56,7 @@ public class OrderController {
     @ResponseBody
     OrderDto createOrder(@RequestBody
                          @io.swagger.v3.oas.annotations.parameters.RequestBody()
-                         OrderDto order) {
+                         OrderRequestDto order) {
         var createdOrder = service.createOrder(con.fromDto(order));
         return con.toDto(createdOrder);
     }

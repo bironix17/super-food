@@ -1,11 +1,14 @@
 package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
 import ru.bironix.super_food.db.models.dish.*;
 import ru.bironix.super_food.db.models.order.Order;
 import ru.bironix.super_food.db.models.order.Status;
+import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.AddressDto;
@@ -16,6 +19,8 @@ import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.StatusDto;
+import ru.bironix.super_food.dtos.order.WayToGetDto;
+import ru.bironix.super_food.dtos.request.createOrder.*;
 import ru.bironix.super_food.dtos.responses.ActionsResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesInCategoriesResponseDto;
 import ru.bironix.super_food.dtos.responses.DishesResponseDto;
@@ -62,7 +67,6 @@ public interface Converter {
 
     Dish fromSmallDto(SmallDishDto dishDto);
 
-
     SmallActionDto toSmallDto(Action action);
 
     FullActionDto toFullDto(Action action);
@@ -76,6 +80,9 @@ public interface Converter {
     StatusDto toDto(Status status);
 
     Status fromDto(StatusDto status);
+
+
+
 
     default ActionsResponseDto toActionsResponseDto(List<Action> actions) {
         var actionsDtos = actions.stream()
@@ -118,4 +125,21 @@ public interface Converter {
 
         return new OrdersResponseDto(ordersDtos);
     }
+
+
+    Addon fromDto(AddonRequestDto addonDto);
+
+    @Mapping(target="priceNow", source="portionDto.price")
+    Portion fromDto(PortionRequestDto portionDto);
+
+    Price fromDto(PriceRequestDto priceDto);
+
+    Address fromDto(AddressRequestDto addressDto);
+
+    @Mapping(target="basePortion", source="dishDto.portion")
+    Dish fromDto(DishRequestDto dishDto);
+
+    WayToGet fromDto(WayToGetDto status);
+
+    Order fromDto(OrderRequestDto orderDto);
 }

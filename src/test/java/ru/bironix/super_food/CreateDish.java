@@ -27,37 +27,37 @@ public class CreateDish {
     @Autowired
     AddonDao addonDao;
 
-
-    //TODO сделать нормальные методы для тестового насыщения бд
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    public void createDish() {
-
-        var portion = new Portion(null, "medium", new Price(null, 100), null);
-        var addon = new Addon(null, "kva", " ", new Price(null, 1));
-        var dish = new Dish(null, new PicturePaths(null, null, null, "dsds"),
-                "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                portion, List.of(portion), new ArrayList<>(List.of(addon)), null, false, new ArrayList<>());
-
-        dishService.createAddon(addon);
-        dishService.createDish(dish);
-
-        var portion1 = new Portion(null, "medium", new Price(null, 100), null);
-        var dish1 = new Dish(null, new PicturePaths(null, null, null, "dsds"),
-                "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
-                portion1, List.of(portion1), null // Вот повторяющиеся addon
-                , List.of(dish), false, new ArrayList<>());
-
-        dishService.createDish(dish1); //здесь падает
 //
-//        var z = dishDao.findAllByAddonsContains(addon);
+//    //TODO сделать нормальные методы для тестового насыщения бд
+//    @Test
+//    @Transactional
+//    @Rollback(value = false)
+//    public void createDish() {
 //
-//        z.forEach(dish2 -> {
-//            dish2.getAddons().remove(addon);
-//        });
-//        addonDao.delete(addon);
-
-        Assert.assertEquals(dish.getId() != null, true);
-    }
+//        var portion = new Portion(null, "medium", new Price(null, 100), null);
+//        var addon = new Addon(null, "kva", " ", new Price(null, 1));
+//        var dish = new Dish(null, new PicturePaths(null, null, null, "dsds"),
+//                "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
+//                portion, List.of(portion), new ArrayList<>(List.of(addon)), null, false, new ArrayList<>());
+//
+//        dishService.createAddon(addon);
+//        dishService.createDish(dish);
+//
+//        var portion1 = new Portion(null, "medium", new Price(null, 100), null);
+//        var dish1 = new Dish(null, new PicturePaths(null, null, null, "dsds"),
+//                "Burger", "dsdsd", CategoryType.BURGERS, "ds", "ds",
+//                portion1, List.of(portion1), null // Вот повторяющиеся addon
+//                , List.of(dish), false, new ArrayList<>());
+//
+//        dishService.createDish(dish1); //здесь падает
+////
+////        var z = dishDao.findAllByAddonsContains(addon);
+////
+////        z.forEach(dish2 -> {
+////            dish2.getAddons().remove(addon);
+////        });
+////        addonDao.delete(addon);
+//
+//        Assert.assertEquals(dish.getId() != null, true);
+//    }
 }

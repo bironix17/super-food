@@ -19,7 +19,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 @Service
 public class
@@ -49,12 +49,11 @@ OrderService {
         return orderDao.findAllByClientId(id);
     }
 
-    //TODO изучить
     @Transactional
     public Order createOrder(Order order) {
         checkCorrectOrder(order);
 
-        if (order.getAddress().getId() == null){
+        if (order.getAddress().getId() == null) {
             var address =
                     personService.addAddressForPerson(order.getClient().getId(), order.getAddress().getAddress());
             order.setAddress(address);
@@ -68,7 +67,7 @@ OrderService {
     private void checkCorrectOrder(Order order) {
         var dishesIds = order.getDishes().stream()
                 .map(Dish::getId)
-                .collect(toList());
+                .collect(toSet());
 
         var dishes = dishService.getDishes(dishesIds);
         checkActualIds(order, dishes);
@@ -76,23 +75,21 @@ OrderService {
         checkTotalPrice(order, dishes);
     }
 
-    private void checkActualIds(Order order, List<Dish> dishes) {
+    private void checkActualIds(Order order, List<Dish> dishesDb) {
 
         var invalidDishes = order.getDishes().stream()
-                .filter(d -> dishes.stream()
+                .filter(d -> dishesDb.stream()
                         .noneMatch(dDb -> dDb.forOrderEquals(d)))
                 .collect(toList());
 
         if (!invalidDishes.isEmpty()) throw new InvalidDishInOrderException(invalidDishes);
 
-            personService.getMe(order.getClient().getId());
-
-//            personService.getAddress(order.getAddress().getId()); // TODO починить потом
+        personService.getMe(order.getClient().getId());
     }
 
 
-    private void checkDeleted(List<Dish> dishes) {
-        var deletedIds = dishes.stream()
+    private void checkDeleted(List<Dish> dishesDb) {
+        var deletedIds = dishesDb.stream()
                 .filter(Dish::getDeleted)
                 .map(Dish::getId)
                 .collect(toList());
@@ -101,23 +98,28 @@ OrderService {
             throw new DeletedDishInOrderException(deletedIds);
     }
 
-    private void checkTotalPrice(Order order, List<Dish> dishes) {
-        var sum = dishes.stream()
-                .map(Dish::getBasePortion)
-                .map(Portion::getPriceNow)
-                .mapToInt(Price::getPrice)
+    private void checkTotalPrice(Order order, List<Dish> dishesDb) {
+
+        var portionsDb = dishesDb.stream()
+                .flatMap(d -> d.getPortions().stream())
+                .collect(toMap(Portion::getId, p -> p));
+
+        var addonsDb = dishesDb.stream()
+                .flatMap(d -> d.getAddons().stream())
+                .collect(toMap(Addon::getId, p -> p));
+
+        var sum = order.getDishes().stream()
+                .peek(d -> d.setBasePortion(
+                        portionsDb.get(d.getBasePortion().getId())
+                ))
+                .peek(d -> d.setAddons(
+                        d.getAddons().stream()
+                                .map(a -> addonsDb.get(a.getId()))
+                                .collect(toList()))
+                )
+                .mapToInt(Dish::getTotalPrice)
                 .sum();
 
-        var addonsDb = dishes.stream()
-                .flatMap(d -> d.getAddons().stream())
-                .collect(Collectors.toMap(Addon::getId, a -> a));
-
-        sum += order.getDishes().stream()
-                .flatMap(d -> d.getAddons().stream())
-                .map(a -> addonsDb.get(a.getId()))
-                .map(Addon::getPrice)
-                .mapToInt(Price::getPrice)
-                .sum();
 
         if (sum != order.getTotalPrice())
             throw new InvalidTotalPriceException();

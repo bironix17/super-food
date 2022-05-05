@@ -3,6 +3,7 @@ package ru.bironix.super_food.db.models.dish;
 import lombok.*;
 import ru.bironix.super_food.db.models.Action;
 import ru.bironix.super_food.db.models.PicturePaths;
+import ru.bironix.super_food.interfaces.GetTotalPrice;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Dish {
+public class Dish implements GetTotalPrice {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
@@ -27,6 +29,9 @@ public class Dish {
     String name;
 
     String composition;
+
+    @Builder.Default
+    Integer count = 1;
 
     @Enumerated(EnumType.STRING)
     CategoryType category;
@@ -88,5 +93,11 @@ public class Dish {
     public List<Addon> getAddons() {
         if (addons != null) return addons;
         else return new ArrayList<>();
+    }
+
+    @Override
+    public int getTotalPrice() {
+        return basePortion.getPriceNow().getPrice() * count
+                + addons.stream().mapToInt(Addon::getTotalPrice).sum();
     }
 }

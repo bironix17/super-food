@@ -1,5 +1,6 @@
 package ru.bironix.super_food.dtos.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import ru.bironix.super_food.dtos.AddressDto;
@@ -22,10 +23,16 @@ public class OrderDto implements Serializable {
     private Integer id;
 
     @Builder.Default
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private LocalDateTime created = LocalDateTime.now();
+
+    @Builder.Default
+    private LocalDateTime targetProduction = LocalDateTime.now();
 
     @Builder.Default
     private StatusDto status = StatusDto.EXPECTS;
+
+    @Builder.Default
+    private WayToGetDto wayToGet = WayToGetDto.PICKUP;
 
     @NotNull
     private int totalPrice;

@@ -28,7 +28,6 @@ public class FullDishDto extends AbstractDishDto {
 
     @Valid
     @Schema(description = "набор порций блюда")
-
     @NotEmpty(message = "Добавьте порцию")
     List<PortionDto> portions;
 
@@ -39,4 +38,7 @@ public class FullDishDto extends AbstractDishDto {
     @Valid
     @Schema(description = "Перечень блюд комбо, не null если category = COMBO", nullable = true)
     List<SmallDishDto> dishes;
+
+    @Schema(description = "Количество блюда. Указывается только при заказе", nullable = true)
+    Integer count;
 }
