@@ -24,10 +24,6 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class OrderController {
 
-
-    private static final String EXAMPLE_PARAM_CREATE_USER = "https://docs.google.com/document/d/1M4YVr78hUMci5bZagc1hIrtIwYgrkkR1N1UM1sdyZ9I/edit?usp=sharing";
-
-
     @Autowired
     public OrderController(OrderService orderService, Converter con) {
         this.service = orderService;
@@ -56,7 +52,7 @@ public class OrderController {
         return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
-    @Operation(summary = "совершить заказ", description = "пример запроса: " + EXAMPLE_PARAM_CREATE_USER)
+    @Operation(summary = "совершить заказ")
     @PostMapping("/createOrder")
     @ResponseBody
     OrderDto createOrder(@RequestBody
