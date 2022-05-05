@@ -17,6 +17,7 @@ public class Log {
                 .condition(exclude(
                         requestTo("/health"),
                         requestTo("/admin/**"),
+                        requestTo("/view/**"),
                         contentType("application/octet-stream"),
                         header("X-Secret", newHashSet("1", "true")::contains)))
                 .build();
