@@ -80,8 +80,11 @@ OrderService {
                         .noneMatch(dDb -> dDb.forOrderEquals(d)))
                 .collect(toList());
 
-        if (!invalidDishes.isEmpty()) throw new InvalidDishInOrderException(invalidDishes);
-
+        if (!invalidDishes.isEmpty()) {
+            throw new InvalidDishInOrderException(invalidDishes.stream()
+                    .map(Dish::getId)
+                    .collect(toList()));
+        }
         personService.getById(order.getClient().getId());
     }
 

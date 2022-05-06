@@ -9,10 +9,10 @@ import java.util.List;
 @Getter
 public class InvalidDishInOrderException extends RuntimeException {
 
-    private List<Dish> invalidDishes;
+    private List<Integer> invalidDishesIds;
 
-    public InvalidDishInOrderException(List<Dish> invalidDishes) {
+    public InvalidDishInOrderException(List<Integer> invalidDishesIds) {
         super(ApiError.INCORRECT_DATA_FOR_DISH.name());
-        this.invalidDishes = invalidDishes;
+        this.invalidDishesIds = invalidDishesIds;
     }
 }

@@ -1,13 +1,11 @@
 package ru.bironix.super_food.controllers.error;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.response.ErrorResponseDto;
 import ru.bironix.super_food.exceptions.*;
 
@@ -16,13 +14,6 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 @ResponseBody
 public class ErrorController {
-
-    private final Converter con;
-
-    @Autowired
-    public ErrorController(Converter con) {
-        this.con = con;
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -72,7 +63,7 @@ public class ErrorController {
     public ErrorResponseDto onInvalidDishInOrderException(InvalidDishInOrderException e) {
         return ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .elements(con.toDishesDto(e.getInvalidDishes()))
+                .ids(e.getInvalidDishesIds())
                 .build();
     }
 

@@ -25,9 +25,5 @@ public class ErrorResponseDto {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     List<Integer> ids;
 
-    @Schema(nullable = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    List<?> elements;
-
     String message;
 }
