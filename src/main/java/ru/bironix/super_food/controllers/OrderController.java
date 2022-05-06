@@ -36,14 +36,14 @@ public class OrderController {
     }
 
     @Operation(summary = "Получить заказ")
-    @GetMapping("/order/{id}")
+    @GetMapping("/my/orders/{id}")
     @ResponseBody
     OrderDto getOrder(@PathVariable @Parameter(description = "id") @Min(0) int id) {
         return con.toDto(service.getOrder(id));
     }
 
     @Operation(summary = "Получить заказы пользователя. Id указывать id в дальнейшем не придётся")
-    @GetMapping("/myOrders")
+    @GetMapping("/my/orders")
     @ResponseBody
     List<OrderDto> getOrders() {
         var username = getUsernameFromSecurityContext();
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @Operation(summary = "совершить заказ")
-    @PostMapping("/createOrder")
+    @PostMapping("/my/orders")
     @ResponseBody
     OrderDto createOrder(@RequestBody
                          @io.swagger.v3.oas.annotations.parameters.RequestBody()

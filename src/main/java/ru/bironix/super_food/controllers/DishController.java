@@ -33,7 +33,7 @@ public class DishController {
     }
 
     @Operation(summary = "Получение блюда")
-    @GetMapping("/dish/{id}")
+    @GetMapping("/dishes/{id}")
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") @Min(0) int id) {
         return con.toFullDto(service.getFullDish(id));
     }

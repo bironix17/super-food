@@ -35,14 +35,14 @@ public class PersonController {
     }
 
     @Operation(summary = "Получить инфу о себе")
-    @GetMapping("/getMe")
+    @GetMapping("/my")
     PersonDto getPerson() {
         var username = getUsernameFromSecurityContext();
         return con.toDto(personService.getByUsername(username));
     }
 
     @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null")
-    @PutMapping("/updateMe")
+    @PutMapping("/my")
     PersonDto updatePerson(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "сущность пользователя") PersonDto person) {
         var username = getUsernameFromSecurityContext();
         var personBd = personService.getByUsername(username);
@@ -53,7 +53,7 @@ public class PersonController {
 
 
     @Operation(summary = "Добавить адрес для пользователя")
-    @PutMapping("/addAddress")
+    @PostMapping("/my/addresses")
     AddressDto addAddress(@RequestParam @ApiParam(name = "добавляемый адрес") @NotBlank String address) {
         var username = getUsernameFromSecurityContext();
         var newAddress = personService.addAddressForPerson(username, address);
@@ -61,7 +61,7 @@ public class PersonController {
     }
 
     @Operation(summary = "Удалить адрес для пользователя")
-    @DeleteMapping("/deleteAddress/{id}")
+    @DeleteMapping("/my/addresses/{id}")
     DeleteResponseDto deleteAddress(@PathVariable @Parameter(description = "id адреса") @Min(0) int id) {
         personService.deleteAddress(id);
         return new DeleteResponseDto(true);

@@ -40,7 +40,7 @@ public class ActionController {
     }
 
     @Operation(summary = "Получение конкретной акции")
-    @GetMapping("/action/{id}")
+    @GetMapping("/actions/{id}")
     FullActionDto getAction(@PathVariable @Parameter(description = "id") @Min(0) int id) {
         return converter.toFullDto(service.getAction(id));
     }
