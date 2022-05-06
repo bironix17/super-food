@@ -3,13 +3,14 @@ package ru.bironix.super_food.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
-import ru.bironix.super_food.exceptions.UserAlreadyExistAuthenticationException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -59,7 +60,7 @@ public class PersonService {
     private void checkExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
         if (personBd.isPresent())
-            throw new UserAlreadyExistAuthenticationException();
+            throw new ApiException(ApiError.USER_ALREADY_EXIST);
     }
 
     @Transactional

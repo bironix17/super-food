@@ -3,6 +3,7 @@ package ru.bironix.super_food.dtos.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import ru.bironix.super_food.constants.ApiError;
 
 import java.util.List;
 
@@ -25,5 +26,6 @@ public class ErrorResponseDto {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     List<Integer> ids;
 
+    ApiError errorCode;
     String message;
 }

@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.dtos.response.ErrorResponseDto;
 import ru.bironix.super_food.exceptions.*;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 @ControllerAdvice
 @ResponseBody
@@ -18,13 +21,48 @@ public class ErrorController {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto onConstraintValidationException(ConstraintViolationException e) {
-        return e.getConstraintViolations()
-                .stream()
-                .map(violation -> ErrorResponseDto.builder()
-                        .fieldName(violation.getPropertyPath().toString())
-                        .message(violation.getMessage())
-                        .build()
-                ).findAny().orElseThrow();
+        var error = e.getConstraintViolations().iterator().next();
+        ApiError apiError = resolveApiError(error.getMessageTemplate());
+
+        return ErrorResponseDto.builder()
+                .fieldName(error.getPropertyPath().toString())
+                .errorCode(apiError)
+                .message(error.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        ApiError apiError = resolveApiError(e.getBindingResult().getFieldError().getCode());
+
+        return ErrorResponseDto.builder()
+                .errorCode(apiError)
+                .message(e.getBindingResult().getFieldError().getDefaultMessage())
+                .fieldName(e.getBindingResult().getFieldError().getField())
+                .build();
+    }
+
+
+    private ApiError resolveApiError(String messageTemplate) {
+
+        if (messageTemplate == null)
+            return ApiError.UNDEFINED;
+
+        if (messageTemplate.contains("Min")
+                || messageTemplate.contains("Max")) {
+            return ApiError.OUT_OF_BOUNDS;
+
+        } else if (messageTemplate.contains("NotBlank")
+                || messageTemplate.contains("NotEmpty")
+                || messageTemplate.contains("NotNull")) {
+            return ApiError.MUST_NOT_BE_EMPTY;
+        } else if (messageTemplate.contains("Email")) {
+            return ApiError.INVALID_EMAIL;
+        } else {
+            return ApiError.UNDEFINED;
+        }
     }
 
 
@@ -32,18 +70,10 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto onNotFoundSourceException(NotFoundSourceException e) {
         return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
                 .message(e.getMessage())
                 .entityName(e.getEntityName())
                 .ids(e.getNotFoundIds())
-                .build();
-    }
-
-
-    @ExceptionHandler(InvalidTotalPriceException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onInvalidTotalPriceException(InvalidTotalPriceException e) {
-        return ErrorResponseDto.builder()
-                .message(e.getMessage())
                 .build();
     }
 
@@ -52,53 +82,22 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto onDeletedDishInOrderException(DeletedDishInOrderException e) {
         return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
                 .message(e.getMessage())
                 .ids(e.getDeletedIds())
                 .build();
     }
 
 
-    @ExceptionHandler(InvalidDishInOrderException.class)
+    @ExceptionHandler(InvalidEntitiesOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onInvalidDishInOrderException(InvalidDishInOrderException e) {
+    public ErrorResponseDto onInvalidDishInOrderException(InvalidEntitiesOrderException e) {
         return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
                 .message(e.getMessage())
-                .ids(e.getInvalidDishesIds())
+                .ids(e.getInvalidEntitiesIds())
                 .build();
     }
 
 
-    @ExceptionHandler(JwtAuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponseDto onJwtAuthenticationException(JwtAuthenticationException e) {
-        return ErrorResponseDto.builder()
-                .message(e.getMessage())
-                .build();
-    }
-
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ErrorResponseDto.builder()
-                .message(e.getBindingResult().getFieldError().getDefaultMessage())
-                .fieldName(e.getBindingResult().getFieldError().getField())
-                .build();
-    }
-
-    @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onUserAlreadyExistAuthenticationException(UserAlreadyExistAuthenticationException e) {
-        return ErrorResponseDto.builder()
-                .message(e.getMessage())
-                .build();
-    }
-
-    @ExceptionHandler(AddressRequiredException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onAddressRequiredException(AddressRequiredException e) {
-        return ErrorResponseDto.builder()
-                .message(e.getMessage())
-                .build();
-    }
 }

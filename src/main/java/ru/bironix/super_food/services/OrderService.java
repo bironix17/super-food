@@ -2,6 +2,7 @@ package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.order.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
@@ -87,9 +88,9 @@ OrderService {
                 .collect(toList());
 
         if (!invalidDishes.isEmpty()) {
-            throw new InvalidDishInOrderException(invalidDishes.stream()
+            throw new InvalidEntitiesOrderException(invalidDishes.stream()
                     .map(Dish::getId)
-                    .collect(toList()));
+                    .collect(toList()), ApiError.INCORRECT_DATA_FOR_DISH);
         }
         personService.getById(order.getClient().getId());
     }
@@ -129,7 +130,7 @@ OrderService {
 
 
         if (sum != order.getTotalPrice())
-            throw new InvalidTotalPriceException();
+            throw new ApiException(ApiError.INVALID_TOTAL_PRICE);
     }
 
     private void checkAddress(Order order) {
@@ -137,7 +138,7 @@ OrderService {
                 order.getAddress() == null &&
                 order.getAddress().getId() == null &&
                 order.getAddress().getAddress() == null) {
-            throw new AddressRequiredException();
+            throw new ApiException(ApiError.ADDRESS_REQUIRED);
         }
     }
 

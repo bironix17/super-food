@@ -10,6 +10,7 @@ public class NotFoundSourceException extends RuntimeException {
 
     private List<Integer> notFoundIds;
     private String entityName;
+    private final ApiError apiError = ApiError.RESOURCE_NOT_FOUND;
 
     public NotFoundSourceException(List<Integer> notFoundIds, String entityName) {
         super(ApiError.RESOURCE_NOT_FOUND.name());
