@@ -93,4 +93,12 @@ public class ErrorController {
                 .message(e.getMessage())
                 .build();
     }
+
+    @ExceptionHandler(AddressRequiredException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onAddressRequiredException(AddressRequiredException e) {
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
 }

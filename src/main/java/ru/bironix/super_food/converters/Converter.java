@@ -25,6 +25,9 @@ import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.request.createOrder.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +99,6 @@ public interface Converter {
 
     WayToGet fromDto(WayToGetDto status);
 
-    @Mapping(target="client.id", source="orderDto.clientId")
     Order fromDto(OrderRequestDto orderDto);
 
 
@@ -130,4 +132,13 @@ public interface Converter {
 
     }
 
+    default LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+    default Date toDate(LocalDateTime localDateTime) {
+        return java.sql.Timestamp.valueOf(localDateTime);
+    }
 }
