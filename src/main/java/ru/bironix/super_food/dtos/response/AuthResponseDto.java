@@ -1,4 +1,4 @@
-package ru.bironix.super_food.dtos.responses;
+package ru.bironix.super_food.dtos.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

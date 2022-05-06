@@ -1,19 +1,10 @@
 package ru.bironix.super_food;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import ru.bironix.super_food.db.dao.dish.AddonDao;
 import ru.bironix.super_food.db.dao.dish.DishDao;
-import ru.bironix.super_food.db.models.PicturePaths;
-import ru.bironix.super_food.db.models.dish.*;
 import ru.bironix.super_food.services.DishService;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 public class CreateDish {

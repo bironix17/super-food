@@ -22,6 +22,11 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class DishService {
 
+    private final DishDao dishDao;
+    private final AddonDao addonDao;
+    private final PortionDao portionDao;
+    private final PriceDao priceDao;
+
     @Autowired
     public DishService(DishDao dishDao, AddonDao addonDao, PortionDao portionDao, PriceDao priceDao) {
         this.dishDao = dishDao;
@@ -29,11 +34,6 @@ public class DishService {
         this.portionDao = portionDao;
         this.priceDao = priceDao;
     }
-
-    final DishDao dishDao;
-    final AddonDao addonDao;
-    final PortionDao portionDao;
-    final PriceDao priceDao;
 
     public Dish getFullDish(int id) {
         return dishDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Dish"));

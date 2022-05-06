@@ -1,9 +1,10 @@
-package ru.bironix.super_food.security;
+package ru.bironix.super_food.controllers.error;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.constants.ApiError;
+import ru.bironix.super_food.security.ErrorAuthResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,10 @@ import java.io.IOException;
 @Component
 public class AccessDeniedHandlerJwt implements AccessDeniedHandler {
     @Override
-    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException e) throws IOException, ServletException {
 
-        ErrorAuthResponse.addError(httpServletResponse, ApiError.AUTHENTICATION_REQUIRED.name());
+        ErrorAuthResponse.addError(response, ApiError.AUTHENTICATION_REQUIRED.name());
     }
 }

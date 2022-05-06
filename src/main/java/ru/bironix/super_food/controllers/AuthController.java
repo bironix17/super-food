@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.dtos.AuthRequestDto;
-import ru.bironix.super_food.dtos.responses.AuthResponseDto;
+import ru.bironix.super_food.dtos.request.AuthRequestDto;
+import ru.bironix.super_food.dtos.response.AuthResponseDto;
 import ru.bironix.super_food.security.JwtTokenProvider;
 import ru.bironix.super_food.services.PersonService;
+
+import javax.validation.Valid;
 
 @Tag(name = "Авторизация")
 @RestController
@@ -36,10 +38,9 @@ public class AuthController {
 
     @Operation(summary = "Зарегистрироваться")
     @PostMapping("/register")
-    @ResponseBody
     AuthResponseDto register(@RequestBody
                              @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Сущность авторизации")
-                             AuthRequestDto request) {
+                             @Valid AuthRequestDto request) {
 
 
         var person = service.createPerson(con.toPerson(request));
@@ -51,10 +52,9 @@ public class AuthController {
 
     @Operation(summary = "Войти")
     @PostMapping("/login")
-    @ResponseBody
     AuthResponseDto login(@RequestBody
                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Сущность авторизации")
-                          AuthRequestDto request) {
+                          @Valid AuthRequestDto request) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));

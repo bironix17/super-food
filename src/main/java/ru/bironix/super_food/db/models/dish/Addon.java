@@ -1,7 +1,8 @@
 package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
-import ru.bironix.super_food.interfaces.GetTotalPrice;
+import ru.bironix.super_food.db.interfaces.ForOrderEquals;
+import ru.bironix.super_food.db.interfaces.GetTotalPrice;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Addon implements GetTotalPrice {
+public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,7 +29,7 @@ public class Addon implements GetTotalPrice {
     @JoinColumn(name = "priceId", nullable = false)
     Price price;
 
-
+    @Override
     public boolean forOrderEquals(Addon addon) {
         if (addon == null) return false;
         return Objects.equals(addon.getId(), getId());

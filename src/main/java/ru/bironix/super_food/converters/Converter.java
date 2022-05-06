@@ -2,8 +2,8 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.bironix.super_food.db.models.Action;
-import ru.bironix.super_food.db.models.PicturePaths;
+import ru.bironix.super_food.db.models.action.Action;
+import ru.bironix.super_food.db.models.common.PicturePaths;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
@@ -13,8 +13,8 @@ import ru.bironix.super_food.db.models.order.Status;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.dtos.AuthRequestDto;
-import ru.bironix.super_food.dtos.PicturePathsDto;
+import ru.bironix.super_food.dtos.request.AuthRequestDto;
+import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
@@ -57,7 +57,6 @@ public interface Converter {
 
     Address fromDto(AddressDto addressDto);
 
-
     FullDishDto toFullDto(Dish addon);
 
     Dish fromFullDto(FullDishDto addonDto);
@@ -83,14 +82,31 @@ public interface Converter {
 
     Person toPerson(AuthRequestDto request);
 
+    Addon fromDto(AddonRequestDto addonDto);
+
+    @Mapping(target="priceNow", source="portionDto.price")
+    Portion fromDto(PortionRequestDto portionDto);
+
+    Price fromDto(PriceRequestDto priceDto);
+
+    Address fromDto(AddressRequestDto addressDto);
+
+    @Mapping(target="basePortion", source="dishDto.portion")
+    Dish fromDto(DishRequestDto dishDto);
+
+    WayToGet fromDto(WayToGetDto status);
+
+    @Mapping(target="client.id", source="orderDto.clientId")
+    Order fromDto(OrderRequestDto orderDto);
+
+
     default List<SmallActionDto> toActionsDto(List<Action> actions) {
         return actions.stream()
                 .map(this::toSmallDto)
                 .collect(toList());
-
     }
 
-    default List<CategoryDto> toCategoryDto(List<Dish> dishes) {
+    default List<CategoryDto> toCategoriesDto(List<Dish> dishes) {
         return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.groupingBy(AbstractDishDto::getCategory))
@@ -114,21 +130,4 @@ public interface Converter {
 
     }
 
-
-    Addon fromDto(AddonRequestDto addonDto);
-
-    @Mapping(target="priceNow", source="portionDto.price")
-    Portion fromDto(PortionRequestDto portionDto);
-
-    Price fromDto(PriceRequestDto priceDto);
-
-    Address fromDto(AddressRequestDto addressDto);
-
-    @Mapping(target="basePortion", source="dishDto.portion")
-    Dish fromDto(DishRequestDto dishDto);
-
-    WayToGet fromDto(WayToGetDto status);
-
-    @Mapping(target="client.id", source="orderDto.clientId")
-    Order fromDto(OrderRequestDto orderDto);
 }

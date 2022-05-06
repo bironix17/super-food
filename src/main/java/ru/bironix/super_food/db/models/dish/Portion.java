@@ -1,6 +1,7 @@
 package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
+import ru.bironix.super_food.db.interfaces.ForOrderEquals;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Portion {
+public class Portion implements ForOrderEquals<Portion> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -48,6 +49,7 @@ public class Portion {
     }
 
 
+    @Override
     public boolean forOrderEquals(Portion portion) {
         if (portion == null) return false;
 

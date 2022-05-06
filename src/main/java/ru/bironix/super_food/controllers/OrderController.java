@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -18,23 +16,24 @@ import ru.bironix.super_food.services.PersonService;
 import javax.validation.constraints.Min;
 import java.util.List;
 
+import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernameFromSecurityContext;
+
 @Tag(name = "Заказ")
 @RestController
 @Validated
 @SecurityRequirement(name = "bearerAuth")
 public class OrderController {
 
+    private final OrderService service;
+    private final Converter con;
+    private final PersonService personService;
+
     @Autowired
-    public OrderController(OrderService orderService, Converter con) {
-        this.service = orderService;
+    public OrderController(OrderService service, Converter con, PersonService personService) {
+        this.service = service;
         this.con = con;
+        this.personService = personService;
     }
-
-    final OrderService service;
-    final Converter con;
-
-    @Autowired
-    private PersonService personService;
 
     @Operation(summary = "Получить заказ")
     @GetMapping("/order/{id}")
@@ -66,11 +65,5 @@ public class OrderController {
 
         var createdOrder = service.createOrder(con.fromDto(order));
         return con.toDto(createdOrder);
-    }
-
-
-    private String getUsernameFromSecurityContext() {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUsername();
     }
 }

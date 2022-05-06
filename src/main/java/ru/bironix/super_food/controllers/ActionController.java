@@ -24,25 +24,23 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class ActionController {
 
+    final ActionService service;
+    final Converter converter;
+
     @Autowired
     public ActionController(ActionService service, Converter converter) {
         this.service = service;
         this.converter = converter;
     }
 
-    final ActionService service;
-    final Converter converter;
-
     @Operation(summary = "Получение списка акций")
     @GetMapping("/actions")
-    @ResponseBody
     List<SmallActionDto> getActions() {
         return converter.toActionsDto(service.getActions());
     }
 
     @Operation(summary = "Получение конкретной акции")
     @GetMapping("/action/{id}")
-    @ResponseBody
     FullActionDto getAction(@PathVariable @Parameter(description = "id") @Min(0) int id) {
         return converter.toFullDto(service.getAction(id));
     }

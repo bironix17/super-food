@@ -1,4 +1,4 @@
-package ru.bironix.super_food.controllers;
+package ru.bironix.super_food.controllers.error;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,24 +8,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.dtos.responses.ErrorResponse;
+import ru.bironix.super_food.dtos.response.ErrorResponseDto;
 import ru.bironix.super_food.exceptions.*;
 
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
+@ResponseBody
 public class ErrorController {
 
-    @Autowired
-    Converter con;
+    private final Converter con;
 
-    @ResponseBody
+    @Autowired
+    public ErrorController(Converter con) {
+        this.con = con;
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onConstraintValidationException(ConstraintViolationException e) {
+    public ErrorResponseDto onConstraintValidationException(ConstraintViolationException e) {
         return e.getConstraintViolations()
                 .stream()
-                .map(violation -> ErrorResponse.builder()
+                .map(violation -> ErrorResponseDto.builder()
                         .fieldName(violation.getPropertyPath().toString())
                         .message(violation.getMessage())
                         .build()
@@ -33,64 +37,69 @@ public class ErrorController {
     }
 
 
-    @ResponseBody
     @ExceptionHandler(NotFoundSourceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onNotFoundSourceException(NotFoundSourceException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onNotFoundSourceException(NotFoundSourceException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .entityName(e.getEntityName())
                 .ids(e.getNotFoundIds())
                 .build();
     }
 
-    @ResponseBody
+
     @ExceptionHandler(InvalidTotalPriceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onInvalidTotalPriceException(InvalidTotalPriceException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onInvalidTotalPriceException(InvalidTotalPriceException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .build();
     }
 
-    @ResponseBody
+
     @ExceptionHandler(DeletedDishInOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onDeletedDishInOrderException(DeletedDishInOrderException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onDeletedDishInOrderException(DeletedDishInOrderException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .ids(e.getDeletedIds())
                 .build();
     }
 
-    @ResponseBody
+
     @ExceptionHandler(InvalidDishInOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onInvalidDishInOrderException(InvalidDishInOrderException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onInvalidDishInOrderException(InvalidDishInOrderException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .elements(con.toDishesDto(e.getInvalidDishes()))
                 .build();
     }
 
 
-    @ResponseBody
     @ExceptionHandler(JwtAuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse onJwtAuthenticationException(JwtAuthenticationException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onJwtAuthenticationException(JwtAuthenticationException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .build();
     }
 
 
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ErrorResponseDto.builder()
                 .message(e.getBindingResult().getFieldError().getDefaultMessage())
                 .fieldName(e.getBindingResult().getFieldError().getField())
+                .build();
+    }
+
+    @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onUserAlreadyExistAuthenticationException(UserAlreadyExistAuthenticationException e) {
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
                 .build();
     }
 }

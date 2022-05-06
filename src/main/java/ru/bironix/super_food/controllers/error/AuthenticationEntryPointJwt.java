@@ -1,10 +1,11 @@
-package ru.bironix.super_food.security;
+package ru.bironix.super_food.controllers.error;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.constants.ApiError;
+import ru.bironix.super_food.security.ErrorAuthResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

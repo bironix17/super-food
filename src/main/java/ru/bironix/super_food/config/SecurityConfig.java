@@ -1,6 +1,5 @@
 package ru.bironix.super_food.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.bironix.super_food.security.AccessDeniedHandlerJwt;
-import ru.bironix.super_food.security.AuthenticationEntryPointJwt;
+import ru.bironix.super_food.controllers.error.AccessDeniedHandlerJwt;
+import ru.bironix.super_food.controllers.error.AuthenticationEntryPointJwt;
 import ru.bironix.super_food.security.JwtChainConfigurer;
 
 @Configuration
@@ -20,15 +19,15 @@ import ru.bironix.super_food.security.JwtChainConfigurer;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtChainConfigurer jwtChainConfigurer;
+    private final AuthenticationEntryPointJwt authenticationEntryPointJwt;
+    private final AccessDeniedHandlerJwt accessDeniedHandlerJwt;
 
-    @Autowired
-    private AuthenticationEntryPointJwt authenticationEntryPointJwt;
-    @Autowired
-    private AccessDeniedHandlerJwt accessDeniedHandlerJwt;
-
-    @Autowired
-    public SecurityConfig(JwtChainConfigurer jwtChainConfigurer) {
+    public SecurityConfig(JwtChainConfigurer jwtChainConfigurer,
+                          AuthenticationEntryPointJwt authenticationEntryPointJwt,
+                          AccessDeniedHandlerJwt accessDeniedHandlerJwt) {
         this.jwtChainConfigurer = jwtChainConfigurer;
+        this.authenticationEntryPointJwt = authenticationEntryPointJwt;
+        this.accessDeniedHandlerJwt = accessDeniedHandlerJwt;
     }
 
     @Override

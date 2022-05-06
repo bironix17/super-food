@@ -1,4 +1,4 @@
-package ru.bironix.super_food.dtos.responses;
+package ru.bironix.super_food.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ErrorResponse {
+public class ErrorResponseDto {
 
     @Schema(nullable = true)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)

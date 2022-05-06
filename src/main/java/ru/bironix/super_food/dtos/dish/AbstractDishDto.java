@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.bironix.super_food.dtos.PicturePathsDto;
+import ru.bironix.super_food.dtos.common.PicturePathsDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

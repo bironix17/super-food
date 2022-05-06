@@ -2,7 +2,7 @@ package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.db.dao.OrderDao;
+import ru.bironix.super_food.db.dao.order.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
@@ -23,21 +23,21 @@ import static java.util.stream.Collectors.*;
 public class
 OrderService {
 
+    private final EntityManager entityManager;
+    private final DishService dishService;
+    private final PersonService personService;
+    private final OrderDao orderDao;
+
     @Autowired
-    public OrderService(OrderDao orderDao) {
+    public OrderService(EntityManager entityManager,
+                        DishService dishService,
+                        PersonService personService,
+                        OrderDao orderDao) {
+        this.entityManager = entityManager;
+        this.dishService = dishService;
+        this.personService = personService;
         this.orderDao = orderDao;
     }
-
-    @Autowired
-    EntityManager entityManager;
-
-    @Autowired
-    DishService dishService;
-
-    @Autowired
-    PersonService personService;
-
-    final private OrderDao orderDao;
 
     public Order getOrder(int id) {
         return orderDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Order"));
@@ -82,9 +82,7 @@ OrderService {
 
         if (!invalidDishes.isEmpty()) throw new InvalidDishInOrderException(invalidDishes);
 
-            personService.getById(order.getClient().getId());
-
-//            personService.getAddress(order.getAddress().getId()); // TODO починить потом
+        personService.getById(order.getClient().getId());
     }
 
 

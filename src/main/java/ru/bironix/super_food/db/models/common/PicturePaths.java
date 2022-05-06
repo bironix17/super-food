@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db.models;
+package ru.bironix.super_food.db.models.common;
 
 import lombok.*;
 

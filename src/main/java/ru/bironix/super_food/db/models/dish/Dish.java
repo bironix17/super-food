@@ -1,9 +1,10 @@
 package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
-import ru.bironix.super_food.db.models.Action;
-import ru.bironix.super_food.db.models.PicturePaths;
-import ru.bironix.super_food.interfaces.GetTotalPrice;
+import ru.bironix.super_food.db.interfaces.ForOrderEquals;
+import ru.bironix.super_food.db.models.action.Action;
+import ru.bironix.super_food.db.models.common.PicturePaths;
+import ru.bironix.super_food.db.interfaces.GetTotalPrice;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Dish implements GetTotalPrice {
+public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -77,6 +78,7 @@ public class Dish implements GetTotalPrice {
         }
     }
 
+    @Override
     public boolean forOrderEquals(Dish dish) {
         if (dish == null) return false;
 

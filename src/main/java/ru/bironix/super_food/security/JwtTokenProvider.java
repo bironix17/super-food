@@ -21,7 +21,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -35,7 +35,7 @@ public class JwtTokenProvider {
     private final String prefixBearer = "Bearer ";
 
     @Autowired
-    public JwtTokenProvider(@Qualifier("UserDetailsServiceImpl") UserDetailsServiceImpl userDetailsService) {
+    public JwtTokenProvider(@Qualifier("CustomUserDetailsService") CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -46,7 +46,6 @@ public class JwtTokenProvider {
 
     public String createToken(String username, Person person) {
         Claims claims = Jwts.claims().setSubject(username);
-//        claims.put("role", role.name()); //TODO fix me
         claims.put("id", person.getId());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds * 1000);

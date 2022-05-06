@@ -1,4 +1,4 @@
-package ru.bironix.super_food.db;
+package ru.bironix.super_food.db.utils;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

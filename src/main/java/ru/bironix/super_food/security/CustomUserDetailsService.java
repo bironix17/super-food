@@ -10,12 +10,15 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Person;
 
-@Service("UserDetailsServiceImpl")
-public class UserDetailsServiceImpl implements UserDetailsService {
+@Service("CustomUserDetailsService")
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final PersonDao personDao;
 
     @Autowired
-    private PersonDao personDao;
-
+    public CustomUserDetailsService(PersonDao personDao) {
+        this.personDao = personDao;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

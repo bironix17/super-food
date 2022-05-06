@@ -1,15 +1,15 @@
 package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @Schema(description = "Добавка к блюду")
+@Builder
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class AddonDto {

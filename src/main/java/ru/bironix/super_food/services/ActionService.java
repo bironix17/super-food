@@ -3,8 +3,8 @@ package ru.bironix.super_food.services;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.db.dao.ActionDao;
-import ru.bironix.super_food.db.models.Action;
+import ru.bironix.super_food.db.dao.action.ActionDao;
+import ru.bironix.super_food.db.models.action.Action;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import java.util.ArrayList;
@@ -13,14 +13,15 @@ import java.util.List;
 @Service
 public class ActionService {
 
+    private final ActionDao actionDao;
+    private final DishService dishService;
+
     @Autowired
     public ActionService(ActionDao actionDao, DishService dishService) {
         this.actionDao = actionDao;
         this.dishService = dishService;
     }
 
-    final ActionDao actionDao;
-    final DishService dishService;
 
     public List<Action> getActions() {
         return IteratorUtils.toList(actionDao.findAll().iterator());

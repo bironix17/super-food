@@ -1,6 +1,6 @@
-package ru.bironix.super_food;
+package ru.bironix.super_food.constants;
 
-import ru.bironix.super_food.dtos.PicturePathsDto;
+import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.dish.CategoryType;
 import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;
@@ -10,6 +10,7 @@ import ru.bironix.super_food.dtos.person.PersonDto;
 
 import java.util.List;
 
+//TODO убрать
 public class Utils {
 
     public static PicturePathsDto getMockPicturesDto() {

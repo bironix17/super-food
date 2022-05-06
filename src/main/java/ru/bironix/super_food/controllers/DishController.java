@@ -23,33 +23,29 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class DishController {
 
+    final Converter con;
+    final DishService service;
+
     @Autowired
     public DishController(Converter con, DishService service) {
         this.con = con;
         this.service = service;
     }
 
-    final Converter con;
-    final DishService service;
-
     @Operation(summary = "Получение блюда")
     @GetMapping("/dish/{id}")
-    @ResponseBody
     FullDishDto getDish(@PathVariable @Parameter(description = "id блюда") @Min(0) int id) {
         return con.toFullDto(service.getFullDish(id));
     }
 
     @Operation(summary = "Получение общего списка блюд по категориям")
     @GetMapping("/dishes")
-    @ResponseBody
-//    @PreAuthorize("hasAnyRole('ALL')")
     List<CategoryDto> getDishes() {
-        return con.toCategoryDto(service.getAllDishes());
+        return con.toCategoriesDto(service.getAllDishes());
     }
 
     @Operation(summary = "Получение запрошеного списка блюд")
     @GetMapping("/specificDishes")
-    @ResponseBody
     List<SmallDishDto> getSpecificDishes(@RequestParam("ids") @Parameter(description = "Список id блюд") List<@Min(0) Integer> ids) {
         return con.toDishesDto(service.getDishes(new HashSet<>(ids)));
     }

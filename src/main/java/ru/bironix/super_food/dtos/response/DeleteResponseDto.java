@@ -1,4 +1,4 @@
-package ru.bironix.super_food.dtos.responses;
+package ru.bironix.super_food.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteResponse {
+public class DeleteResponseDto {
     boolean status;
 }

@@ -3,7 +3,7 @@ package ru.bironix.super_food.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.db.UpdateMapper;
+import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Address;
@@ -17,21 +17,24 @@ import java.util.Optional;
 
 @Service
 public class PersonService {
+
     private final PersonDao personDao;
     private final AddressDao addressDao;
     private final UpdateMapper mapper;
+    private final EntityManager entityManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    EntityManager entityManager;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public PersonService(PersonDao personDao, UpdateMapper mapper, AddressDao addressDao) {
+    public PersonService(PersonDao personDao,
+                         AddressDao addressDao,
+                         UpdateMapper mapper,
+                         EntityManager entityManager,
+                         PasswordEncoder passwordEncoder) {
         this.personDao = personDao;
-        this.mapper = mapper;
         this.addressDao = addressDao;
+        this.mapper = mapper;
+        this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Person getByUsername(String email) {

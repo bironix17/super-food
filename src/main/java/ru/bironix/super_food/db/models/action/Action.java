@@ -1,6 +1,7 @@
-package ru.bironix.super_food.db.models;
+package ru.bironix.super_food.db.models.action;
 
 import lombok.*;
+import ru.bironix.super_food.db.models.common.PicturePaths;
 import ru.bironix.super_food.db.models.dish.Dish;
 
 import javax.persistence.*;
