@@ -53,7 +53,7 @@
     <select name="category" id="category">
         <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryType).values()}"
                 th:value="${categoryOpt}"
-                th:text="${categoryOpt}"
+                th:text="${categoryOpt.getRusName()}"
                 th:selected=" ${categoryOpt.equals(dish.category)}"
         ></option>
     </select>
