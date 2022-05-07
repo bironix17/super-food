@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Создать заказ", description = "Корректный пример для поля deliveryTime = 10:20")
-    @PostMapping("/orders")
+    @PostMapping("/admin/orders")//TODO подумать как передавать пользователя
     @ResponseBody
     OrderDto createOrder(@RequestBody
                          @io.swagger.v3.oas.annotations.parameters.RequestBody()
@@ -49,17 +49,17 @@ public class OrderController {
     }
 
     @Operation(summary = "Получение заказа")
-    @GetMapping("/orders/{id}")
+    @GetMapping("/admin/orders/{id}")
     OrderDto getOrder(@PathVariable
                       @Parameter(description = "id заказа")
                       @Min(0) int id) {
         return null;
     }
 
-    @Operation(summary = "Изменение блюда")
-    @PutMapping("/orders/{id}")
+    @Operation(summary = "Изменение заказа")
+    @PutMapping("/admin/orders/{id}")
     OrderDto updateOrder(@RequestBody
-                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
+                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Заказ")
                          OrderRequestDto orderDto,
                          @PathVariable
                          @Parameter(description = "id заказа")
@@ -68,7 +68,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Удаление заказа")
-    @DeleteMapping("/orders/{id}")
+    @DeleteMapping("/admin/orders/{id}")
     ApiActionResponseDto deleteOrder(@PathVariable
                                      @Parameter(description = "id заказа")
                                      @Min(0) int id) {
@@ -76,16 +76,15 @@ public class OrderController {
     }
 
 
-
     @Operation(summary = "Получить мой заказ")
-    @GetMapping("/my/orders/{id}")
+    @GetMapping("/client/my/orders/{id}")
     @ResponseBody
-    OrderDto getOrderForMy(@PathVariable @Parameter(description = "id") @Min(0) int id) {
+    OrderDto getOrderForMy(@PathVariable @Parameter(description = "id") @Min(0) int id) {//TODO прикрутить проверку владельца заказа
         return con.toDto(service.getOrder(id));
     }
 
-    @Operation(summary = "Получить мои заказы. Id указывать id в дальнейшем не придётся")
-    @GetMapping("/my/orders")
+    @Operation(summary = "Получить мои заказы")
+    @GetMapping("/client/my/orders")
     @ResponseBody
     List<OrderDto> getOrdersForMy() {
         var username = getUsernameFromSecurityContext();
@@ -94,7 +93,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Совершить заказ для меня", description = "Корректный пример для поля deliveryTime = 10:20")
-    @PostMapping("/my/orders")
+    @PostMapping("/client/my/orders")
     @ResponseBody
     OrderDto createOrderForMy(@RequestBody
                               @io.swagger.v3.oas.annotations.parameters.RequestBody()
@@ -110,29 +109,28 @@ public class OrderController {
     }
 
 
-
     @Operation(summary = "Изменение статуса блюда")
-    @PutMapping("/orders/{id}/status")
+    @PutMapping({"/deliveryman/orders/{id}/status/{status}", "/admin/orders/{id}/status/{status}"})
     OrderDto updateOrder(@PathVariable
                          @Parameter(description = "id заказа")
                          @Min(0) int id,
-                         @RequestParam("status")
+                         @PathVariable
                          @Parameter(description = "статус")
-                         StatusDto statusDto) {
+                         StatusDto status) {
         return null;
     }
 
     @Operation(summary = "Получение незавершённых заказов")
-    @GetMapping("/activeOrders")
+    @GetMapping({"/deliveryman/activeOrders", "/admin/activeOrders"})
     List<SmallDishDto> getActiveOrders() {
         return null;
     }
 
     @Operation(summary = "Получение заказов по конкретному статусу")
-    @GetMapping("/orders/status")
-    List<SmallDishDto> getOrdersByStatus(@RequestParam("status")
+    @GetMapping({"/deliveryman/orders/status/{status}", "/admin/orders/status/{status}"})
+    List<SmallDishDto> getOrdersByStatus(@PathVariable
                                          @Parameter(description = "статус")
-                                         StatusDto statusDto) {
+                                         StatusDto status) {
         return null;
     }
 }

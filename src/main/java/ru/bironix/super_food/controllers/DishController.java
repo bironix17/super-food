@@ -35,7 +35,7 @@ public class DishController {
     }
 
     @Operation(summary = "Создание блюда")
-    @PostMapping("/dishes")
+    @PostMapping("/admin/dishes")
     FullDishDto createDish(@RequestBody
                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
                            FullDishDto dishDto) {
@@ -43,7 +43,7 @@ public class DishController {
     }
 
     @Operation(summary = "Получение блюда")
-    @GetMapping("/dishes/{id}")
+    @GetMapping({"client/dishes/{id}", "/admin/dishes/{id}"})
     FullDishDto getDish(@PathVariable
                         @Parameter(description = "id блюда")
                         @Min(0) int id) {
@@ -51,7 +51,7 @@ public class DishController {
     }
 
     @Operation(summary = "Изменение блюда")
-    @PutMapping("/dishes/{id}")
+    @PutMapping("/admin/dishes/{id}")
     FullDishDto updateDish(@RequestBody
                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
                            FullDishDto dishDto,
@@ -63,7 +63,7 @@ public class DishController {
     }
 
     @Operation(summary = "Удаление блюда")
-    @DeleteMapping("/dishes/{id}")
+    @DeleteMapping("/admin/dishes/{id}")
     ApiActionResponseDto deleteDish(@PathVariable
                                     @Parameter(description = "id блюда")
                                     @Min(0) int id) {
@@ -72,15 +72,15 @@ public class DishController {
 
 
     @Operation(summary = "Создание добавки")
-    @PostMapping("/addons")
+    @PostMapping("/admin/addons")
     AddonDto createAddon(@RequestBody
                          @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
                          AddonDto addonDto) {
         return null;
     }
 
-    @Operation(summary = "Получение блюда")
-    @GetMapping("/addons/{id}")
+    @Operation(summary = "Получение добавки")
+    @GetMapping({"/client/addons/{id}", "/admin/addons/{id}"})
     AddonDto getAddon(@PathVariable
                       @Parameter(description = "id добавки")
                       @Min(0) int id) {
@@ -89,7 +89,7 @@ public class DishController {
 
 
     @Operation(summary = "Изменение добавки")
-    @PutMapping("/addons/{id}")
+    @PutMapping("/admin/addons/{id}")
     AddonDto updateAddon(@RequestBody
                          @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
                          AddonDto addonDto,
@@ -102,7 +102,7 @@ public class DishController {
 
 
     @Operation(summary = "Удаление добавки")
-    @DeleteMapping("/addons/{id}")
+    @DeleteMapping("/admin/addons/{id}")
     ApiActionResponseDto deleteAddon(@PathVariable
                                      @Parameter(description = "id добавки")
                                      @Min(0) int id) {
@@ -111,13 +111,13 @@ public class DishController {
 
 
     @Operation(summary = "Получение общего списка блюд по категориям")
-    @GetMapping("/dishes")
+    @GetMapping({"/client/dishes", "/admin/dishes"})
     List<CategoryDto> getDishes() {
         return con.toCategoriesDto(service.getAllDishes());
     }
 
-    @Operation(summary = "Получение запрошеного списка блюд")
-    @GetMapping("/specificDishes")
+    @Operation(summary = "Получение запрошенного списка блюд")
+    @GetMapping({"/client/specificDishes", "/admin/specificDishes"})
     List<SmallDishDto> getSpecificDishes(@RequestParam("ids")
                                          @Parameter(description = "Список id блюд")
                                          List<@Min(0) Integer> ids) {

@@ -16,6 +16,7 @@ import javax.validation.constraints.Min;
 @Tag(name = "Пользователь")
 @RestController
 @Validated
+@RequestMapping("/admin")
 @SecurityRequirement(name = "bearerAuth")
 public class PersonController {
 

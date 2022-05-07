@@ -32,7 +32,7 @@ public class ActionController {
     }
 
     @Operation(summary = "Создание акции")
-    @PostMapping("/actions")
+    @PostMapping("/admin/actions")
     FullActionDto createAction(@RequestBody
                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
                                FullActionDto actionDto) {
@@ -41,7 +41,7 @@ public class ActionController {
 
 
     @Operation(summary = "Получение акции")
-    @GetMapping("/actions/{id}")
+    @GetMapping({"/client/actions/{id}", "/admin/actions/{id}"})
     FullActionDto getAction(@PathVariable
                             @Parameter(description = "id")
                             @Min(0) int id) {
@@ -49,7 +49,7 @@ public class ActionController {
     }
 
     @Operation(summary = "Изменение акции")
-    @PutMapping("/actions/{id}")
+    @PutMapping("/admin/actions/{id}")
     FullActionDto updateAction(@RequestBody
                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
                                FullActionDto actionDto,
@@ -62,16 +62,16 @@ public class ActionController {
 
 
     @Operation(summary = "Удаление акции")
-    @DeleteMapping("/actions/{id}")
+    @DeleteMapping({"/admin/actions/{id}",})
     ApiActionResponseDto deleteAction(@PathVariable
-                            @Parameter(description = "id")
-                            @Min(0) int id) {
+                                      @Parameter(description = "id")
+                                      @Min(0) int id) {
         return null;
     }
 
 
     @Operation(summary = "Получение списка акций")
-    @GetMapping("/actions")
+    @GetMapping({"/client/actions","/admin/actions"})
     List<SmallActionDto> getActions() {
         return converter.toActionsDto(service.getActions());
     }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -23,6 +24,7 @@ import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernam
 @Tag(name = "Пользователь. Информация о себе")
 @RestController
 @Validated
+@RequestMapping("/client")
 @SecurityRequirement(name = "bearerAuth")
 public class MyPersonController {
 
@@ -68,8 +70,8 @@ public class MyPersonController {
     @Operation(summary = "Удалить адрес для пользователя")
     @DeleteMapping("/my/addresses/{id}")
     ApiActionResponseDto deleteAddressForMy(@PathVariable
-                                         @Parameter(description = "id адреса")
-                                         @Min(0) int id) {
+                                            @Parameter(description = "id адреса")
+                                            @Min(0) int id) {
         service.deleteAddress(id);
         return new ApiActionResponseDto(true);
     }
@@ -85,8 +87,8 @@ public class MyPersonController {
     @Operation(summary = "Добавить закладку для пользователя")
     @PostMapping("/my/favorites/{dishId}")
     ApiActionResponseDto addFavoritesForMy(@PathVariable
-                                        @Parameter(description = "id блюда")
-                                        @Min(0) int dishId) {
+                                           @Parameter(description = "id блюда")
+                                           @Min(0) int dishId) {
         var username = getUsernameFromSecurityContext();
         service.addFavoritesForPerson(username, dishId);
         return new ApiActionResponseDto(true);
@@ -95,8 +97,8 @@ public class MyPersonController {
     @Operation(summary = "Удалить закладку у пользователя")
     @DeleteMapping("/my/favorites/{dishId}")
     ApiActionResponseDto deleteFavoritesForMy(@PathVariable
-                                           @Parameter(description = "id блюда")
-                                           @Min(0) int dishId) {
+                                              @Parameter(description = "id блюда")
+                                              @Min(0) int dishId) {
         var username = getUsernameFromSecurityContext();
         service.deleteFavoritesForPerson(username, dishId);
         return new ApiActionResponseDto(true);

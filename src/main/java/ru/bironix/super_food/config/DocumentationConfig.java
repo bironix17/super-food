@@ -8,6 +8,10 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotationUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @SecurityScheme(
@@ -27,12 +31,14 @@ public class DocumentationConfig {
                         .url("/view/"));
     }
 
-    //TODO вынести в текстовые списки
+    private static final String authPaths = "/auth/**";
+
+
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
-                .group("user")
-                .pathsToMatch("/**")
+                .group("client")
+                .pathsToMatch("/client/**", authPaths)
                 .build();
     }
 
@@ -40,7 +46,15 @@ public class DocumentationConfig {
     public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
                 .group("admin")
-                .pathsToMatch("/**")
+                .pathsToMatch("/admin/**", authPaths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi deliverymanApi() {
+        return GroupedOpenApi.builder()
+                .group("deliveryman")
+                .pathsToMatch("/deliveryman/**", authPaths)
                 .build();
     }
 
