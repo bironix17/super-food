@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
-import ru.bironix.super_food.dtos.response.DeleteResponseDto;
+import ru.bironix.super_food.dtos.response.ActionResponseDto;
 import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+
+import java.util.List;
 
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernameFromSecurityContext;
 
@@ -25,12 +27,12 @@ import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernam
 @SecurityRequirement(name = "bearerAuth")
 public class PersonController {
 
-    private final PersonService personService;
+    private final PersonService service;
     private final Converter con;
 
     @Autowired
     public PersonController(PersonService personService, Converter converter) {
-        this.personService = personService;
+        this.service = personService;
         this.con = converter;
     }
 
@@ -38,16 +40,16 @@ public class PersonController {
     @GetMapping("/my")
     PersonDto getPerson() {
         var username = getUsernameFromSecurityContext();
-        return con.toDto(personService.getByUsername(username));
+        return con.toDto(service.getByUsername(username));
     }
 
     @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null")
     @PutMapping("/my")
     PersonDto updatePerson(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "сущность пользователя") PersonDto person) {
         var username = getUsernameFromSecurityContext();
-        var personBd = personService.getByUsername(username);
+        var personBd = service.getByUsername(username);
         person.setId(personBd.getId());
-        var updatedPerson = personService.updatePerson(con.fromDto(person));
+        var updatedPerson = service.updatePerson(con.fromDto(person));
         return con.toDto(updatedPerson);
     }
 
@@ -56,14 +58,38 @@ public class PersonController {
     @PostMapping("/my/addresses")
     AddressDto addAddress(@RequestParam @ApiParam(name = "добавляемый адрес") @NotBlank String address) {
         var username = getUsernameFromSecurityContext();
-        var newAddress = personService.addAddressForPerson(username, address);
+        var newAddress = service.addAddressForPerson(username, address);
         return con.toDto(newAddress);
     }
 
     @Operation(summary = "Удалить адрес для пользователя")
     @DeleteMapping("/my/addresses/{id}")
-    DeleteResponseDto deleteAddress(@PathVariable @Parameter(description = "id адреса") @Min(0) int id) {
-        personService.deleteAddress(id);
-        return new DeleteResponseDto(true);
+    ActionResponseDto deleteAddress(@PathVariable @Parameter(description = "id адреса") @Min(0) int id) {
+        service.deleteAddress(id);
+        return new ActionResponseDto(true);
+    }
+
+
+    @Operation(summary = "Получить закладки пользователя")
+    @GetMapping("/my/favorites")
+    List<Integer> getFavorites() {
+        var username = getUsernameFromSecurityContext();
+        return con.toFavoritesDto(service.getFavoritesForPerson(username));
+    }
+
+    @Operation(summary = "Добавить закладку для пользователя")
+    @PostMapping("/my/favorites/{dishId}")
+    ActionResponseDto addFavorites(@PathVariable @Parameter(description = "id блюда") @Min(0) int dishId) {
+        var username = getUsernameFromSecurityContext();
+        service.addFavoritesForPerson(username, dishId);
+        return new ActionResponseDto(true);
+    }
+
+    @Operation(summary = "Удалить закладку у пользователя")
+    @DeleteMapping("/my/favorites/{dishId}")
+    ActionResponseDto deleteFavorites(@PathVariable @Parameter(description = "id блюда") @Min(0) int dishId) {
+        var username = getUsernameFromSecurityContext();
+        service.deleteFavoritesForPerson(username, dishId);
+        return new ActionResponseDto(true);
     }
 }

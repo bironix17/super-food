@@ -9,6 +9,7 @@ import java.util.List;
 public class DeletedDishInOrderException extends RuntimeException {
 
     private List<Integer> deletedIds;
+    private final ApiError apiError = ApiError.RESOURCE_NOT_FOUND;
 
     public DeletedDishInOrderException(List<Integer> deletedIds) {
         super(ApiError.DELETED_DISH_IN_ORDER.name());

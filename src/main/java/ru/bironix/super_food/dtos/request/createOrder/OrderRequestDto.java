@@ -1,14 +1,16 @@
 package ru.bironix.super_food.dtos.request.createOrder;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Schema(description = "Заказ. Версия для его создания со стороны фронта")
@@ -18,13 +20,15 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class OrderRequestDto {
+
     @Builder.Default
     @JsonIgnore
-    private LocalDateTime created = LocalDateTime.now();
+    private Date created = new Date();
 
     @NotNull
-    @Schema(description = "Целевое время вручения заказчику заказа. Пример 2022-05-05T13:52:41.109735", example = "2022-05-05T13:52:41.109735")
-    private LocalDateTime targetProduction;
+    @Schema(description = "Целевое время вручения клиенту заказа. Пример 10:20", example = "10:20")
+    @JsonFormat(pattern = "HH:mm")
+    private Date deliveryTime;
 
     @NotNull
     private int totalPrice;
@@ -38,7 +42,7 @@ public class OrderRequestDto {
     private AddressRequestDto address;
 
     @JsonIgnore
-    private Integer clientId;
+    private PersonDto client;
 
     @Builder.Default
     @NotNull

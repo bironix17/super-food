@@ -12,6 +12,7 @@ import ru.bironix.super_food.db.models.order.Order;
 import ru.bironix.super_food.db.models.order.Status;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Address;
+import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.request.AuthRequestDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
@@ -25,6 +26,9 @@ import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.request.createOrder.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,8 +100,14 @@ public interface Converter {
 
     WayToGet fromDto(WayToGetDto status);
 
-    @Mapping(target="client.id", source="orderDto.clientId")
     Order fromDto(OrderRequestDto orderDto);
+
+    default Integer toDto(Favorite favorite){
+        return favorite.getDishId();
+    }
+
+    @Mapping(target="dishId", source="favorite")
+    Favorite fromDto(Integer favorite);
 
 
     default List<SmallActionDto> toActionsDto(List<Action> actions) {
@@ -130,4 +140,19 @@ public interface Converter {
 
     }
 
+    default LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+    default Date toDate(LocalDateTime localDateTime) {
+        return java.sql.Timestamp.valueOf(localDateTime);
+    }
+
+    default List<Integer> toFavoritesDto(List<Favorite> favorites){
+        return favorites.stream()
+                .map(Favorite::getDishId)
+                .collect(toList());
+    }
 }

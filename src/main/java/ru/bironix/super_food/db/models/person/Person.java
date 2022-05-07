@@ -30,8 +30,12 @@ public class Person {
     Role role = Role.User;
 
     @Valid
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")//TODO зачем здесь mappedBy
     List<Address> addresses;
+
+    @Valid
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Favorite> favorites;
 
     public boolean forOrderEquals(Person person) {
         if (person == null) return false;

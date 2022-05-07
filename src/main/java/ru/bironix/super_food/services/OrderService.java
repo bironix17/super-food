@@ -2,16 +2,15 @@ package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.order.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.order.Order;
+import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidTotalPriceException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
+import ru.bironix.super_food.exceptions.*;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -51,10 +50,16 @@ OrderService {
     public Order createOrder(Order order) {
         checkCorrectOrder(order);
 
-        if (order.getAddress().getId() == null) {
-            var address =
-                    personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
-            order.setAddress(address);
+        if (order.getWayToGet() == WayToGet.DELIVERY
+                && order.getAddress() != null) {
+
+            if (order.getAddress().getAddress() != null) {
+                var address =
+                        personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
+                order.setAddress(address);
+            }
+        } else if (order.getWayToGet() == WayToGet.PICKUP) {
+            order.setAddress(null);
         }
 
         var createdOrder = orderDao.saveAndFlush(order);
@@ -71,7 +76,9 @@ OrderService {
         checkActualIds(order, dishes);
         checkDeleted(dishes);
         checkTotalPrice(order, dishes);
+        checkAddress(order);
     }
+
 
     private void checkActualIds(Order order, List<Dish> dishesDb) {
 
@@ -81,9 +88,9 @@ OrderService {
                 .collect(toList());
 
         if (!invalidDishes.isEmpty()) {
-            throw new InvalidDishInOrderException(invalidDishes.stream()
+            throw new InvalidEntitiesOrderException(invalidDishes.stream()
                     .map(Dish::getId)
-                    .collect(toList()));
+                    .collect(toList()), ApiError.INCORRECT_DATA_FOR_DISH);
         }
         personService.getById(order.getClient().getId());
     }
@@ -123,7 +130,16 @@ OrderService {
 
 
         if (sum != order.getTotalPrice())
-            throw new InvalidTotalPriceException();
+            throw new ApiException(ApiError.INVALID_TOTAL_PRICE);
+    }
+
+    private void checkAddress(Order order) {
+        if (order.getWayToGet() == WayToGet.DELIVERY &&
+                order.getAddress() == null &&
+                order.getAddress().getId() == null &&
+                order.getAddress().getAddress() == null) {
+            throw new ApiException(ApiError.ADDRESS_REQUIRED);
+        }
     }
 
 

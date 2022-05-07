@@ -23,7 +23,7 @@ public class Order {
     Integer id;
 
     LocalDateTime created;
-    LocalDateTime targetProduction;
+    LocalDateTime deliveryTime;
 
     int totalPrice;
 

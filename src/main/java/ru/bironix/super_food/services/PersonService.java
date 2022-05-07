@@ -3,16 +3,20 @@ package ru.bironix.super_food.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
+import ru.bironix.super_food.db.dao.person.FavoritesDao;
+import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
-import ru.bironix.super_food.exceptions.UserAlreadyExistAuthenticationException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +24,7 @@ public class PersonService {
 
     private final PersonDao personDao;
     private final AddressDao addressDao;
+    private final FavoritesDao favoritesDao;
     private final UpdateMapper mapper;
     private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
@@ -27,11 +32,13 @@ public class PersonService {
     @Autowired
     public PersonService(PersonDao personDao,
                          AddressDao addressDao,
+                         FavoritesDao favoritesDao,
                          UpdateMapper mapper,
                          EntityManager entityManager,
                          PasswordEncoder passwordEncoder) {
         this.personDao = personDao;
         this.addressDao = addressDao;
+        this.favoritesDao = favoritesDao;
         this.mapper = mapper;
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
@@ -59,7 +66,7 @@ public class PersonService {
     private void checkExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
         if (personBd.isPresent())
-            throw new UserAlreadyExistAuthenticationException();
+            throw new ApiException(ApiError.USER_ALREADY_EXIST);
     }
 
     @Transactional
@@ -100,5 +107,39 @@ public class PersonService {
 
     public Person getById(Integer id) {
         return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
+    }
+
+    public List<Favorite> getFavoritesForPerson(String email) {
+        var person = personDao.findByEmail(email)
+                .orElseThrow(() -> new NotFoundSourceException("Person"));
+        return person.getFavorites();
+    }
+
+    @Transactional
+    public Favorite addFavoritesForPerson(String email, Integer dishId) {
+        var person = personDao.findByEmail(email)
+                .orElseThrow(() -> new NotFoundSourceException("Person"));
+
+        if (person.getFavorites().stream()
+                .anyMatch(f -> f.getDishId() == dishId))
+            throw new ApiException(ApiError.ENTITY_ALREADY_EXISTS);
+
+        var newFavorite = favoritesDao.save(new Favorite(null, dishId));
+        person.getFavorites().add(newFavorite);
+        return newFavorite;
+    }
+
+    @Transactional
+    public void deleteFavoritesForPerson(String email, int dishId) {
+        var person = personDao.findByEmail(email)
+                .orElseThrow(() -> new NotFoundSourceException("Person"));
+
+        var favorite = person.getFavorites().stream()
+                .filter(f -> f.getDishId() == dishId)
+                .findAny()
+                .orElseThrow(()-> new NotFoundSourceException(dishId,"Favorite"));
+
+        person.getFavorites().remove(favorite);
+        personDao.save(person);
     }
 }

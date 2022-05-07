@@ -51,7 +51,7 @@ public class OrderController {
         return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
-    @Operation(summary = "совершить заказ")
+    @Operation(summary = "совершить заказ", description = "Корректный пример для поля deliveryTime = 10:20")
     @PostMapping("/my/orders")
     @ResponseBody
     OrderDto createOrder(@RequestBody
@@ -61,7 +61,7 @@ public class OrderController {
         var username = getUsernameFromSecurityContext();
         var person = personService.getByUsername(username);
 
-        order.setClientId(person.getId());
+        order.setClient(con.toDto(person));
 
         var createdOrder = service.createOrder(con.fromDto(order));
         return con.toDto(createdOrder);

@@ -1,5 +1,7 @@
 package ru.bironix.super_food.dtos.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import ru.bironix.super_food.dtos.dish.FullDishDto;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Schema(description = "Заказ")
@@ -22,10 +25,10 @@ public class OrderDto implements Serializable {
     private Integer id;
 
     @Builder.Default
-    private LocalDateTime created = LocalDateTime.now();
+    private Date created = new Date();
 
-    @Builder.Default
-    private LocalDateTime targetProduction = LocalDateTime.now();
+    @JsonFormat(pattern = "HH:mm")
+    private Date deliveryTime;
 
     @Builder.Default
     private StatusDto status = StatusDto.EXPECTS;
