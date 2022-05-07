@@ -6,13 +6,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
+import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.ActionService;
 
 import javax.validation.constraints.Min;
@@ -33,15 +31,49 @@ public class ActionController {
         this.converter = converter;
     }
 
+    @Operation(summary = "Создание акции")
+    @PostMapping("/actions")
+    FullActionDto createAction(@RequestBody
+                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
+                               FullActionDto actionDto) {
+        return null;
+    }
+
+
+    @Operation(summary = "Получение акции")
+    @GetMapping("/actions/{id}")
+    FullActionDto getAction(@PathVariable
+                            @Parameter(description = "id")
+                            @Min(0) int id) {
+        return converter.toFullDto(service.getAction(id));
+    }
+
+    @Operation(summary = "Изменение акции")
+    @PutMapping("/actions/{id}")
+    FullActionDto updateAction(@RequestBody
+                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
+                               FullActionDto actionDto,
+                               @PathVariable
+                               @Parameter(description = "id")
+                               @Min(0) int id) {
+        actionDto.setId(id);
+        return converter.toFullDto(service.getAction(id));
+    }
+
+
+    @Operation(summary = "Удаление акции")
+    @DeleteMapping("/actions/{id}")
+    ApiActionResponseDto deleteAction(@PathVariable
+                            @Parameter(description = "id")
+                            @Min(0) int id) {
+        return null;
+    }
+
+
     @Operation(summary = "Получение списка акций")
     @GetMapping("/actions")
     List<SmallActionDto> getActions() {
         return converter.toActionsDto(service.getActions());
     }
 
-    @Operation(summary = "Получение конкретной акции")
-    @GetMapping("/actions/{id}")
-    FullActionDto getAction(@PathVariable @Parameter(description = "id") @Min(0) int id) {
-        return converter.toFullDto(service.getAction(id));
-    }
 }
