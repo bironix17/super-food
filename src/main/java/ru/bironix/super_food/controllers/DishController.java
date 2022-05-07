@@ -47,7 +47,7 @@ public class DishController {
     FullDishDto getDish(@PathVariable
                         @Parameter(description = "id блюда")
                         @Min(0) int id) {
-        return con.toFullDto(service.getFullDish(id));
+        return con.toFullDto(service.getDish(id));
     }
 
     @Operation(summary = "Изменение блюда")
@@ -113,7 +113,7 @@ public class DishController {
     @Operation(summary = "Получение общего списка блюд по категориям")
     @GetMapping({"/client/dishes", "/admin/dishes"})
     List<CategoryDto> getDishes() {
-        return con.toCategoriesDto(service.getAllDishes());
+        return con.toCategoriesDto(service.getDishes());
     }
 
     @Operation(summary = "Получение запрошенного списка блюд")

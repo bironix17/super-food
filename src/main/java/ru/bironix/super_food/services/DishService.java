@@ -35,11 +35,11 @@ public class DishService {
         this.priceDao = priceDao;
     }
 
-    public Dish getFullDish(int id) {
+    public Dish getDish(int id) {
         return dishDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Dish"));
     }
 
-    public List<Dish> getAllDishes() {
+    public List<Dish> getDishes() {
         return IteratorUtils.toList(dishDao.findAll().iterator());
     }
 
@@ -48,7 +48,7 @@ public class DishService {
         return addonDao.save(addon);
     }
 
-    public List<Addon> getAllAddons() {
+    public List<Addon> getAddons() {
         List<Addon> result = new ArrayList<>();
         addonDao.findAll().forEach(result::add);
         return result;

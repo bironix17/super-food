@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -41,7 +40,7 @@ public class MyPersonController {
     @GetMapping("/my")
     PersonDto getMy() {
         var username = getUsernameFromSecurityContext();
-        return con.toDto(service.getByUsername(username));
+        return con.toDto(service.getPersonByUsername(username));
     }
 
     @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null")
@@ -50,7 +49,7 @@ public class MyPersonController {
                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
                        PersonDto person) {
         var username = getUsernameFromSecurityContext();
-        var personBd = service.getByUsername(username);
+        var personBd = service.getPersonByUsername(username);
         person.setId(personBd.getId());
         var updatedPerson = service.updatePerson(con.fromDto(person));
         return con.toDto(updatedPerson);

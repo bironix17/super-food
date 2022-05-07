@@ -88,7 +88,7 @@ public class OrderController {
     @ResponseBody
     List<OrderDto> getOrdersForMy() {
         var username = getUsernameFromSecurityContext();
-        var person = personService.getByUsername(username);
+        var person = personService.getPersonByUsername(username);
         return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
@@ -100,7 +100,7 @@ public class OrderController {
                               OrderRequestDto order) {
 
         var username = getUsernameFromSecurityContext();
-        var person = personService.getByUsername(username);
+        var person = personService.getPersonByUsername(username);
 
         order.setClient(con.toDto(person));
 

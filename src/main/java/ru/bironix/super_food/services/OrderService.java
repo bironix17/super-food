@@ -92,7 +92,7 @@ OrderService {
                     .map(Dish::getId)
                     .collect(toList()), ApiError.INCORRECT_DATA_FOR_DISH);
         }
-        personService.getById(order.getClient().getId());
+        personService.getPersonById(order.getClient().getId());
     }
 
 

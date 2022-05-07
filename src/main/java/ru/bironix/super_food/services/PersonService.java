@@ -44,7 +44,7 @@ public class PersonService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Person getByUsername(String email) {
+    public Person getPersonByUsername(String email) {
         return personDao.findByEmail(email).orElseThrow(() ->
                 new NotFoundSourceException("Person"));
     }
@@ -52,7 +52,7 @@ public class PersonService {
     @Transactional
     public Person createPerson(Person person) {
 
-        checkExist(person);
+        checkPersonExist(person);
 
         person.setId(null);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
@@ -63,7 +63,7 @@ public class PersonService {
         return person;
     }
 
-    private void checkExist(Person person) {
+    private void checkPersonExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
         if (personBd.isPresent())
             throw new ApiException(ApiError.USER_ALREADY_EXIST);
@@ -105,7 +105,7 @@ public class PersonService {
         return personDao.findByEmail(email);
     }
 
-    public Person getById(Integer id) {
+    public Person getPersonById(Integer id) {
         return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
     }
 

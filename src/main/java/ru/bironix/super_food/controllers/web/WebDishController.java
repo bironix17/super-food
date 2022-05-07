@@ -70,10 +70,10 @@ public class WebDishController {
 
     private void initModelDefaultData(Model model) {
         var create = getMockDishDto();
-        create.setAddons(dishService.getAllAddons().stream()
+        create.setAddons(dishService.getAddons().stream()
                 .map(i -> con.toDto(i))
                 .collect(Collectors.toList()));
-        create.setDishes(dishService.getAllDishes().stream()
+        create.setDishes(dishService.getDishes().stream()
                 .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
 

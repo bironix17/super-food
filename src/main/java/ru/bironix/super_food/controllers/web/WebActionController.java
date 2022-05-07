@@ -59,7 +59,7 @@ public class WebActionController {
     private void initModelDefaultData(Model model) {
         var create = getMockFullActionDto();
 
-        create.setDishes(dishService.getAllDishes().stream()
+        create.setDishes(dishService.getDishes().stream()
                 .map(i -> con.toSmallDto(i))
                 .collect(Collectors.toList()));
 
