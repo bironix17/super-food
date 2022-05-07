@@ -18,6 +18,6 @@ public class AccessDeniedHandlerJwt implements AccessDeniedHandler {
                        HttpServletResponse response,
                        AccessDeniedException e) throws IOException, ServletException {
 
-        ErrorAuthResponse.addError(response, ApiError.AUTHENTICATION_REQUIRED.name());
+        ErrorAuthResponse.addError(response, ApiError.AUTHENTICATION_REQUIRED);
     }
 }

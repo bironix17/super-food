@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteResponseDto {
+public class ActionResponseDto {
     boolean status;
 }

@@ -99,5 +99,14 @@ public class ErrorController {
                 .build();
     }
 
+    @ExceptionHandler(ApiException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onApiException(ApiException e) {
+        return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
+                .message(e.getMessage())
+                .build();
+    }
+
 
 }

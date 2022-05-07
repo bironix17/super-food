@@ -2,8 +2,10 @@ package ru.bironix.super_food.db.dao.person;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.models.person.Person;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
