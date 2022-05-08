@@ -36,8 +36,6 @@ public class ActionService {
                 .forEach(dish -> {
                     var basePortion = dish.getBasePortion();
                     dishService.updatePriceForDishPortion(basePortion, newPrice);
-                    if (dish.getActions() == null) dish.setActions(new ArrayList<>());
-                    dish.getActions().add(action);
                 });
 
         actionDao.save(action);

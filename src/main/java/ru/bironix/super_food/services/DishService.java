@@ -1,5 +1,6 @@
 package ru.bironix.super_food.services;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class DishService {
 
     private void checkComboCorrect(Dish dish) {
         if (dish.getCategory() == CategoryType.COMBO
-                && dish.getDishes() != null)
+                && CollectionUtils.isNotEmpty(dish.getDishes()))
             throw new ApiException(ApiError.ONLY_COMBO_CAN_CONTAIN_DISHES);
     }
 

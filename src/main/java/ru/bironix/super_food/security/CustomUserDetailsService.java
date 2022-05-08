@@ -28,12 +28,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails toSecurityUser(Person p) {
-        return new User(p.getEmail(),
+        return new MySecurityUser(p.getEmail(),
                 p.getPassword(),
                 true,
                 true,
                 true,
                 true,
-                Role.User.getAuthorities()); // TODO fix me
+                Role.User.getAuthorities(),
+                p.getId()); // TODO fix me
     }
 }

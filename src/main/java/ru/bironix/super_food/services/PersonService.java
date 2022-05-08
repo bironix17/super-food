@@ -58,8 +58,6 @@ public class PersonService {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         personDao.saveAndFlush(person);
         entityManager.refresh(person);
-        if (person.getAddresses() != null)
-            person.getAddresses().forEach((a) -> a.setPerson(person)); //TODO подумать как пофиксить
         return person;
     }
 
@@ -85,7 +83,7 @@ public class PersonService {
     public Address addAddressForPerson(String email, String addressName) {
         var person = personDao.findByEmail(email)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
-        var newAddress = addressDao.save(new Address(null, addressName, person));
+        var newAddress = addressDao.save(new Address(null, addressName));
         person.getAddresses().add(newAddress);
         return newAddress;
     }
