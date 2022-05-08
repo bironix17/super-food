@@ -18,7 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernameFromSecurityContext;
+import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
 
 @Tag(name = "Пользователь. Информация о себе")
 @RestController
@@ -39,8 +39,10 @@ public class MyPersonController {
     @Operation(summary = "Получить информацию о себе")
     @GetMapping("/my")
     PersonDto getMy() {
-        var username = getUsernameFromSecurityContext();
-        return con.toDto(service.getPersonByUsername(username));
+        var id = getPersonIdFromSecurityContext();
+        var personDto = con.toDto(service.getPersonById(id));
+        personDto.setPassword(null);
+        return personDto;
     }
 
     @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null")
@@ -48,8 +50,9 @@ public class MyPersonController {
     PersonDto updateMy(@RequestBody
                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
                        PersonDto person) {
-        var username = getUsernameFromSecurityContext();
-        var personBd = service.getPersonByUsername(username);
+
+        var id = getPersonIdFromSecurityContext();
+        var personBd = service.getPersonById(id);
         person.setId(personBd.getId());
         var updatedPerson = service.updatePerson(con.fromDto(person));
         return con.toDto(updatedPerson);
@@ -61,8 +64,8 @@ public class MyPersonController {
     AddressDto addAddressForMy(@RequestParam
                                @ApiParam(name = "добавляемый адрес")
                                @NotBlank String address) {
-        var username = getUsernameFromSecurityContext();
-        var newAddress = service.addAddressForPerson(username, address);
+        var id = getPersonIdFromSecurityContext();
+        var newAddress = service.addAddressForPerson(id, address);
         return con.toDto(newAddress);
     }
 
@@ -79,8 +82,8 @@ public class MyPersonController {
     @Operation(summary = "Получить закладки пользователя")
     @GetMapping("/my/favorites")
     List<Integer> getFavoritesForMy() {
-        var username = getUsernameFromSecurityContext();
-        return con.toFavoritesDto(service.getFavoritesForPerson(username));
+        var id = getPersonIdFromSecurityContext();
+        return con.toFavoritesDto(service.getFavoritesForPerson(id));
     }
 
     @Operation(summary = "Добавить закладку для пользователя")
@@ -88,8 +91,8 @@ public class MyPersonController {
     ApiActionResponseDto addFavoritesForMy(@PathVariable
                                            @Parameter(description = "id блюда")
                                            @Min(0) int dishId) {
-        var username = getUsernameFromSecurityContext();
-        service.addFavoritesForPerson(username, dishId);
+        var id = getPersonIdFromSecurityContext();
+        service.addFavoritesForPerson(id, dishId);
         return new ApiActionResponseDto(true);
     }
 
@@ -98,8 +101,8 @@ public class MyPersonController {
     ApiActionResponseDto deleteFavoritesForMy(@PathVariable
                                               @Parameter(description = "id блюда")
                                               @Min(0) int dishId) {
-        var username = getUsernameFromSecurityContext();
-        service.deleteFavoritesForPerson(username, dishId);
+        var id = getPersonIdFromSecurityContext();
+        service.deleteFavoritesForPerson(id, dishId);
         return new ApiActionResponseDto(true);
     }
 

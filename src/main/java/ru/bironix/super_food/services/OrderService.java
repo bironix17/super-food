@@ -55,7 +55,8 @@ OrderService {
 
             if (order.getAddress().getAddress() != null) {
                 var address =
-                        personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
+                        personService.addAddressForPerson(order.getClient().getId(),
+                                order.getAddress().getAddress());
                 order.setAddress(address);
             }
         } else if (order.getWayToGet() == WayToGet.PICKUP) {

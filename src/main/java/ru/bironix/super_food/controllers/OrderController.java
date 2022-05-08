@@ -19,7 +19,8 @@ import ru.bironix.super_food.services.PersonService;
 import javax.validation.constraints.Min;
 import java.util.List;
 
-import static ru.bironix.super_food.controllers.utils.ControllerUtils.getUsernameFromSecurityContext;
+import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
+
 
 @Tag(name = "Заказ")
 @RestController
@@ -87,8 +88,8 @@ public class OrderController {
     @GetMapping("/client/my/orders")
     @ResponseBody
     List<OrderDto> getOrdersForMy() {
-        var username = getUsernameFromSecurityContext();
-        var person = personService.getPersonByUsername(username);
+        var id = getPersonIdFromSecurityContext();
+        var person = personService.getPersonById(id);
         return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
@@ -99,8 +100,8 @@ public class OrderController {
                               @io.swagger.v3.oas.annotations.parameters.RequestBody()
                               OrderRequestDto order) {
 
-        var username = getUsernameFromSecurityContext();
-        var person = personService.getPersonByUsername(username);
+        var id = getPersonIdFromSecurityContext();
+        var person = personService.getPersonById(id);
 
         order.setClient(con.toDto(person));
 
