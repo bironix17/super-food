@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.person.FavoritesDao;
+import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
@@ -16,8 +17,13 @@ import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Service
 public class PersonService {
@@ -28,6 +34,7 @@ public class PersonService {
     private final UpdateMapper mapper;
     private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
+    private final DishService dishService;
 
     @Autowired
     public PersonService(PersonDao personDao,
@@ -35,13 +42,15 @@ public class PersonService {
                          FavoritesDao favoritesDao,
                          UpdateMapper mapper,
                          EntityManager entityManager,
-                         PasswordEncoder passwordEncoder) {
+                         PasswordEncoder passwordEncoder,
+                         DishService dishService) {
         this.personDao = personDao;
         this.addressDao = addressDao;
         this.favoritesDao = favoritesDao;
         this.mapper = mapper;
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
+        this.dishService = dishService;
     }
 
     public Person getByUsername(String email) {
@@ -137,9 +146,21 @@ public class PersonService {
         var favorite = person.getFavorites().stream()
                 .filter(f -> f.getDishId() == dishId)
                 .findAny()
-                .orElseThrow(()-> new NotFoundSourceException(dishId,"Favorite"));
+                .orElseThrow(() -> new NotFoundSourceException(dishId, "Favorite"));
 
         person.getFavorites().remove(favorite);
         personDao.save(person);
+    }
+
+    public List<Dish> getFavoriteDishesForPerson(String email) {
+        var person = personDao.findByEmail(email)
+                .orElseThrow(() -> new NotFoundSourceException("Person"));
+
+
+        var favoritesDishesIds = person.getFavorites().stream()
+                .map(Favorite::getDishId)
+                .collect(toSet());
+
+        return dishService.getDishes(favoritesDishesIds);
     }
 }

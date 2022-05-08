@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.dtos.dish.SmallDishDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.ActionResponseDto;
@@ -75,6 +76,13 @@ public class PersonController {
     List<Integer> getFavorites() {
         var username = getUsernameFromSecurityContext();
         return con.toFavoritesDto(service.getFavoritesForPerson(username));
+    }
+
+    @Operation(summary = "Получить блюда из закладок пользователя")
+    @GetMapping("/my/favorites/dishes")
+    List<SmallDishDto> getFavoriteDishes() {
+        var username = getUsernameFromSecurityContext();
+        return con.toDishesDto(service.getFavoriteDishesForPerson(username));
     }
 
     @Operation(summary = "Добавить закладку для пользователя")
