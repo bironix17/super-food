@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(unique = true)
@@ -30,16 +30,11 @@ public class Person {
     Role role = Role.User;
 
     @Valid
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")//TODO зачем здесь mappedBy
+    @OneToMany(cascade = CascadeType.ALL)
     List<Address> addresses;
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Favorite> favorites;
 
-    public boolean forOrderEquals(Person person) {
-        if (person == null) return false;
-
-        return Objects.equals(person.getId(), getId());
-    }
 }

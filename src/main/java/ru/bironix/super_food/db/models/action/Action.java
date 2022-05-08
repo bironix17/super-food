@@ -16,7 +16,7 @@ import java.util.List;
 public class Action {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     String name;
@@ -24,15 +24,7 @@ public class Action {
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     PicturePaths picturePaths;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.REFRESH})
     List<Dish> dishes;
 
-
-    //TODO подумать о централизованном подходе к удалению
-    @PreRemove
-    private void removeDishes() {
-        for (var dish : dishes) {
-            dish.getActions().remove(this);
-        }
-    }
 }

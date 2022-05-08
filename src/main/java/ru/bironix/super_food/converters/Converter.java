@@ -9,7 +9,7 @@ import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.dish.Price;
 import ru.bironix.super_food.db.models.order.Order;
-import ru.bironix.super_food.db.models.order.Status;
+import ru.bironix.super_food.db.models.order.OrderStatus;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Favorite;
@@ -20,7 +20,7 @@ import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.dtos.action.SmallActionDto;
 import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.dtos.order.OrderDto;
-import ru.bironix.super_food.dtos.order.StatusDto;
+import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
@@ -80,9 +80,9 @@ public interface Converter {
 
     OrderDto toDto(Order order);
 
-    StatusDto toDto(Status status);
+    OrderStatusDto toDto(OrderStatus orderStatus);
 
-    Status fromDto(StatusDto status);
+    OrderStatus fromDto(OrderStatusDto status);
 
     Person toPerson(AuthRequestDto request);
 

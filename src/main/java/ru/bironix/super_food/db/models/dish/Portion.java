@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Portion implements ForOrderEquals<Portion> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     String size;
@@ -29,25 +29,14 @@ public class Portion implements ForOrderEquals<Portion> {
     @JoinColumn(name = "oldPriceId")
     Price oldPrice;
 
+    @Builder.Default
+    Boolean deleted = false;
+
     public Portion(String size, Price priceNow, Price oldPrice) {
         this.size = size;
         this.priceNow = priceNow;
         this.oldPrice = oldPrice;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Portion portion = (Portion) o;
-        return Objects.equals(id, portion.id) && Objects.equals(size, portion.size) && priceNow.equals(portion.priceNow) && Objects.equals(oldPrice, portion.oldPrice);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, size, priceNow, oldPrice);
-    }
-
 
     @Override
     public boolean forOrderEquals(Portion portion) {

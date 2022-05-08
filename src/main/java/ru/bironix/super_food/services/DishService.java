@@ -3,14 +3,13 @@ package ru.bironix.super_food.services;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.dish.AddonDao;
 import ru.bironix.super_food.db.dao.dish.DishDao;
 import ru.bironix.super_food.db.dao.dish.PortionDao;
 import ru.bironix.super_food.db.dao.dish.PriceDao;
-import ru.bironix.super_food.db.models.dish.Addon;
-import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.dish.Portion;
-import ru.bironix.super_food.db.models.dish.Price;
+import ru.bironix.super_food.db.models.dish.*;
+import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import java.util.ArrayList;
@@ -56,10 +55,18 @@ public class DishService {
 
     public Dish createDish(Dish dish) {
 
+        checkComboCorrect(dish);
+
         var basePortionIndex = dish.getPortions().indexOf(dish.getBasePortion());
         portionDao.saveAll(dish.getPortions());
         dish.setBasePortion(dish.getPortions().get(basePortionIndex));
         return dishDao.save(dish);
+    }
+
+    private void checkComboCorrect(Dish dish) {
+        if (dish.getCategory() == CategoryType.COMBO
+                && dish.getDishes() != null)
+            throw new ApiException(ApiError.ONLY_COMBO_CAN_CONTAIN_DISHES);
     }
 
 

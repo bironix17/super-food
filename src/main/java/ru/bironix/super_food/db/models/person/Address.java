@@ -13,10 +13,9 @@ import javax.persistence.*;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     String address;
 
-    @ManyToOne
-    Person person;
 }

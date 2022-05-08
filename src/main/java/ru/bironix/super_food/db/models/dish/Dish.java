@@ -20,7 +20,7 @@ import java.util.Objects;
 public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
@@ -46,37 +46,22 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     @OneToMany(cascade = CascadeType.ALL)
     List<Portion> portions;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinColumns({
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addon_id")
     })
     List<Addon> addons = new ArrayList<>();
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinColumns({
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "inner_dish_id")
     })
     List<Dish> dishes;
 
+    @Builder.Default
     Boolean deleted = false;
-
-    //TODO подумать о централизованном подходе к удалению
-    @ManyToMany()
-    @JoinColumns({
-            @JoinColumn(name = "dish_id"),
-            @JoinColumn(name = "action_id")
-    })
-    private List<Action> actions;
-
-
-    @PreRemove
-    private void removeActions() {
-        for (var action : actions) {
-            action.getDishes().remove(this);
-        }
-    }
 
     @Override
     public boolean forOrderEquals(Dish dish) {

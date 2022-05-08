@@ -19,7 +19,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     LocalDateTime created;
@@ -28,22 +28,21 @@ public class Order {
     int totalPrice;
 
     @Enumerated(EnumType.STRING)
-    Status status;
+    OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
     WayToGet wayToGet;
 
-    //TODO изучить
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinColumns({
             @JoinColumn(name = "order_id"),
             @JoinColumn(name = "dish_id")
     })
     List<Dish> dishes;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     Person client;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     Address address;
 }

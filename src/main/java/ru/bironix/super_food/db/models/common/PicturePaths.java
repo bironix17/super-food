@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class PicturePaths {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     String small;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.dish.SmallDishDto;
 import ru.bironix.super_food.dtos.order.OrderDto;
-import ru.bironix.super_food.dtos.order.StatusDto;
+import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.request.createOrder.OrderRequestDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.OrderService;
@@ -116,7 +116,7 @@ public class OrderController {
                          @Min(0) int id,
                          @PathVariable
                          @Parameter(description = "статус")
-                         StatusDto status) {
+                         OrderStatusDto status) {
         return null;
     }
 
@@ -130,7 +130,7 @@ public class OrderController {
     @GetMapping({"/deliveryman/orders/status/{status}", "/admin/orders/status/{status}"})
     List<SmallDishDto> getOrdersByStatus(@PathVariable
                                          @Parameter(description = "статус")
-                                         StatusDto status) {
+                                         OrderStatusDto status) {
         return null;
     }
 }
