@@ -3,46 +3,76 @@ package ru.bironix.super_food.dtos.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.bironix.super_food.dtos.dish.FullDishDto;
+import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.dtos.dish.DishCountDto;
+import ru.bironix.super_food.dtos.interfaces.*;
+import ru.bironix.super_food.dtos.interfaces.dish.DishesCountes;
+import ru.bironix.super_food.dtos.interfaces.person.Client;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Schema(description = "Заказ")
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class OrderDto implements Serializable {
-    private Integer id;
 
-    @Builder.Default
-    private Date created = new Date();
+public abstract class OrderDto {
 
-    @JsonFormat(pattern = "HH:mm")
-    private Date deliveryTime;
 
-    @Builder.Default
-    private OrderStatusDto status = OrderStatusDto.EXPECTS;
+    @Schema(description = "Заказ. Создание, обновление", name = "OrderDto.CreateUpdate")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CreateUpdate implements Created, DeliveryTime, Status,
+            WayToGet, TotalPrice, BindClient, Address, DishesCountes {
 
-    @Builder.Default
-    private WayToGetDto wayToGet = WayToGetDto.PICKUP;
+        @Builder.Default
+        private Date created = new Date();
+        @JsonFormat(pattern = "HH:mm")
+        private Date deliveryTime;
+        @Builder.Default
+        private OrderStatusDto status = OrderStatusDto.EXPECTS;
+        @Builder.Default
+        private WayToGetDto wayToGet = WayToGetDto.PICKUP;
+        private Integer totalPrice;
+        private List<DishCountDto> dishes;
+        private PersonDto.Bind client;
+        private AddressDto address;
+    }
 
-    @NotNull
-    private int totalPrice;
+    public static class Base {
+        @Schema(description = "Заказ. Базовая сжатая", name = "OrderDto.Base.Full")
+        @Data
+        @SuperBuilder
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Small implements Id, Created, Status,
+                TotalPrice, DishesCountes {
 
-    @NotEmpty
-    private List<FullDishDto> dishes;
+            private Integer id;
+            @Builder.Default
+            private Date created = new Date();
+            @Builder.Default
+            private OrderStatusDto status = OrderStatusDto.EXPECTS;
+            private Integer totalPrice;
+            private List<DishCountDto> dishes;
+        }
 
-    @NotEmpty
-    private PersonDto client;
+        @Schema(description = "Заказ. Базовая, полная", name = "OrderDto.Base.Full")
+        @Data
+        @EqualsAndHashCode(callSuper = true)
+        @SuperBuilder
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Full extends Small implements DeliveryTime,
+                WayToGet, Client, Address {
 
-    @NotEmpty
-    private AddressDto address;
+            @JsonFormat(pattern = "HH:mm")
+            private Date deliveryTime;
+            @Builder.Default
+            private WayToGetDto wayToGet = WayToGetDto.PICKUP;
+            private PersonDto.Base client;
+            private AddressDto address;
+        }
+    }
 }

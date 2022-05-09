@@ -7,7 +7,8 @@ import ru.bironix.super_food.db.dao.action.ActionDao;
 import ru.bironix.super_food.db.models.action.Action;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -15,13 +16,16 @@ public class ActionService {
 
     private final ActionDao actionDao;
     private final DishService dishService;
+    private final EntityManager entityManager;
 
     @Autowired
-    public ActionService(ActionDao actionDao, DishService dishService) {
+    public ActionService(ActionDao actionDao,
+                         DishService dishService,
+                         EntityManager entityManager) {
         this.actionDao = actionDao;
         this.dishService = dishService;
+        this.entityManager = entityManager;
     }
-
 
     public List<Action> getActions() {
         return IteratorUtils.toList(actionDao.findAll().iterator());
@@ -31,6 +35,7 @@ public class ActionService {
         return actionDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Action"));
     }
 
+    @Transactional
     public Action createAction(Action action, int newPrice) {
         action.getDishes()
                 .forEach(dish -> {
@@ -38,7 +43,8 @@ public class ActionService {
                     dishService.updatePriceForDishPortion(basePortion, newPrice);
                 });
 
-        actionDao.save(action);
+        actionDao.saveAndFlush(action);
+        entityManager.refresh(action);
         return action;
     }
 }

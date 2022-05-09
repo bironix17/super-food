@@ -1,7 +1,7 @@
 package ru.bironix.super_food.db.models.order;
 
 import lombok.*;
-import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.DishCount;
 import ru.bironix.super_food.db.models.person.Address;
 import ru.bironix.super_food.db.models.person.Person;
 
@@ -27,18 +27,19 @@ public class Order {
 
     int totalPrice;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    OrderStatus orderStatus;
+    OrderStatus orderStatus = OrderStatus.EXPECTS;
 
     @Enumerated(EnumType.STRING)
     WayToGet wayToGet;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "order_id"),
-            @JoinColumn(name = "dish_id")
+            @JoinColumn(name = "dishCount_id")
     })
-    List<Dish> dishes;
+    List<DishCount> dishes;
 
     @OneToOne(cascade = CascadeType.REFRESH)
     Person client;

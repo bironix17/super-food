@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.person.FavoritesDao;
-import ru.bironix.super_food.db.models.person.Favorite;
-import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
+import ru.bironix.super_food.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.db.dao.person.PersonDao;
 import ru.bironix.super_food.db.models.person.Address;
+import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
@@ -139,5 +139,10 @@ public class PersonService {
 
         person.getFavorites().remove(favorite);
         personDao.save(person);
+    }
+
+    @Transactional
+    public void deletePerson(int id) {
+        personDao.deleteById(id);
     }
 }

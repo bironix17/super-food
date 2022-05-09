@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
-import ru.bironix.super_food.dtos.action.FullActionDto;
 import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
 
@@ -40,14 +40,14 @@ public class WebActionController {
 
 
     @PostMapping("/createAction")
-    public String createDish(@ModelAttribute("action") @Valid FullActionDto action, BindingResult actionResult,
+    public String createDish(@ModelAttribute("action") @Valid ActionDto.CreateUpdate action, BindingResult actionResult,
                              @RequestParam(name = "newPrice") Integer newPrice,
                              Model model) throws JsonProcessingException {
 
         if (newPrice < 0) return "view/createAction/index";
         if (actionResult.hasErrors()) return "view/createAction/index";
 
-        var createdAction = actionService.createAction(con.fromFullDto(action), newPrice);
+        var createdAction = actionService.createAction(con.fromDto(action), newPrice);
         var createdDishString = toPrettyJsonForHtml(con.toFullDto(createdAction));
         model.addAttribute("createdAction", createdDishString);
 
@@ -67,8 +67,8 @@ public class WebActionController {
         model.addAttribute("newPrice", 750);
     }
 
-    private FullActionDto getMockFullActionDto() {
-        return FullActionDto.builder()
+    private ActionDto.Base.Full getMockFullActionDto() {
+        return ActionDto.Base.Full.builder()
                 .picturePaths(new PicturePathsDto("https://sun9-34.userapi.com/impg/mKg7k8pedbc7XqJvUTG66AOMgSG-TzVSVLqORQ/2NCmTa9jO-c.jpg?size=604x515&quality=95&sign=d7134a8fda78aec413ad851f4ecd64f5&type=album"))
                 .name("4 пиццы по цене двух роллов, по размерам такие же")
                 .build();

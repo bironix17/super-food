@@ -2,9 +2,8 @@ package ru.bironix.super_food.db.models.dish;
 
 import lombok.*;
 import ru.bironix.super_food.db.interfaces.ForOrderEquals;
-import ru.bironix.super_food.db.models.action.Action;
-import ru.bironix.super_food.db.models.common.PicturePaths;
 import ru.bironix.super_food.db.interfaces.GetTotalPrice;
+import ru.bironix.super_food.db.models.common.PicturePaths;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,9 +29,6 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     String name;
 
     String composition;
-
-    @Builder.Default
-    Integer count = 1;
 
     @Enumerated(EnumType.STRING)
     CategoryType category;
@@ -84,7 +80,7 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     @Override
     public int getTotalPrice() {
-        return basePortion.getPriceNow().getPrice() * count
+        return basePortion.getPriceNow().getPrice()
                 + addons.stream().mapToInt(Addon::getTotalPrice).sum();
     }
 }

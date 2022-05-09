@@ -6,7 +6,6 @@ import ru.bironix.super_food.security.Role;
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -28,6 +27,8 @@ public class Person {
 
     @Enumerated(EnumType.STRING)
     Role role = Role.User;
+
+    String phoneNumber;
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL)

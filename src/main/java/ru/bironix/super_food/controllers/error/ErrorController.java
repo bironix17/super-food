@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.dtos.response.ErrorResponseDto;
-import ru.bironix.super_food.exceptions.*;
+import ru.bironix.super_food.exceptions.ApiException;
+import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
+import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Objects;
 
 @ControllerAdvice
 @ResponseBody

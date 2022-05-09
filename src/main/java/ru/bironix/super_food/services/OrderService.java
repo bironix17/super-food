@@ -6,11 +6,15 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.order.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.DishCount;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.order.Order;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.exceptions.*;
+import ru.bironix.super_food.exceptions.ApiException;
+import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
+import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -70,6 +74,7 @@ OrderService {
 
     private void checkCorrectOrder(Order order) {
         var dishesIds = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .map(Dish::getId)
                 .collect(toSet());
 
@@ -84,6 +89,7 @@ OrderService {
     private void checkActualIds(Order order, List<Dish> dishesDb) {
 
         var invalidDishes = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .filter(d -> dishesDb.stream()
                         .noneMatch(dDb -> dDb.forOrderEquals(d)))
                 .collect(toList());
@@ -118,6 +124,7 @@ OrderService {
                 .collect(toMap(Addon::getId, p -> p));
 
         var sum = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .peek(d -> d.setBasePortion(
                         portionsDb.get(d.getBasePortion().getId())
                 ))

@@ -51,7 +51,7 @@
     <!--    Категория-->
     <label for="category">Enter category</label>
     <select name="category" id="category">
-        <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryType).values()}"
+        <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryTypeDto).values()}"
                 th:value="${categoryOpt}"
                 th:text="${categoryOpt.getRusName()}"
                 th:selected=" ${categoryOpt.equals(dish.category)}"
@@ -82,7 +82,7 @@
                 th:text="Nothing"></option>
         <option th:each="addon : ${dish.addons}"
                 th:value="${{addon}}"
-                th:text="${addon.name}"></option>
+                th:text="${addon.id}"></option>
     </select>
     <div style="color: red" th:if="${#fields.hasErrors('addons')}" th:errors="*{addons}">error</div>
     <br/>
@@ -95,7 +95,7 @@
                 th:text="Nothing"></option>
         <option th:each="dish : ${dish.dishes}"
                 th:value="${{dish}}"
-                th:text="${dish.name}"></option>
+                th:text="${dish.id}"></option>
     </select>
     <div style="color: red" th:if="${#fields.hasErrors('dishes')}" th:errors="*{dishes}">error</div>
     <br/>

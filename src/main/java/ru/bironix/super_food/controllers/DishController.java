@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.CategoryDto;
-import ru.bironix.super_food.dtos.dish.FullDishDto;
-import ru.bironix.super_food.dtos.dish.SmallDishDto;
+import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.DishService;
 
@@ -36,29 +35,30 @@ public class DishController {
 
     @Operation(summary = "Создание блюда")
     @PostMapping("/admin/dishes")
-    FullDishDto createDish(@RequestBody
-                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
-                           FullDishDto dishDto) {
+    DishDto.Base.Full createDish(@RequestBody
+                                 @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
+                                 DishDto.CreateUpdate dishDto) {
         return null;
     }
 
     @Operation(summary = "Получение блюда")
     @GetMapping({"client/dishes/{id}", "/admin/dishes/{id}"})
-    FullDishDto getDish(@PathVariable
-                        @Parameter(description = "id блюда")
-                        @Min(0) int id) {
+    DishDto.Base.Full getDish(@PathVariable
+                              @Parameter(description = "id блюда")
+                              @Min(0) int id) {
         return con.toFullDto(service.getDish(id));
     }
 
     @Operation(summary = "Изменение блюда")
     @PutMapping("/admin/dishes/{id}")
-    FullDishDto updateDish(@RequestBody
-                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
-                           FullDishDto dishDto,
-                           @PathVariable
-                           @Parameter(description = "id блюда")
-                           @Min(0) int id) {
-        dishDto.setId(id);
+    DishDto.Base.Full updateDish(@RequestBody
+                                 @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
+                                 DishDto.CreateUpdate dishDto,
+                                 @PathVariable
+                                 @Parameter(description = "id блюда")
+                                 @Min(0) int id) {
+        var dish = con.fromDto(dishDto);
+        dish.setId(id);
         return null;
     }
 
@@ -73,30 +73,32 @@ public class DishController {
 
     @Operation(summary = "Создание добавки")
     @PostMapping("/admin/addons")
-    AddonDto createAddon(@RequestBody
-                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
-                         AddonDto addonDto) {
+    AddonDto.Base createAddon(@RequestBody
+                              @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
+                              AddonDto.CreateUpdate addonDto) {
         return null;
     }
 
     @Operation(summary = "Получение добавки")
     @GetMapping({"/client/addons/{id}", "/admin/addons/{id}"})
-    AddonDto getAddon(@PathVariable
-                      @Parameter(description = "id добавки")
-                      @Min(0) int id) {
+    AddonDto.Base getAddon(@PathVariable
+                           @Parameter(description = "id добавки")
+                           @Min(0) int id) {
         return null;
     }
 
 
     @Operation(summary = "Изменение добавки")
     @PutMapping("/admin/addons/{id}")
-    AddonDto updateAddon(@RequestBody
-                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
-                         AddonDto addonDto,
-                         @PathVariable
-                         @Parameter(description = "id добавки")
-                         @Min(0) int id) {
-        addonDto.setId(id);
+    AddonDto.Base updateAddon(@RequestBody
+                              @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
+                              AddonDto.CreateUpdate addonDto,
+                              @PathVariable
+                              @Parameter(description = "id добавки")
+                              @Min(0) int id) {
+
+        var addon = con.fromDto(addonDto);
+        addon.setId(id);
         return null;
     }
 
@@ -118,9 +120,9 @@ public class DishController {
 
     @Operation(summary = "Получение запрошенного списка блюд")
     @GetMapping({"/client/specificDishes", "/admin/specificDishes"})
-    List<SmallDishDto> getSpecificDishes(@RequestParam("ids")
-                                         @Parameter(description = "Список id блюд")
-                                         List<@Min(0) Integer> ids) {
+    List<DishDto.Base.Small> getSpecificDishes(@RequestParam("ids")
+                                               @Parameter(description = "Список id блюд")
+                                               List<@Min(0) Integer> ids) {
         return con.toDishesDto(service.getDishes(new HashSet<>(ids)));
     }
 

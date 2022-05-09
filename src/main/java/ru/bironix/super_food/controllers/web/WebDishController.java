@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.bironix.super_food.controllers.DishController;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
-import ru.bironix.super_food.dtos.dish.CategoryType;
-import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.dish.CategoryTypeDto;
+import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;
 import ru.bironix.super_food.services.DishService;
@@ -48,18 +48,18 @@ public class WebDishController {
     }
 
     @PostMapping("/createDish")
-    public String createDish(@ModelAttribute("dish") @Valid FullDishDto dish, BindingResult dishResult,
-                             @ModelAttribute("newPortion") @Valid PortionDto newPortion, BindingResult newPortionResult,
+    public String createDish(@ModelAttribute("dish") @Valid DishDto.CreateUpdate dish, BindingResult dishResult,
+                             @ModelAttribute("newPortion") @Valid PortionDto.CreateUpdate newPortion, BindingResult newPortionResult,
                              Model model) throws JsonProcessingException {
 
         if (StringUtils.isNotBlank(newPortion.getSize())) {
             if (dish.getPortions() == null) dish.setPortions(new ArrayList<>());
             dish.getPortions().add(newPortion);
-            model.addAttribute("newPortion", new PortionDto());
+            model.addAttribute("newPortion", PortionDto.Base.builder().build());
             return "view/createDish/index";
         } else if (dishResult.hasErrors()) return "view/createDish/index";
 
-        var createdDish = dishService.createDish(con.fromFullDto(dish));
+        var createdDish = dishService.createDish(con.fromDto(dish));
         var createdDishString = toPrettyJsonForHtml(con.toFullDto(createdDish));
         model.addAttribute("createdDish", createdDishString);
 
@@ -78,18 +78,27 @@ public class WebDishController {
                 .collect(Collectors.toList()));
 
         model.addAttribute("dish", create);
-        model.addAttribute("newPortion", new PortionDto());
+        model.addAttribute("newPortion", PortionDto.Base.builder().build());
     }
 
-    private FullDishDto getMockDishDto() {
-        return FullDishDto.builder()
+    private DishDto.Base.Full getMockDishDto() {
+        return DishDto.Base.Full.builder()
                 .picturePaths(new PicturePathsDto("https://srokigodnosti.ru/wp-content/uploads/2022/01/191-e1620542426741.jpg"))
                 .name("Маргарита")
                 .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
                 .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
                 .allergens("Перец, соус, помидорки")
-                .category(CategoryType.PIZZA)
-                .portions(new ArrayList<>(List.of(new PortionDto(null, "40 см", new PriceDto(null, 800), null))))
+                .category(CategoryTypeDto.PIZZA)
+                .portions(new ArrayList<>(List.of(PortionDto.Base.builder()
+                        .id(null)
+                        .size("40 см")
+                        .priceNow(PriceDto.Base.builder()
+                                .id(null)
+                                .price(800)
+                                .build())
+                        .oldPrice(null)
+                        .build()
+                )))
                 .build();
     }
 

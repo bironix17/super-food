@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.db.models.person.Person;
 import ru.bironix.super_food.dtos.person.PersonDto;
+import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.PersonService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 @Tag(name = "Пользователь")
@@ -31,39 +34,47 @@ public class PersonController {
 
     @Operation(summary = "Создать пользователя")
     @PostMapping("/persons")
-    PersonDto createPerson(@RequestBody
+    PersonDto.Base createPerson(@RequestBody
                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                           PersonDto person) {
-        return null;
+                           @Valid PersonDto.Create personDto) {
+        var person = service.createPerson(con.fromDto(personDto));
+        return con.toDto(person);
     }
 
 
     @Operation(summary = "Получить информацию о пользователе")
     @GetMapping("/persons/{id}")
-    PersonDto getPerson(@PathVariable
+    PersonDto.Base getPerson(@PathVariable
                         @Parameter(description = "id пользователя")
                         @Min(0) int id) {
-        return null;
+        var personDto = con.toDto(service.getPersonById(id));
+        personDto.setPassword(null);
+        return personDto;
     }
 
-    @Operation(summary = "Обновить информацию о пользователе. Поля которые обновлять не нужно должны быть null")
+    @Operation(summary = "Обновить информацию о пользователе. Поле id в json можно не заполнять." +
+            " Поля которые обновлять не нужно должны быть null")
     @PutMapping("/persons/{id}")
-    PersonDto updatePerson(@RequestBody
+    PersonDto.Base updatePerson(@RequestBody
                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                           PersonDto person,
+                           PersonDto.Update personDto,
                            @PathVariable
                            @Parameter(description = "id пользователя")
-                           @Min(0) int id) { // TODO @VALID
+                           @Min(0) int id) {
+
+        Person person = con.fromDto(personDto);
         person.setId(id);
-        return null;
+        var updatedPerson = service.updatePerson(person);
+        return con.toDto(updatedPerson);
     }
 
     @Operation(summary = "Удалить пользователя")
     @DeleteMapping("/persons/{id}")
-    ResponseStatus deletePerson(@PathVariable
-                                @Parameter(description = "id пользователя")
-                                @Min(0) int id) { // TODO @VALID
-        return null;
+    ApiActionResponseDto deletePerson(@PathVariable
+                                      @Parameter(description = "id пользователя")
+                                      @Min(0) int id) {
+        service.deletePerson(id);
+        return new ApiActionResponseDto(true);
     }
 
 }

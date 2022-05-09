@@ -2,35 +2,57 @@ package ru.bironix.super_food.dtos.person;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.dtos.interfaces.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
-@Schema(description = "Пользователь, пароль еще поменяется")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PersonDto {
 
-    Integer id;
+public abstract class PersonDto {
 
-    @NotBlank
-    @Email
-    String email;
+    @Schema(description = "Пользователь. Создание", name = "PersonDto.Create")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Create implements Email, Password {
+        String email;
+        String password;
+    }
 
-    @NotBlank
-    String password;
+    @Schema(description = "Пользователь. Обновление", name = "PersonDto.Update")
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update extends Create implements Name, Addresses, PhoneNumber {
+        String name;
+        List<AddressDto> addresses;
+        String phoneNumber;
+    }
 
-    String name;
 
-    @Valid
-    @Builder.Default
-    List<AddressDto> addresses = new ArrayList<>();
+    @Schema(description = "Пользователь. Базовая", name = "PersonDto.Base")
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Base extends Update implements Id {
+        Integer id;
+    }
+
+
+    @Schema(description = "Пользователь. Сущность для указания в заказе", name = "PersonDto.Bind")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Bind implements Id {
+        Integer id;
+    }
 }

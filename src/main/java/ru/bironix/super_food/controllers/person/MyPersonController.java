@@ -36,25 +36,28 @@ public class MyPersonController {
         this.con = converter;
     }
 
+
     @Operation(summary = "Получить информацию о себе")
     @GetMapping("/my")
-    PersonDto getMy() {
+    PersonDto.Base getMy() {
         var id = getPersonIdFromSecurityContext();
         var personDto = con.toDto(service.getPersonById(id));
         personDto.setPassword(null);
         return personDto;
     }
 
-    @Operation(summary = "Обновить информацию о себе. Поля которые обновлять не нужно должны быть null")
+
+    @Operation(summary = "Обновить информацию о себе. Поле id в данном случае не важно. " +
+            "Поля которые обновлять не нужно должны быть null")
     @PutMapping("/my")
-    PersonDto updateMy(@RequestBody
+    PersonDto.Base updateMy(@RequestBody
                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                       PersonDto person) {
+                       PersonDto.Update personDto) {
 
         var id = getPersonIdFromSecurityContext();
-        var personBd = service.getPersonById(id);
-        person.setId(personBd.getId());
-        var updatedPerson = service.updatePerson(con.fromDto(person));
+        var person = con.fromDto(personDto);
+        person.setId(id);
+        var updatedPerson = service.updatePerson(person);
         return con.toDto(updatedPerson);
     }
 
@@ -68,6 +71,7 @@ public class MyPersonController {
         var newAddress = service.addAddressForPerson(id, address);
         return con.toDto(newAddress);
     }
+
 
     @Operation(summary = "Удалить адрес для пользователя")
     @DeleteMapping("/my/addresses/{id}")
@@ -86,6 +90,7 @@ public class MyPersonController {
         return con.toFavoritesDto(service.getFavoritesForPerson(id));
     }
 
+
     @Operation(summary = "Добавить закладку для пользователя")
     @PostMapping("/my/favorites/{dishId}")
     ApiActionResponseDto addFavoritesForMy(@PathVariable
@@ -96,6 +101,7 @@ public class MyPersonController {
         return new ApiActionResponseDto(true);
     }
 
+
     @Operation(summary = "Удалить закладку у пользователя")
     @DeleteMapping("/my/favorites/{dishId}")
     ApiActionResponseDto deleteFavoritesForMy(@PathVariable
@@ -105,5 +111,4 @@ public class MyPersonController {
         service.deleteFavoritesForPerson(id, dishId);
         return new ApiActionResponseDto(true);
     }
-
 }
