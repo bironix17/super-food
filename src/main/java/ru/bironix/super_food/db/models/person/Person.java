@@ -23,6 +23,8 @@ public class Person {
     @Column(unique = true)
     String email;
 
+    String PhoneNumber;
+
     String password;
     String name;
 

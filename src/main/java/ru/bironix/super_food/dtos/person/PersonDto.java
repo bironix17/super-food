@@ -26,6 +26,9 @@ public class PersonDto {
     String email;
 
     @NotBlank
+    String PhoneNumber;
+
+    @NotBlank
     String password;
 
     String name;
