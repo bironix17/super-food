@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
+import ru.bironix.super_food.dtos.dish.DishDto;
+import ru.bironix.super_food.dtos.dish.PortionDto;
+import ru.bironix.super_food.dtos.dish.PriceDto;
 import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.toPrettyJsonForHtml;
 
 @Controller
@@ -47,7 +51,17 @@ public class WebActionController {
         if (newPrice < 0) return "view/createAction/index";
         if (actionResult.hasErrors()) return "view/createAction/index";
 
-        var createdAction = actionService.createAction(con.fromDto(action), newPrice);
+        action.setPortions(action.getDishes().stream()
+                .map(DishDto.Bind::getPortion)
+                .map(p -> PortionDto.CreateUpdateForAction.builder()
+                        .id(p.getId())
+                        .price(PriceDto.CreateUpdate.builder()
+                                .price(newPrice)
+                                .build())
+                        .build())
+                .collect(toList()));
+
+        var createdAction = actionService.createAction(con.fromDto(action));
         var createdDishString = toPrettyJsonForHtml(con.toFullDto(createdAction));
         model.addAttribute("createdAction", createdDishString);
 
@@ -61,7 +75,7 @@ public class WebActionController {
 
         create.setDishes(dishService.getDishes().stream()
                 .map(i -> con.toSmallDto(i))
-                .collect(Collectors.toList()));
+                .collect(toList()));
 
         model.addAttribute("action", create);
         model.addAttribute("newPrice", 750);

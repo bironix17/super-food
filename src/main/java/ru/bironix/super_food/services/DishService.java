@@ -10,6 +10,7 @@ import ru.bironix.super_food.db.dao.dish.DishDao;
 import ru.bironix.super_food.db.dao.dish.PortionDao;
 import ru.bironix.super_food.db.dao.dish.PriceDao;
 import ru.bironix.super_food.db.models.dish.*;
+import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
@@ -30,18 +31,21 @@ public class DishService {
     private final PortionDao portionDao;
     private final PriceDao priceDao;
     private final EntityManager entityManager;
+    private final UpdateMapper updateMapper;
 
     @Autowired
     public DishService(DishDao dishDao,
                        AddonDao addonDao,
                        PortionDao portionDao,
                        PriceDao priceDao,
+                       UpdateMapper updateMapper,
                        EntityManager entityManager) {
         this.dishDao = dishDao;
         this.addonDao = addonDao;
         this.portionDao = portionDao;
         this.priceDao = priceDao;
         this.entityManager = entityManager;
+        this.updateMapper = updateMapper;
     }
 
     public Dish getDish(int id) {
@@ -59,7 +63,7 @@ public class DishService {
 
     public List<Addon> getAddons() {
         List<Addon> result = new ArrayList<>();
-        addonDao.findAll().forEach(result:: add);
+        addonDao.findAll().forEach(result::add);
         return result;
     }
 
@@ -87,30 +91,47 @@ public class DishService {
     }
 
     @Transactional
-    public boolean updatePriceForDishPortion(Portion portion, int price) {
+    public Portion createNewPriceForAction(Portion portion) {
 
         if (!portionDao.existsById(portion.getId()))
-            throw new NotFoundSourceException(portion.getId(), "Dish");
+            throw new NotFoundSourceException(portion.getId(), "Portion");
 
-        var newOldPrice = priceDao.findById(portion.getPriceNow().getId()).get();
-        portion.setOldPrice(newOldPrice);
-        var newPrice = new Price(null, price);
-        priceDao.save(newPrice);
+        var newPrice = portion.getPriceNow().getPrice();
+        var portionDb = getPortion(portion.getId());
 
-        portion.setPriceNow(newPrice);
-        portionDao.save(portion);
-        return true;
+        portionDb.setOldPrice(portion.getPriceNow());
+        portionDb.setPriceNow(new Price(null, newPrice));
+
+        return portionDb;
+    }
+
+    @Transactional
+    public Portion deleteNewPriceForAction(Portion portion) {
+
+        if (!portionDao.existsById(portion.getId()))
+            throw new NotFoundSourceException(portion.getId(), "Portion");
+
+        var portionDb = getPortion(portion.getId());
+
+        portionDb.setPriceNow(portion.getOldPrice());
+        portionDb.setOldPrice(null);
+
+        return portionDb;
     }
 
 
-    public boolean deleteDish(int id) {
-        var dishOpt = dishDao.findById(id);
-        if (dishOpt.isEmpty()) return false;
-        dishDao.save(resetDataForDish(dishOpt.get()));
-        return true;
+    private Portion getPortion(Integer id) {
+        return portionDao.findById(id).orElseThrow(() ->
+                new NotFoundSourceException(id, "Portion"));
     }
 
-    private Dish resetDataForDish(Dish dish) {
+
+    public void deleteDish(int id) {
+        var dish = getDish(id);
+        dishDao.saveAndFlush(resetDataForDeletedDish(dish));
+    }
+
+    private Dish resetDataForDeletedDish(Dish dish) {
         return Dish.builder()
                 .id(dish.getId())
                 .picturePaths(dish.getPicturePaths())
@@ -127,5 +148,35 @@ public class DishService {
             throw new NotFoundSourceException(notExistIds, "Dish");
         }
         return dishes;
+    }
+
+    public Addon getAddon(int id) {
+        return addonDao.findById(id).orElseThrow(() ->
+                new NotFoundSourceException(id, "Addon"));
+    }
+
+    @Transactional
+    public Addon updateAddon(Addon addon) {
+        var addonDb = getAddon(addon.getId());
+        updateMapper.map(addon, addonDb);
+        return addonDb;
+    }
+
+    @Transactional
+    public void deleteAddon(int id) {
+        var addon = getAddon(id);
+        addon.setDeleted(true);
+
+    }
+
+    @Transactional
+    public Dish updateDish(Dish dish) {
+        var dishDb = getDish(dish.getId());
+        updateMapper.map(dish, dishDb);
+        return dishDb;
+    }
+
+    public List<Dish> getActualDishes() {
+        return dishDao.findByDeleted(false);
     }
 }

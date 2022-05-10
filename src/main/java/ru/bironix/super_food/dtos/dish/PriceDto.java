@@ -29,7 +29,7 @@ public abstract class PriceDto {
     }
 
 
-    @Schema(description = "Цена. Сущность для указания в заказе", name = "PriceDto.Bind")
+    @Schema(description = "Цена. Связывающая", name = "PriceDto.Bind")
     @Data
     @SuperBuilder
     @AllArgsConstructor

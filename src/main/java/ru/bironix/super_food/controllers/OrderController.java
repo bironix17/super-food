@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.db.models.order.Order;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
@@ -39,13 +40,22 @@ public class OrderController {
     }
 
     @Operation(summary = "Создать заказ", description = "Корректный пример для поля deliveryTime = 10:20")
-    @PostMapping("/admin/orders")
+    @PostMapping("/admin/orders/person/{personId}")
     @ResponseBody
     OrderDto.Base.Full createOrder(@RequestBody
                                    @io.swagger.v3.oas.annotations.parameters.RequestBody()
-                                   OrderDto.CreateUpdate orderDto) {
+                                   OrderDto.CreateUpdate orderDto,
+                                   @PathVariable
+                                   @Parameter(description = "id пользователя")
+                                   @Min(0) int personId) {
 
-        return null;
+        var order = con.fromDto(orderDto);
+        var person = personService.getPerson(personId);
+
+        order.setClient(person);
+
+        var createdOrder = service.createOrder(order);
+        return con.toFullDto(createdOrder);
     }
 
     @Operation(summary = "Получение заказа")
@@ -53,7 +63,7 @@ public class OrderController {
     OrderDto.Base.Full getOrder(@PathVariable
                                 @Parameter(description = "id заказа")
                                 @Min(0) int id) {
-        return null;
+        return con.toFullDto(service.getOrder(id));
     }
 
     @Operation(summary = "Изменение заказа")
@@ -64,7 +74,9 @@ public class OrderController {
                                    @PathVariable
                                    @Parameter(description = "id заказа")
                                    @Min(0) int id) {
-        return null;
+        var order = con.fromDto(orderDto);
+        order.setId(id);
+        return con.toFullDto(service.updateOrder(order));
     }
 
     @Operation(summary = "Удаление заказа")
@@ -72,7 +84,8 @@ public class OrderController {
     ApiActionResponseDto deleteOrder(@PathVariable
                                      @Parameter(description = "id заказа")
                                      @Min(0) int id) {
-        return null;
+        service.deleteOrder(id);
+        return new ApiActionResponseDto(true);
     }
 
 
@@ -88,7 +101,7 @@ public class OrderController {
     @ResponseBody
     List<OrderDto.Base.Small> getOrdersForMy() {
         var id = getPersonIdFromSecurityContext();
-        var person = personService.getPersonById(id);
+        var person = personService.getPerson(id);
         return con.toOrdersDto(service.getOrdersForPerson(person));
     }
 
@@ -100,7 +113,6 @@ public class OrderController {
                                         OrderDto.CreateUpdate orderDto) {
 
         var id = getPersonIdFromSecurityContext();
-//        var person = personService.getPersonById(id);
         var order = con.fromDto(orderDto);
 
         order.setClient(con.fromDto(PersonDto.Bind.builder()
@@ -120,13 +132,18 @@ public class OrderController {
                                    @PathVariable
                                    @Parameter(description = "статус")
                                    OrderStatusDto status) {
-        return null;
+        var order = Order.builder()
+                .id(id)
+                .orderStatus(con.fromDto(status))
+                .build();
+
+        return con.toFullDto(service.updateOrder(order));
     }
 
     @Operation(summary = "Получение незавершённых заказов")
     @GetMapping({"/deliveryman/activeOrders", "/admin/activeOrders"})
     List<OrderDto.Base.Small> getActiveOrders() {
-        return null;
+        return con.toOrdersDto(service.getActiveOrders());
     }
 
     @Operation(summary = "Получение заказов по конкретному статусу")
@@ -134,6 +151,6 @@ public class OrderController {
     List<OrderDto.Base.Small> getOrdersByStatus(@PathVariable
                                                 @Parameter(description = "статус")
                                                 OrderStatusDto status) {
-        return null;
+        return con.toOrdersDto(service.getOrdersByStatus(con.fromDto(status)));
     }
 }

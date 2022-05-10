@@ -103,7 +103,7 @@ public class PersonService {
         return personDao.findByEmail(email);
     }
 
-    public Person getPersonById(Integer id) {
+    public Person getPerson(Integer id) {
         return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
     }
 

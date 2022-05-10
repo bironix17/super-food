@@ -40,6 +40,8 @@ public interface Converter {
     Portion fromDto(PortionDto.Base portionDto);
     @Mapping(target="priceNow", source="portionDto.price")
     Portion fromDto(PortionDto.Bind portionDto);
+    @Mapping(target="priceNow", source="portionDto.price")
+    Portion fromDto(PortionDto.CreateUpdateForAction portionDto);
 
     PriceDto.Base toDto(Price price);
     Price fromDto(PriceDto.CreateUpdate priceDto);

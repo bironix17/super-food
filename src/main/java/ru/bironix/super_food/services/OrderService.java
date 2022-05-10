@@ -9,8 +9,11 @@ import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.dish.DishCount;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.order.Order;
+import ru.bironix.super_food.db.models.order.OrderStatus;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.db.utils.UpdateMapper;
+import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
@@ -30,16 +33,19 @@ OrderService {
     private final DishService dishService;
     private final PersonService personService;
     private final OrderDao orderDao;
+    private final UpdateMapper updateMapper;
 
     @Autowired
     public OrderService(EntityManager entityManager,
                         DishService dishService,
                         PersonService personService,
+                        UpdateMapper updateMapper,
                         OrderDao orderDao) {
         this.entityManager = entityManager;
         this.dishService = dishService;
         this.personService = personService;
         this.orderDao = orderDao;
+        this.updateMapper = updateMapper;
     }
 
     public Order getOrder(int id) {
@@ -99,7 +105,7 @@ OrderService {
                     .map(Dish::getId)
                     .collect(toList()), ApiError.INCORRECT_DATA_FOR_DISH);
         }
-        personService.getPersonById(order.getClient().getId());
+        personService.getPerson(order.getClient().getId());
     }
 
 
@@ -151,4 +157,24 @@ OrderService {
     }
 
 
+    @Transactional
+    public Order updateOrder(Order order) {
+        var orderBd = getOrder(order.getId());
+        updateMapper.map(order, orderBd);
+        return orderBd;
+    }
+
+
+    public void deleteOrder(int id) {
+        var order = getOrder(id);
+        orderDao.delete(order);
+    }
+
+    public List<Order> getActiveOrders() {
+        return orderDao.findByOrderStatusNot(OrderStatus.COMPLETED);
+    }
+
+    public List<Order> getOrdersByStatus(OrderStatus status) {
+        return orderDao.findByOrderStatus(status);
+    }
 }

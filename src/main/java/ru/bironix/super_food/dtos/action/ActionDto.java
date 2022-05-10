@@ -1,20 +1,20 @@
 package ru.bironix.super_food.dtos.action;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.dish.DishDto;
+import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Name;
 import ru.bironix.super_food.dtos.interfaces.PicturePaths;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
 import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
+import ru.bironix.super_food.dtos.interfaces.portion.CreateUpdateForActionPortions;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ActionDto {
@@ -24,11 +24,14 @@ public abstract class ActionDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Name, PicturePaths, BindDishes {
+    public static class CreateUpdate implements Name, PicturePaths, BindDishes, CreateUpdateForActionPortions {
         PicturePathsDto picturePaths;
         String name;
         @NotEmpty
         List<DishDto.Bind> dishes;
+
+        @Builder.Default
+        List<PortionDto.CreateUpdateForAction> portions = new ArrayList<>();
     }
 
 

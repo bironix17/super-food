@@ -3,6 +3,7 @@ package ru.bironix.super_food.db.models.action;
 import lombok.*;
 import ru.bironix.super_food.db.models.common.PicturePaths;
 import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.Portion;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,4 +28,6 @@ public class Action {
     @ManyToMany(cascade = {CascadeType.REFRESH})
     List<Dish> dishes;
 
+    @ManyToMany(cascade = {CascadeType.REFRESH})
+    List<Portion> portions;
 }

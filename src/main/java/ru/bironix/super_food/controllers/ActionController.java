@@ -1,5 +1,6 @@
 package ru.bironix.super_food.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,33 +35,33 @@ public class ActionController {
     @Operation(summary = "Создание акции")
     @PostMapping("/admin/actions")
     ActionDto.Base.Full createAction(@RequestBody
-                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
-                                ActionDto.CreateUpdate actionDto) {
+                                     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
+                                     ActionDto.CreateUpdate actionDto) {
 
-//     service.createAction(con.fromDto(actionDto));
-        return null;
+        return con.toFullDto(service.createAction(con.fromDto(actionDto)));
     }
 
 
     @Operation(summary = "Получение акции")
     @GetMapping({"/client/actions/{id}", "/admin/actions/{id}"})
     ActionDto.Base.Full getAction(@PathVariable
-                            @Parameter(description = "id")
-                            @Min(0) int id) {
+                                  @Parameter(description = "id")
+                                  @Min(0) int id) {
         return con.toFullDto(service.getAction(id));
     }
 
     @Operation(summary = "Изменение акции")
     @PutMapping("/admin/actions/{id}")
     ActionDto.Base.Full updateAction(@RequestBody
-                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
-                               ActionDto.CreateUpdate actionDto,
-                               @PathVariable
-                               @Parameter(description = "id")
-                               @Min(0) int id) {
-        Action action = service.getAction(id);
+                                     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
+                                     ActionDto.CreateUpdate actionDto,
+                                     @PathVariable
+                                     @Parameter(description = "id")
+                                     @Min(0) int id) {
+
+        Action action = con.fromDto(actionDto);
         action.setId(id);
-        return con.toFullDto(action);
+        return con.toFullDto(service.updateAction(action));
     }
 
 
@@ -69,7 +70,8 @@ public class ActionController {
     ApiActionResponseDto deleteAction(@PathVariable
                                       @Parameter(description = "id")
                                       @Min(0) int id) {
-        return null;
+        service.deleteAction(id);
+        return new ApiActionResponseDto(true);
     }
 
 

@@ -41,7 +41,7 @@ public class MyPersonController {
     @GetMapping("/my")
     PersonDto.Base getMy() {
         var id = getPersonIdFromSecurityContext();
-        var personDto = con.toDto(service.getPersonById(id));
+        var personDto = con.toDto(service.getPerson(id));
         personDto.setPassword(null);
         return personDto;
     }

@@ -38,7 +38,8 @@ public class DishController {
     DishDto.Base.Full createDish(@RequestBody
                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
                                  DishDto.CreateUpdate dishDto) {
-        return null;
+        var dish = service.createDish(con.fromDto(dishDto));
+        return con.toFullDto(dish);
     }
 
     @Operation(summary = "Получение блюда")
@@ -59,7 +60,7 @@ public class DishController {
                                  @Min(0) int id) {
         var dish = con.fromDto(dishDto);
         dish.setId(id);
-        return null;
+        return con.toFullDto(service.updateDish(dish));
     }
 
     @Operation(summary = "Удаление блюда")
@@ -67,7 +68,8 @@ public class DishController {
     ApiActionResponseDto deleteDish(@PathVariable
                                     @Parameter(description = "id блюда")
                                     @Min(0) int id) {
-        return null;
+        service.deleteDish(id);
+        return new ApiActionResponseDto(true);
     }
 
 
@@ -76,7 +78,8 @@ public class DishController {
     AddonDto.Base createAddon(@RequestBody
                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
                               AddonDto.CreateUpdate addonDto) {
-        return null;
+        var addon = service.createAddon(con.fromDto(addonDto));
+        return con.toDto(addon);
     }
 
     @Operation(summary = "Получение добавки")
@@ -84,7 +87,7 @@ public class DishController {
     AddonDto.Base getAddon(@PathVariable
                            @Parameter(description = "id добавки")
                            @Min(0) int id) {
-        return null;
+        return con.toDto(service.getAddon(id));
     }
 
 
@@ -99,7 +102,7 @@ public class DishController {
 
         var addon = con.fromDto(addonDto);
         addon.setId(id);
-        return null;
+        return con.toDto(service.updateAddon(addon));
     }
 
 
@@ -108,14 +111,21 @@ public class DishController {
     ApiActionResponseDto deleteAddon(@PathVariable
                                      @Parameter(description = "id добавки")
                                      @Min(0) int id) {
-        return null;
+        service.deleteAddon(id);
+        return new ApiActionResponseDto(true);
     }
 
 
-    @Operation(summary = "Получение общего списка блюд по категориям")
-    @GetMapping({"/client/dishes", "/admin/dishes"})
-    List<CategoryDto> getDishes() {
+    @Operation(summary = "Получение всего списка блюд по категориям")
+    @GetMapping({"/client/dishes/categories", "/admin/dishes/categories"})
+    List<CategoryDto> getDishesInCategories() {
         return con.toCategoriesDto(service.getDishes());
+    }
+
+    @Operation(summary = "Получение актуального списка блюд по категориям")
+    @GetMapping({"/client/dishes/actual/categories", "/admin/dishes/actual/categories"})
+    List<CategoryDto> getActualDishesInCategories() {
+        return con.toCategoriesDto(service.getActualDishes());
     }
 
     @Operation(summary = "Получение запрошенного списка блюд")

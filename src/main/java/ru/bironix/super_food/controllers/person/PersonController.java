@@ -47,7 +47,7 @@ public class PersonController {
     PersonDto.Base getPerson(@PathVariable
                         @Parameter(description = "id пользователя")
                         @Min(0) int id) {
-        var personDto = con.toDto(service.getPersonById(id));
+        var personDto = con.toDto(service.getPerson(id));
         personDto.setPassword(null);
         return personDto;
     }

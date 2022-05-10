@@ -36,7 +36,7 @@ public abstract class PortionDto {
     }
 
 
-    @Schema(description = "Порция. Сущность для указания в заказе", name = "PortionDto.Bind")
+    @Schema(description = "Порция. Связывающая", name = "PortionDto.Bind")
     @Data
     @SuperBuilder
     @AllArgsConstructor
@@ -44,5 +44,15 @@ public abstract class PortionDto {
     public static class Bind implements Id, BindPrice {
         Integer id;
         PriceDto.Bind price;
+    }
+
+    @Schema(description = "Порция. Для указания в акции", name = "PortionDto.CreateUpdateForAction")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CreateUpdateForAction implements Id, CreateUpdatePrice {
+        Integer id;
+        PriceDto.CreateUpdate price;
     }
 }
