@@ -3,6 +3,7 @@ package ru.bironix.super_food.db.models.action;
 import lombok.*;
 import ru.bironix.super_food.db.models.common.PicturePaths;
 import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.Portion;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Action {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     String name;
@@ -24,15 +25,9 @@ public class Action {
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     PicturePaths picturePaths;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.REFRESH})
     List<Dish> dishes;
 
-
-    //TODO подумать о централизованном подходе к удалению
-    @PreRemove
-    private void removeDishes() {
-        for (var dish : dishes) {
-            dish.getActions().remove(this);
-        }
-    }
+    @ManyToMany(cascade = {CascadeType.REFRESH})
+    List<Portion> portions;
 }

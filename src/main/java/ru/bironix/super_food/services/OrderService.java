@@ -6,11 +6,18 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.db.dao.order.OrderDao;
 import ru.bironix.super_food.db.models.dish.Addon;
 import ru.bironix.super_food.db.models.dish.Dish;
+import ru.bironix.super_food.db.models.dish.DishCount;
 import ru.bironix.super_food.db.models.dish.Portion;
 import ru.bironix.super_food.db.models.order.Order;
+import ru.bironix.super_food.db.models.order.OrderStatus;
 import ru.bironix.super_food.db.models.order.WayToGet;
 import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.exceptions.*;
+import ru.bironix.super_food.db.utils.UpdateMapper;
+import ru.bironix.super_food.dtos.order.OrderStatusDto;
+import ru.bironix.super_food.exceptions.ApiException;
+import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
+import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
+import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -26,16 +33,19 @@ OrderService {
     private final DishService dishService;
     private final PersonService personService;
     private final OrderDao orderDao;
+    private final UpdateMapper updateMapper;
 
     @Autowired
     public OrderService(EntityManager entityManager,
                         DishService dishService,
                         PersonService personService,
+                        UpdateMapper updateMapper,
                         OrderDao orderDao) {
         this.entityManager = entityManager;
         this.dishService = dishService;
         this.personService = personService;
         this.orderDao = orderDao;
+        this.updateMapper = updateMapper;
     }
 
     public Order getOrder(int id) {
@@ -55,7 +65,8 @@ OrderService {
 
             if (order.getAddress().getAddress() != null) {
                 var address =
-                        personService.addAddressForPerson(order.getClient().getEmail(), order.getAddress().getAddress());
+                        personService.addAddressForPerson(order.getClient().getId(),
+                                order.getAddress().getAddress());
                 order.setAddress(address);
             }
         } else if (order.getWayToGet() == WayToGet.PICKUP) {
@@ -69,6 +80,7 @@ OrderService {
 
     private void checkCorrectOrder(Order order) {
         var dishesIds = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .map(Dish::getId)
                 .collect(toSet());
 
@@ -83,6 +95,7 @@ OrderService {
     private void checkActualIds(Order order, List<Dish> dishesDb) {
 
         var invalidDishes = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .filter(d -> dishesDb.stream()
                         .noneMatch(dDb -> dDb.forOrderEquals(d)))
                 .collect(toList());
@@ -92,7 +105,7 @@ OrderService {
                     .map(Dish::getId)
                     .collect(toList()), ApiError.INCORRECT_DATA_FOR_DISH);
         }
-        personService.getById(order.getClient().getId());
+        personService.getPerson(order.getClient().getId());
     }
 
 
@@ -117,6 +130,7 @@ OrderService {
                 .collect(toMap(Addon::getId, p -> p));
 
         var sum = order.getDishes().stream()
+                .map(DishCount::getDish)
                 .peek(d -> d.setBasePortion(
                         portionsDb.get(d.getBasePortion().getId())
                 ))
@@ -143,4 +157,24 @@ OrderService {
     }
 
 
+    @Transactional
+    public Order updateOrder(Order order) {
+        var orderBd = getOrder(order.getId());
+        updateMapper.map(order, orderBd);
+        return orderBd;
+    }
+
+
+    public void deleteOrder(int id) {
+        var order = getOrder(id);
+        orderDao.delete(order);
+    }
+
+    public List<Order> getActiveOrders() {
+        return orderDao.findByOrderStatusNot(OrderStatus.COMPLETED);
+    }
+
+    public List<Order> getOrdersByStatus(OrderStatus status) {
+        return orderDao.findByOrderStatus(status);
+    }
 }

@@ -40,8 +40,8 @@ public class WebPersonController {
 
 
     @PostMapping("/createPerson")
-    public String createUser(@ModelAttribute("person") @Valid PersonDto person, BindingResult personResult,
-                             @ModelAttribute("newAddress") @Valid AddressDto newAddress, BindingResult newAddressResult,
+    public String createUser(@ModelAttribute("person") @Valid PersonDto.Update person, BindingResult personResult,
+                             @ModelAttribute("newAddress") AddressDto newAddress, BindingResult newAddressResult,
                              Model model) throws JsonProcessingException {
 
         if (StringUtils.isNotBlank(newAddress.getAddress())) {
@@ -67,8 +67,8 @@ public class WebPersonController {
         model.addAttribute("newAddress", new AddressDto());
     }
 
-    private PersonDto getMockPersonDto() {
-        return PersonDto.builder()
+    private PersonDto.Base getMockPersonDto() {
+        return PersonDto.Base.builder()
                 .email("hello@rambler.ru")
                 .password("Kotopes777")
                 .name("Саня")

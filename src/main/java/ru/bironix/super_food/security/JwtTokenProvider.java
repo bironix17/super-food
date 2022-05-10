@@ -81,6 +81,6 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         var headerValue = request.getHeader(authorizationHeader);
         if (headerValue == null) return null;
-        else return headerValue.replace(prefixBearer, ""); //TODO пофиксить излишнюю сложность
+        else return headerValue.replace(prefixBearer, "");
     }
 }

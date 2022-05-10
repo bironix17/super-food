@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.person.FavoritesDao;
-import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.person.Favorite;
-import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.db.dao.person.AddressDao;
+import ru.bironix.super_food.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.db.dao.person.PersonDao;
+import ru.bironix.super_food.db.models.dish.Dish;
 import ru.bironix.super_food.db.models.person.Address;
+import ru.bironix.super_food.db.models.person.Favorite;
 import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
@@ -53,7 +53,7 @@ public class PersonService {
         this.dishService = dishService;
     }
 
-    public Person getByUsername(String email) {
+    public Person getPersonByUsername(String email) {
         return personDao.findByEmail(email).orElseThrow(() ->
                 new NotFoundSourceException("Person"));
     }
@@ -61,18 +61,16 @@ public class PersonService {
     @Transactional
     public Person createPerson(Person person) {
 
-        checkExist(person);
+        checkPersonExist(person);
 
         person.setId(null);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         personDao.saveAndFlush(person);
         entityManager.refresh(person);
-        if (person.getAddresses() != null)
-            person.getAddresses().forEach((a) -> a.setPerson(person)); //TODO подумать как пофиксить
         return person;
     }
 
-    private void checkExist(Person person) {
+    private void checkPersonExist(Person person) {
         var personBd = getPersonByEmail(person.getEmail());
         if (personBd.isPresent())
             throw new ApiException(ApiError.USER_ALREADY_EXIST);
@@ -91,10 +89,10 @@ public class PersonService {
     }
 
     @Transactional
-    public Address addAddressForPerson(String email, String addressName) {
-        var person = personDao.findByEmail(email)
+    public Address addAddressForPerson(Integer personId, String addressName) {
+        var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
-        var newAddress = addressDao.save(new Address(null, addressName, person));
+        var newAddress = addressDao.save(new Address(null, addressName));
         person.getAddresses().add(newAddress);
         return newAddress;
     }
@@ -114,19 +112,19 @@ public class PersonService {
         return personDao.findByEmail(email);
     }
 
-    public Person getById(Integer id) {
+    public Person getPerson(Integer id) {
         return personDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Person"));
     }
 
-    public List<Favorite> getFavoritesForPerson(String email) {
-        var person = personDao.findByEmail(email)
+    public List<Favorite> getFavoritesForPerson(Integer personId) {
+        var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
         return person.getFavorites();
     }
 
     @Transactional
-    public Favorite addFavoritesForPerson(String email, Integer dishId) {
-        var person = personDao.findByEmail(email)
+    public Favorite addFavoritesForPerson(Integer id, Integer dishId) {
+        var person = personDao.findById(id)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
 
         if (person.getFavorites().stream()
@@ -139,8 +137,8 @@ public class PersonService {
     }
 
     @Transactional
-    public void deleteFavoritesForPerson(String email, int dishId) {
-        var person = personDao.findByEmail(email)
+    public void deleteFavoritesForPerson(Integer personId, int dishId) {
+        var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
 
         var favorite = person.getFavorites().stream()
@@ -150,6 +148,11 @@ public class PersonService {
 
         person.getFavorites().remove(favorite);
         personDao.save(person);
+    }
+
+    @Transactional
+    public void deletePerson(int id) {
+        personDao.deleteById(id);
     }
 
     public List<Dish> getFavoriteDishesForPerson(String email) {

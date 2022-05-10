@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.db.dao.action.ActionDao;
 import ru.bironix.super_food.db.models.action.Action;
+import ru.bironix.super_food.db.utils.UpdateMapper;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -15,13 +17,19 @@ public class ActionService {
 
     private final ActionDao actionDao;
     private final DishService dishService;
+    private final EntityManager entityManager;
+    private final UpdateMapper updateMapper;
 
     @Autowired
-    public ActionService(ActionDao actionDao, DishService dishService) {
+    public ActionService(ActionDao actionDao,
+                         DishService dishService,
+                         UpdateMapper updateMapper,
+                         EntityManager entityManager) {
         this.actionDao = actionDao;
         this.dishService = dishService;
+        this.entityManager = entityManager;
+        this.updateMapper = updateMapper;
     }
-
 
     public List<Action> getActions() {
         return IteratorUtils.toList(actionDao.findAll().iterator());
@@ -31,16 +39,31 @@ public class ActionService {
         return actionDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Action"));
     }
 
-    public Action createAction(Action action, int newPrice) {
-        action.getDishes()
-                .forEach(dish -> {
-                    var basePortion = dish.getBasePortion();
-                    dishService.updatePriceForDishPortion(basePortion, newPrice);
-                    if (dish.getActions() == null) dish.setActions(new ArrayList<>());
-                    dish.getActions().add(action);
-                });
+    @Transactional
+    public Action createAction(Action action) {
 
-        actionDao.save(action);
+        action.getPortions()
+                .forEach(dishService::createNewPriceForAction);
+
+        actionDao.saveAndFlush(action);
+        entityManager.refresh(action);
         return action;
+    }
+
+
+    public Action updateAction(Action action) {
+        var actionDb = getAction(action.getId());
+
+        actionDb.getPortions().forEach(dishService::deleteNewPriceForAction);
+        updateMapper.map(action, actionDb);
+        actionDb.getPortions().forEach(dishService::createNewPriceForAction);
+
+        return actionDb;
+    }
+
+    public void deleteAction(int id) {
+        var action = getAction(id);
+        action.getPortions().forEach(dishService::deleteNewPriceForAction);
+        actionDao.delete(action);
     }
 }

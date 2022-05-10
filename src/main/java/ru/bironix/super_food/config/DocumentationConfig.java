@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,4 +26,32 @@ public class DocumentationConfig {
                         .description("Порождение моделей")
                         .url("/view/"));
     }
+
+    private static final String authPaths = "/auth/**";
+
+
+    @Bean
+    public GroupedOpenApi userApi() {
+        return GroupedOpenApi.builder()
+                .group("client")
+                .pathsToMatch("/client/**", authPaths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi adminApi() {
+        return GroupedOpenApi.builder()
+                .group("admin")
+                .pathsToMatch("/admin/**", authPaths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi deliverymanApi() {
+        return GroupedOpenApi.builder()
+                .group("deliveryman")
+                .pathsToMatch("/deliveryman/**", authPaths)
+                .build();
+    }
+
 }

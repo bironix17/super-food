@@ -1,7 +1,6 @@
 package ru.bironix.super_food.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,12 +27,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails toSecurityUser(Person p) {
-        return new User(p.getEmail(),
+        return new SecurityUser(p.getEmail(),
                 p.getPassword(),
                 true,
                 true,
                 true,
                 true,
-                Role.User.getAuthorities()); // TODO fix me
+                Role.User.getAuthorities(),
+                p.getId()); // TODO fix me
     }
 }

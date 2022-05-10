@@ -1,23 +1,23 @@
 package ru.bironix.super_food.config.formatters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.dtos.dish.FullDishDto;
+import ru.bironix.super_food.dtos.dish.DishDto;
+import ru.bironix.super_food.utils.Utils;
 
 import java.util.Locale;
 
 @Service
-public class FullDishDtoFormatter implements Formatter<FullDishDto> {
+public class FullDishDtoFormatter implements Formatter<DishDto.Base.Full> {
 
 
     @Override
-    public String print(FullDishDto object, Locale locale) {
-        ObjectMapper mapper = new ObjectMapper();
-
+    public String print(DishDto.Base.Full object, Locale locale) {
         try {
-            return mapper.writeValueAsString(object);
+            return Utils.customMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -26,10 +26,10 @@ public class FullDishDtoFormatter implements Formatter<FullDishDto> {
     }
 
     @Override
-    public FullDishDto parse(String text, Locale locale) {
-        ObjectMapper mapper = new ObjectMapper();
+    public DishDto.Base.Full parse(String text, Locale locale) {
+                
         try {
-            return mapper.readValue(text, FullDishDto.class);
+            return Utils.customMapper.readValue(text, DishDto.Base.Full.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

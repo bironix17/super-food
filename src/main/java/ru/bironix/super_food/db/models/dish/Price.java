@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Price implements ForOrderEquals<Price> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(nullable = false)
@@ -33,7 +33,6 @@ public class Price implements ForOrderEquals<Price> {
     public int hashCode() {
         return Objects.hash(id, price);
     }
-
 
     @Override
     public boolean forOrderEquals(Price price) {

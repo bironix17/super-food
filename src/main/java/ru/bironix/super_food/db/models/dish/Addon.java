@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(nullable = false)
@@ -25,8 +25,10 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
     @Column(nullable = false)
     String picturePath;
 
+    @Builder.Default
+    Boolean deleted = false;
+
     @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "priceId", nullable = false)
     Price price;
 
     @Override

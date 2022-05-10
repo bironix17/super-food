@@ -1,23 +1,22 @@
 package ru.bironix.super_food.config.formatters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.dtos.dish.SmallDishDto;
+import ru.bironix.super_food.dtos.dish.DishDto;
+import ru.bironix.super_food.utils.Utils;
 
 import java.util.Locale;
 
 @Service
-public class SmallDishDtoFormatter implements Formatter<SmallDishDto> {
+public class SmallDishDtoFormatter implements Formatter<DishDto.Base.Small> {
 
     @Override
-    public String print(SmallDishDto object, Locale locale) {
-        ObjectMapper mapper = new ObjectMapper();
-
+    public String print(DishDto.Base.Small object, Locale locale) {
         try {
-            var z =  mapper.writeValueAsString(object);
-            return z;
+            return Utils.customMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -26,11 +25,9 @@ public class SmallDishDtoFormatter implements Formatter<SmallDishDto> {
     }
 
     @Override
-    public SmallDishDto parse(String text, Locale locale) {
-        ObjectMapper mapper = new ObjectMapper();
+    public DishDto.Base.Small parse(String text, Locale locale) {
         try {
-            var z =  mapper.readValue(text, SmallDishDto.class);
-            return z;
+            return Utils.customMapper.readValue(text, DishDto.Base.Small.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

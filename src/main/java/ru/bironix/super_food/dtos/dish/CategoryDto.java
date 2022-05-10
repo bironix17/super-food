@@ -13,9 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
 
-
-    CategoryType categoryType;
+    CategoryTypeDto categoryTypeDto;
 
     @Schema(nullable = true)
-    List<SmallDishDto> dishes;
+    List<DishDto.Base.Small> dishes;
 }

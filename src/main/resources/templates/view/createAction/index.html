@@ -47,7 +47,7 @@
 
         <option th:each="dish : ${action.dishes}"
                 th:value="${{dish}}"
-                th:text="${dish.name}"></option>
+                th:text="${dish.id}"></option>
     </select>
     <div style="color: red" th:if="${#fields.hasErrors('dishes')}" th:errors="*{dishes}">error</div>
     <br/>

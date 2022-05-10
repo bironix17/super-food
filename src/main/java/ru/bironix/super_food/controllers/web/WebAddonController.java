@@ -14,8 +14,6 @@ import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;
 import ru.bironix.super_food.services.DishService;
 
-import javax.validation.Valid;
-
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.toPrettyJsonForHtml;
 
 @Controller
@@ -38,7 +36,7 @@ public class WebAddonController {
     }
 
     @PostMapping("/createAddon")
-    public String createAddon(@ModelAttribute("addon") @Valid AddonDto addon,
+    public String createAddon(@ModelAttribute("addon") AddonDto.CreateUpdate addon,
                               BindingResult bindingResult, Model model) throws JsonProcessingException {
 
         if (!bindingResult.hasErrors()) {
@@ -57,11 +55,15 @@ public class WebAddonController {
         model.addAttribute("addon", create);
     }
 
-    private AddonDto getMockAddonDto() {
-        return AddonDto.builder()
+    private AddonDto.Base getMockAddonDto() {
+        return AddonDto.Base.builder()
                 .picturePath("https://s1.eda.ru/StaticContent/Photos/120131111936/140715165635/p_O.jpg")
                 .name("Картошка Фри")
-                .price(new PriceDto(null, 20))
+                .price(PriceDto.Base.builder()
+                        .id(null)
+                        .price(20)
+                        .build()
+                )
                 .build();
     }
 }

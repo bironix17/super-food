@@ -1,32 +1,51 @@
 package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.dtos.interfaces.Id;
+import ru.bironix.super_food.dtos.interfaces.Name;
+import ru.bironix.super_food.dtos.interfaces.PicturePath;
+import ru.bironix.super_food.dtos.interfaces.price.BasePrice;
+import ru.bironix.super_food.dtos.interfaces.price.BindPrice;
+import ru.bironix.super_food.dtos.interfaces.price.CreateUpdatePrice;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+public abstract class AddonDto {
 
-@Schema(description = "Добавка к блюду")
-@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class AddonDto {
-
-    public AddonDto(String name, PriceDto price) {
-        this.name = name;
-        this.price = price;
+    @Schema(description = "Добавка. Создание, обновление", name = "AddonDto.CreateUpdate")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CreateUpdate implements Name, PicturePath, CreateUpdatePrice {
+        String name;
+        String picturePath;
+        PriceDto.CreateUpdate price;
     }
 
-    Integer id;
 
-    @NotBlank
-    String name;
+    @Schema(description = "Добавка. Базовая", name = "AddonDto.Base")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Base implements Id, Name, PicturePath, BasePrice {
+        Integer id;
+        String name;
+        String picturePath;
+        PriceDto.Base price;
+    }
 
-    @NotBlank
-    String picturePath;
+    @Schema(description = "Добавка. Связующая", name = "AddonDto.Bind")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Bind implements Id, BindPrice {
+        Integer id;
+        PriceDto.Bind price;
+    }
 
-    @Valid
-    PriceDto price;
 }

@@ -6,7 +6,6 @@ import ru.bironix.super_food.security.Role;
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,13 +16,11 @@ import java.util.Objects;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column(unique = true)
     String email;
-
-    String PhoneNumber;
 
     String password;
     String name;
@@ -31,17 +28,14 @@ public class Person {
     @Enumerated(EnumType.STRING)
     Role role = Role.User;
 
+    String phoneNumber;
+
     @Valid
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")//TODO зачем здесь mappedBy
+    @OneToMany(cascade = CascadeType.ALL)
     List<Address> addresses;
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Favorite> favorites;
 
-    public boolean forOrderEquals(Person person) {
-        if (person == null) return false;
-
-        return Objects.equals(person.getId(), getId());
-    }
 }
