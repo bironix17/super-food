@@ -23,11 +23,9 @@ public abstract class OrderDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Created, DeliveryTime, Status,
-            WayToGet, TotalPrice, BindClient, Address, DishesCountes {
+    public static class CreateUpdate implements DeliveryTime, Status,
+            WayToGet, TotalPrice, Address, DishesCountes {
 
-        @Builder.Default
-        private Date created = new Date();
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
         @Builder.Default
@@ -36,7 +34,6 @@ public abstract class OrderDto {
         private WayToGetDto wayToGet = WayToGetDto.PICKUP;
         private Integer totalPrice;
         private List<DishCountDto> dishes;
-        private PersonDto.Bind client;
         private AddressDto address;
     }
 

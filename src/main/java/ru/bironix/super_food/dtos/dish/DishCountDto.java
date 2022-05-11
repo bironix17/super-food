@@ -2,6 +2,7 @@ package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +15,7 @@ import ru.bironix.super_food.dtos.interfaces.dish.BindDish;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DishCountDto implements Count, BindDish {
-    Integer count;
+    @Builder.Default
+    Integer count = 1;
     DishDto.Bind dish;
 }

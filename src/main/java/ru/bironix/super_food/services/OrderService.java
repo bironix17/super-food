@@ -21,6 +21,7 @@ import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.*;
@@ -34,16 +35,19 @@ OrderService {
     private final PersonService personService;
     private final OrderDao orderDao;
     private final UpdateMapper updateMapper;
+    private final InformationService informationService;
 
     @Autowired
     public OrderService(EntityManager entityManager,
                         DishService dishService,
                         PersonService personService,
+                        InformationService informationService,
                         UpdateMapper updateMapper,
                         OrderDao orderDao) {
         this.entityManager = entityManager;
         this.dishService = dishService;
         this.personService = personService;
+        this.informationService = informationService;
         this.orderDao = orderDao;
         this.updateMapper = updateMapper;
     }
@@ -53,7 +57,7 @@ OrderService {
     }
 
     public List<Order> getOrdersForPerson(Person person) {
-        return orderDao.findAllByClientId(person.getId());
+        return orderDao.findByClient_IdOrderByCreatedDesc(person.getId());
     }
 
     @Transactional
@@ -72,6 +76,8 @@ OrderService {
         } else if (order.getWayToGet() == WayToGet.PICKUP) {
             order.setAddress(null);
         }
+
+        order.setCreated(LocalDateTime.now());
 
         var createdOrder = orderDao.saveAndFlush(order);
         entityManager.refresh(createdOrder);
@@ -141,6 +147,10 @@ OrderService {
                 )
                 .mapToInt(Dish::getTotalPrice)
                 .sum();
+
+        if (order.getWayToGet() == WayToGet.DELIVERY) {
+            sum += informationService.getDeliveryPrice();
+        }
 
 
         if (sum != order.getTotalPrice())
