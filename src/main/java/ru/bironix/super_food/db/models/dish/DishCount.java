@@ -19,6 +19,7 @@ public class DishCount implements GetTotalPrice {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     Dish dish;
+
     @Builder.Default
     Integer count = 1;
 

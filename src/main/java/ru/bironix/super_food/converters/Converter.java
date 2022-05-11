@@ -36,6 +36,10 @@ public interface Converter {
     PicturePaths fromDto(PicturePathsDto picturePathsDto);
 
     PortionDto.Base toDto(Portion portion);
+    @Mapping(target="price", source="portion.priceNow")
+    PortionDto.Bind toBindDto(Portion portion);
+    @Mapping(target="price", source="portion.priceNow")
+    PortionDto.CreateUpdateForAction toCreateUpdateForActionDto(Portion portion);
     Portion fromDto(PortionDto.CreateUpdate portionDto);
     Portion fromDto(PortionDto.Base portionDto);
     @Mapping(target="priceNow", source="portionDto.price")
@@ -60,6 +64,8 @@ public interface Converter {
 
     DishDto.Base.Full toFullDto(Dish dish);
     DishDto.Base.Small toSmallDto(Dish dish);
+    @Mapping(target="portion", source="dish.basePortion")
+    DishDto.Bind toDto(Dish dish);
     Dish fromDto(DishDto.CreateUpdate dishDto);
     Dish fromDto(DishDto.Base.Full dishDto);
     Dish fromDto(DishDto.Base.Small dishDto);
@@ -68,7 +74,6 @@ public interface Converter {
 
     DishCountDto toDto(DishCount dishesCount);
     DishCount fromDto(DishCountDto dishCountDto);
-
 
 
     ActionDto.Base.Small toSmallDto(Action action);
