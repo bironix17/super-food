@@ -47,7 +47,7 @@ public abstract class PersonDto {
     }
 
 
-    @Schema(description = "Пользователь. Сущность для указания в заказе", name = "PersonDto.Bind")
+    @Schema(description = "Пользователь. Связующая", name = "PersonDto.Bind")
     @Data
     @SuperBuilder
     @AllArgsConstructor

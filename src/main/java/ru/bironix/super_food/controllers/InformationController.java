@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bironix.super_food.dtos.DeliveryInformationDto;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Tag(name = "Дополнительная информация")
 @RestController
 @Validated
@@ -18,9 +15,10 @@ import java.util.Map;
 public class InformationController {
 
     @Operation(summary = "Получить информацию о доставке")
-    @GetMapping("/information/delivery")
-    DeliveryInformationDto getPerson() {
-
+    @GetMapping(value = {"/client/information/delivery",
+            "/admin/information/delivery",
+            "/deliveryman/information/delivery"})
+    DeliveryInformationDto getDeliveryInformation() {
         return new DeliveryInformationDto(200);
     }
 
