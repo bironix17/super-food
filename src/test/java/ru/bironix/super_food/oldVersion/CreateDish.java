@@ -1,10 +1,11 @@
-package ru.bironix.super_food;
+package ru.bironix.super_food.oldVersion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.bironix.super_food.store.db.dao.dish.AddonDao;
 import ru.bironix.super_food.store.db.dao.dish.DishDao;
 import ru.bironix.super_food.services.DishService;
+
 
 @SpringBootTest
 public class CreateDish {
