@@ -3,17 +3,16 @@ package ru.bironix.super_food.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.order.OrderDao;
-import ru.bironix.super_food.db.models.dish.Addon;
-import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.dish.DishCount;
-import ru.bironix.super_food.db.models.dish.Portion;
-import ru.bironix.super_food.db.models.order.Order;
-import ru.bironix.super_food.db.models.order.OrderStatus;
-import ru.bironix.super_food.db.models.order.WayToGet;
-import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.db.utils.UpdateMapper;
-import ru.bironix.super_food.dtos.order.OrderStatusDto;
+import ru.bironix.super_food.store.db.dao.order.OrderDao;
+import ru.bironix.super_food.store.db.models.dish.Addon;
+import ru.bironix.super_food.store.db.models.dish.Dish;
+import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.store.db.models.dish.Portion;
+import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.order.OrderStatus;
+import ru.bironix.super_food.store.db.models.order.WayToGet;
+import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
 import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
@@ -149,7 +148,7 @@ OrderService {
                 .sum();
 
         if (order.getWayToGet() == WayToGet.DELIVERY) {
-            sum += informationService.getDeliveryPrice();
+            sum += informationService.getDeliveryInformation().getDeliveryPrice();
         }
 
 

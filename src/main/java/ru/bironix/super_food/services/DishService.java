@@ -5,12 +5,12 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.dish.AddonDao;
-import ru.bironix.super_food.db.dao.dish.DishDao;
-import ru.bironix.super_food.db.dao.dish.PortionDao;
-import ru.bironix.super_food.db.dao.dish.PriceDao;
-import ru.bironix.super_food.db.models.dish.*;
-import ru.bironix.super_food.db.utils.UpdateMapper;
+import ru.bironix.super_food.store.db.dao.dish.AddonDao;
+import ru.bironix.super_food.store.db.dao.dish.DishDao;
+import ru.bironix.super_food.store.db.dao.dish.PortionDao;
+import ru.bironix.super_food.store.db.dao.dish.PriceDao;
+import ru.bironix.super_food.store.db.models.dish.*;
+import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 

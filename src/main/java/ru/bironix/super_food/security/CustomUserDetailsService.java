@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.person.PersonDao;
-import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.store.db.dao.person.PersonDao;
+import ru.bironix.super_food.store.db.models.person.Person;
 
 @Service("CustomUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {

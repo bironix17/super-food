@@ -4,25 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.db.dao.person.AddressDao;
-import ru.bironix.super_food.db.dao.person.FavoritesDao;
-import ru.bironix.super_food.db.dao.person.PersonDao;
-import ru.bironix.super_food.db.models.dish.Dish;
-import ru.bironix.super_food.db.models.person.Address;
-import ru.bironix.super_food.db.models.person.Favorite;
-import ru.bironix.super_food.db.models.person.Person;
-import ru.bironix.super_food.db.utils.UpdateMapper;
+import ru.bironix.super_food.store.db.dao.person.AddressDao;
+import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
+import ru.bironix.super_food.store.db.dao.person.PersonDao;
+import ru.bironix.super_food.store.db.models.dish.Dish;
+import ru.bironix.super_food.store.db.models.person.Address;
+import ru.bironix.super_food.store.db.models.person.Favorite;
+import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @Service

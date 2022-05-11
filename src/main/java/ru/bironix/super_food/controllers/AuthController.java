@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.dtos.response.AuthResponseDto;
 import ru.bironix.super_food.security.JwtTokenProvider;

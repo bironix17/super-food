@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.store.db.models.person.Person;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;

@@ -3,9 +3,9 @@ package ru.bironix.super_food.services;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.bironix.super_food.db.dao.action.ActionDao;
-import ru.bironix.super_food.db.models.action.Action;
-import ru.bironix.super_food.db.utils.UpdateMapper;
+import ru.bironix.super_food.store.db.dao.action.ActionDao;
+import ru.bironix.super_food.store.db.models.action.Action;
+import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;

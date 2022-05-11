@@ -2,15 +2,16 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.bironix.super_food.db.models.action.Action;
-import ru.bironix.super_food.db.models.common.PicturePaths;
-import ru.bironix.super_food.db.models.dish.*;
-import ru.bironix.super_food.db.models.order.Order;
-import ru.bironix.super_food.db.models.order.OrderStatus;
-import ru.bironix.super_food.db.models.order.WayToGet;
-import ru.bironix.super_food.db.models.person.Address;
-import ru.bironix.super_food.db.models.person.Favorite;
-import ru.bironix.super_food.db.models.person.Person;
+import ru.bironix.super_food.store.db.models.action.Action;
+import ru.bironix.super_food.store.db.models.common.PicturePaths;
+import ru.bironix.super_food.store.db.models.dish.*;
+import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.order.OrderStatus;
+import ru.bironix.super_food.store.db.models.order.WayToGet;
+import ru.bironix.super_food.store.db.models.person.Address;
+import ru.bironix.super_food.store.db.models.person.Favorite;
+import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.dtos.DeliveryInformationDto;
 import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.dish.*;
@@ -20,6 +21,7 @@ import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.AuthRequestDto;
+import ru.bironix.super_food.store.fileStore.models.DeliveryInformation;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -101,6 +103,9 @@ public interface Converter {
 
     WayToGetDto fromDto(WayToGet wayToGet);
     WayToGet fromDto(WayToGetDto wayToGetDto);
+
+    DeliveryInformationDto toDto(DeliveryInformation deliveryInformation);
+    DeliveryInformation fromDto(DeliveryInformationDto deliveryInformationDto);
 
     default Integer toDto(Favorite favorite){
         return favorite.getDishId();
