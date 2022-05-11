@@ -54,4 +54,12 @@ public class DocumentationConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi cookApi() {
+        return GroupedOpenApi.builder()
+                .group("cook")
+                .pathsToMatch("/cook/**", authPaths)
+                .build();
+    }
+
 }

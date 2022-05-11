@@ -1,7 +1,6 @@
 package ru.bironix.super_food.db.models.person;
 
 import lombok.*;
-import ru.bironix.super_food.security.Role;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -26,7 +25,8 @@ public class Person {
     String name;
 
     @Enumerated(EnumType.STRING)
-    Role role = Role.User;
+    @Builder.Default
+    Role role = Role.CLIENT;
 
     String phoneNumber;
 

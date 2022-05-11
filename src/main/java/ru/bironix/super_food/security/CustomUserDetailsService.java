@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                Role.User.getAuthorities(),
-                p.getId()); // TODO fix me
+                p.getRole().getAuthority(),
+                p.getId());
     }
 }

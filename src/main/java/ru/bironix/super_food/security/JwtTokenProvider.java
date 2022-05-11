@@ -65,7 +65,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails details = userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(details, "", details.getAuthorities()); // TODO разобраться почему такой странный принимаемый список параметров
+        return new UsernamePasswordAuthenticationToken(details, "", details.getAuthorities());
 
     }
 

@@ -3,6 +3,7 @@ package ru.bironix.super_food.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,7 +16,7 @@ import ru.bironix.super_food.security.JwtChainConfigurer;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true) //TODO
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtChainConfigurer jwtChainConfigurer;
@@ -47,6 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/auth/register").permitAll()
                 .antMatchers("/auth/login").permitAll()
+
+                .antMatchers("/client/**").hasAuthority("CLIENT")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/deliveryman/**").hasAuthority("DELIVERYMAN")
+                .antMatchers("/cook/**").hasAuthority("COOK")
 
                 .anyRequest()
                 .authenticated()

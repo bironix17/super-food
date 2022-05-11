@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -59,7 +60,9 @@ public class OrderController {
     }
 
     @Operation(summary = "Получение заказа")
-    @GetMapping("/admin/orders/{id}")
+    @GetMapping({"/deliveryman/orders/{id}",
+            "/cook/orders/{id}",
+            "/admin/orders/{id}"})
     OrderDto.Base.Full getOrder(@PathVariable
                                 @Parameter(description = "id заказа")
                                 @Min(0) int id) {
@@ -87,7 +90,6 @@ public class OrderController {
         service.deleteOrder(id);
         return new ApiActionResponseDto(true);
     }
-
 
     @Operation(summary = "Получить мой заказ")
     @GetMapping("/client/my/orders/{id}")
@@ -123,9 +125,10 @@ public class OrderController {
         return con.toFullDto(createdOrder);
     }
 
-
     @Operation(summary = "Изменение статуса блюда")
-    @PutMapping({"/deliveryman/orders/{id}/status/{status}", "/admin/orders/{id}/status/{status}"})
+    @PutMapping({"/deliveryman/orders/{id}/status/{status}",
+            "/cook/orders/{id}/status/{status}",
+            "/admin/orders/{id}/status/{status}"})
     OrderDto.Base.Full updateOrder(@PathVariable
                                    @Parameter(description = "id заказа")
                                    @Min(0) int id,
@@ -141,13 +144,17 @@ public class OrderController {
     }
 
     @Operation(summary = "Получение незавершённых заказов")
-    @GetMapping({"/deliveryman/activeOrders", "/admin/activeOrders"})
+    @GetMapping({"/deliveryman/activeOrders",
+            "/cook/activeOrders",
+            "/admin/activeOrders"})
     List<OrderDto.Base.Small> getActiveOrders() {
         return con.toOrdersDto(service.getActiveOrders());
     }
 
     @Operation(summary = "Получение заказов по конкретному статусу")
-    @GetMapping({"/deliveryman/orders/status/{status}", "/admin/orders/status/{status}"})
+    @GetMapping({"/deliveryman/orders/status/{status}",
+            "/cook/activeOrders",
+            "/admin/orders/status/{status}"})
     List<OrderDto.Base.Small> getOrdersByStatus(@PathVariable
                                                 @Parameter(description = "статус")
                                                 OrderStatusDto status) {

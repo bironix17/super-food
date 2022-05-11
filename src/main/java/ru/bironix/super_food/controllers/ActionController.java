@@ -1,11 +1,11 @@
 package ru.bironix.super_food.controllers;
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -41,7 +41,6 @@ public class ActionController {
         return con.toFullDto(service.createAction(con.fromDto(actionDto)));
     }
 
-
     @Operation(summary = "Получение акции")
     @GetMapping({"/client/actions/{id}", "/admin/actions/{id}"})
     ActionDto.Base.Full getAction(@PathVariable
@@ -64,7 +63,6 @@ public class ActionController {
         return con.toFullDto(service.updateAction(action));
     }
 
-
     @Operation(summary = "Удаление акции")
     @DeleteMapping({"/admin/actions/{id}",})
     ApiActionResponseDto deleteAction(@PathVariable
@@ -73,7 +71,6 @@ public class ActionController {
         service.deleteAction(id);
         return new ApiActionResponseDto(true);
     }
-
 
     @Operation(summary = "Получение списка акций")
     @GetMapping({"/client/actions", "/admin/actions"})
