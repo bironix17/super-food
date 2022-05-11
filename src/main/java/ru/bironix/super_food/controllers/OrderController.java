@@ -136,7 +136,7 @@ public class OrderController {
                                    OrderStatusDto status) {
         var order = Order.builder()
                 .id(id)
-                .orderStatus(con.fromDto(status))
+                .status(con.fromDto(status))
                 .build();
 
         return con.toFullDto(service.updateOrder(order));

@@ -30,4 +30,12 @@ public class Action {
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
     List<Portion> portions;
+
+    public Action(Action other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.picturePaths = other.picturePaths;
+        this.dishes = other.dishes;
+        this.portions = other.portions;
+    }
 }

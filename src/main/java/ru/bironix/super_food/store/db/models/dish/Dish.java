@@ -83,4 +83,19 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
         return basePortion.getPriceNow().getPrice()
                 + addons.stream().mapToInt(Addon::getTotalPrice).sum();
     }
+
+    public Dish(Dish other) {
+        this.id = other.id;
+        this.picturePaths = other.picturePaths;
+        this.name = other.name;
+        this.composition = other.composition;
+        this.category = other.category;
+        this.description = other.description;
+        this.allergens = other.allergens;
+        this.basePortion = other.basePortion;
+        this.portions = other.portions;
+        this.addons = other.addons;
+        this.dishes = other.dishes;
+        this.deleted = other.deleted;
+    }
 }

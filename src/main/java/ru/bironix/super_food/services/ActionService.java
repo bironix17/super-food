@@ -41,13 +41,13 @@ public class ActionService {
 
     @Transactional
     public Action createAction(Action action) {
-
-        action.getPortions()
+        var newAction = new Action(action);
+        newAction.getPortions()
                 .forEach(dishService::createNewPriceForAction);
 
-        actionDao.saveAndFlush(action);
-        entityManager.refresh(action);
-        return action;
+        actionDao.saveAndFlush(newAction);
+        entityManager.refresh(newAction);
+        return newAction;
     }
 
 

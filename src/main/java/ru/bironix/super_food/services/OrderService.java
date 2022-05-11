@@ -61,24 +61,25 @@ OrderService {
 
     @Transactional
     public Order createOrder(Order order) {
-        checkCorrectOrder(order);
+        var newOrder = new Order(order);
+        checkCorrectOrder(newOrder);
 
-        if (order.getWayToGet() == WayToGet.DELIVERY
-                && order.getAddress() != null) {
+        if (newOrder.getWayToGet() == WayToGet.DELIVERY
+                && newOrder.getAddress() != null) {
 
-            if (order.getAddress().getAddress() != null) {
+            if (newOrder.getAddress().getAddress() != null) {
                 var address =
-                        personService.addAddressForPerson(order.getClient().getId(),
-                                order.getAddress().getAddress());
-                order.setAddress(address);
+                        personService.addAddressForPerson(newOrder.getClient().getId(),
+                                newOrder.getAddress().getAddress());
+                newOrder.setAddress(address);
             }
-        } else if (order.getWayToGet() == WayToGet.PICKUP) {
-            order.setAddress(null);
+        } else if (newOrder.getWayToGet() == WayToGet.PICKUP) {
+            newOrder.setAddress(null);
         }
 
-        order.setCreated(LocalDateTime.now());
+        newOrder.setCreated(LocalDateTime.now());
 
-        var createdOrder = orderDao.saveAndFlush(order);
+        var createdOrder = orderDao.saveAndFlush(newOrder);
         entityManager.refresh(createdOrder);
         return orderDao.findById(createdOrder.getId()).get();
     }
@@ -180,10 +181,10 @@ OrderService {
     }
 
     public List<Order> getActiveOrders() {
-        return orderDao.findByOrderStatusNot(OrderStatus.COMPLETED);
+        return orderDao.findByStatusNot(OrderStatus.COMPLETED);
     }
 
     public List<Order> getOrdersByStatus(OrderStatus status) {
-        return orderDao.findByOrderStatus(status);
+        return orderDao.findByStatus(status);
     }
 }

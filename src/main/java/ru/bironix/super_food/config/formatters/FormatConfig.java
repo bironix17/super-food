@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import ru.bironix.super_food.dtos.order.OrderStatusDto;
 
 @Configuration
 public class FormatConfig extends WebMvcConfigurerAdapter {
@@ -16,9 +17,10 @@ public class FormatConfig extends WebMvcConfigurerAdapter {
     private final BaseAddonDtoFormatter baseAddonDtoFormatter;
     private final BindDishDtoFormatter bindDishDtoFormatter;
     private final CreateUpdatePortionDtoFormatter createUpdatePortionDtoFormatter;
+    private final OrderStatusDtoFormatter orderStatusDtoFormatter;
 
-@Autowired
-    public FormatConfig(BindAddonDtoFormatter bindAddonDtoFormatter, FullDishDtoFormatter fullDishDtoFormatter, PortionDtoFormatter portionDtoFormatter, SmallDishDtoFormatter smallDishDtoFormatter, AddressDtoFormatter addressDtoFormatter, BaseAddonDtoFormatter baseAddonDtoFormatter, BindDishDtoFormatter bindDishDtoFormatter, CreateUpdatePortionDtoFormatter createUpdatePortionDtoFormatter) {
+    @Autowired
+    public FormatConfig(BindAddonDtoFormatter bindAddonDtoFormatter, FullDishDtoFormatter fullDishDtoFormatter, PortionDtoFormatter portionDtoFormatter, SmallDishDtoFormatter smallDishDtoFormatter, AddressDtoFormatter addressDtoFormatter, BaseAddonDtoFormatter baseAddonDtoFormatter, BindDishDtoFormatter bindDishDtoFormatter, CreateUpdatePortionDtoFormatter createUpdatePortionDtoFormatter, OrderStatusDtoFormatter orderStatusDtoFormatter) {
         this.bindAddonDtoFormatter = bindAddonDtoFormatter;
         this.fullDishDtoFormatter = fullDishDtoFormatter;
         this.portionDtoFormatter = portionDtoFormatter;
@@ -27,6 +29,7 @@ public class FormatConfig extends WebMvcConfigurerAdapter {
         this.baseAddonDtoFormatter = baseAddonDtoFormatter;
         this.bindDishDtoFormatter = bindDishDtoFormatter;
         this.createUpdatePortionDtoFormatter = createUpdatePortionDtoFormatter;
+        this.orderStatusDtoFormatter = orderStatusDtoFormatter;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class FormatConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(baseAddonDtoFormatter);
         registry.addFormatter(bindDishDtoFormatter);
         registry.addFormatter(createUpdatePortionDtoFormatter);
+        registry.addFormatter(orderStatusDtoFormatter);
     }
     
 }

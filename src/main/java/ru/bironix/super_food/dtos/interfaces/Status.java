@@ -6,6 +6,6 @@ import ru.bironix.super_food.dtos.order.OrderStatusDto;
 
 public interface Status {
 
-    @Schema(description = "Флаг удаления блюда")
+    @Schema(description = "Статус заказа")
     OrderStatusDto getStatus();
 }

@@ -20,13 +20,15 @@ public class CustomHttpLogFormatter implements HttpLogFormatter {
 
         result.append("<<<<<<<<<<<<<<<<<<<<<<<<<<<<REQUEST<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
         result.append('\n');
-
+        result.append(request.getPath());
+        result.append('\n');
         result.append("Remote: ");
         result.append(request.getRemote());
         result.append('\n');
 
         result.append(request.getMethod());
         result.append(' ');
+
         result.append(request.getProtocolVersion());
         result.append('\n');
 

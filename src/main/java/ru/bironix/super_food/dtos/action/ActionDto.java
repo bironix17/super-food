@@ -35,7 +35,7 @@ public abstract class ActionDto {
     }
 
 
-    public static class Base {
+    public abstract static class Base {
 
         @Schema(description = "Акция. Базовая сжатая", name = "ActionDto.Base.Small")
         @Data

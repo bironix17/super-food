@@ -122,7 +122,7 @@ public class DishController {
         return con.toCategoriesDto(service.getDishes());
     }
 
-    @Operation(summary = "Получение актуального списка блюд по категориям")
+    @Operation(summary = "Получение актуального списка блюд по категориям. (Без удалённых)")
     @GetMapping({"/client/dishes/actual/categories", "/admin/dishes/actual/categories"})
     List<CategoryDto> getActualDishesInCategories() {
         return con.toCategoriesDto(service.getActualDishes());

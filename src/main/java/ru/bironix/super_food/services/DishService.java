@@ -58,6 +58,7 @@ public class DishService {
 
 
     public Addon createAddon(Addon addon) {
+        var newAddon = new Addon(addon);
         return addonDao.save(addon);
     }
 
@@ -69,19 +70,19 @@ public class DishService {
 
     @Transactional
     public Dish createDish(Dish dish) {
+        var newDish = new Dish(dish);
+        checkComboCorrect(newDish);
 
-        checkComboCorrect(dish);
-
-        var basePortionIndex = IntStream.range(0, dish.getPortions().size())
-                .filter(userInd -> dish.getPortions().get(userInd).getSize().equals(dish.getBasePortion().getSize()))
+        var basePortionIndex = IntStream.range(0, newDish.getPortions().size())
+                .filter(userInd -> newDish.getPortions().get(userInd).getSize().equals(newDish.getBasePortion().getSize()))
                 .findFirst()
                 .orElse(0);
 
-        portionDao.saveAll(dish.getPortions());
-        dish.setBasePortion(dish.getPortions().get(basePortionIndex));
-        dishDao.saveAndFlush(dish);
-        entityManager.refresh(dish);
-        return dish;
+        portionDao.saveAll(newDish.getPortions());
+        newDish.setBasePortion(newDish.getPortions().get(basePortionIndex));
+        dishDao.saveAndFlush(newDish);
+        entityManager.refresh(newDish);
+        return newDish;
     }
 
     private void checkComboCorrect(Dish dish) {
@@ -135,6 +136,9 @@ public class DishService {
         return Dish.builder()
                 .id(dish.getId())
                 .picturePaths(dish.getPicturePaths())
+                .portions(dish.getPortions())
+                .basePortion(dish.getBasePortion())
+                .addons(dish.getAddons())
                 .name(dish.getName())
                 .deleted(true)
                 .build();

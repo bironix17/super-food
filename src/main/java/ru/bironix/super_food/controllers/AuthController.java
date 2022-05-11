@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.AuthRequestDto;
+import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.response.AuthResponseDto;
 import ru.bironix.super_food.security.JwtTokenProvider;
 import ru.bironix.super_food.services.PersonService;
@@ -41,7 +41,7 @@ public class AuthController {
 
     @Operation(summary = "Зарегистрироваться")
     @PostMapping("/register")
-    AuthResponseDto register(@RequestBody
+    public AuthResponseDto register(@RequestBody
                              @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Сущность авторизации")
                              @Valid AuthRequestDto request) {
 
@@ -55,7 +55,7 @@ public class AuthController {
 
     @Operation(summary = "Войти")
     @PostMapping("/login")
-    AuthResponseDto login(@RequestBody
+    public AuthResponseDto login(@RequestBody
                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Сущность авторизации")
                           @Valid AuthRequestDto request) {
 

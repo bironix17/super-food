@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @ApiModel
 public enum ApiError {
     AUTHENTICATION_REQUIRED,
+    RESOURCE_ACCESS_DENIED,
     RESOURCE_NOT_FOUND,
     TOKEN_EXPIRED_OR_INVALID,
     DELETED_DISH_IN_ORDER,

@@ -30,10 +30,11 @@ public class Order {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    OrderStatus orderStatus = OrderStatus.EXPECTS;
+    OrderStatus status = OrderStatus.EXPECTS;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    WayToGet wayToGet;
+    WayToGet wayToGet = WayToGet.PICKUP;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
@@ -47,4 +48,16 @@ public class Order {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     Address address;
+
+    public Order(Order other) {
+        this.id = other.id;
+        this.created = other.created;
+        this.deliveryTime = other.deliveryTime;
+        this.totalPrice = other.totalPrice;
+        this.status = other.status;
+        this.wayToGet = other.wayToGet;
+        this.dishes = other.dishes;
+        this.client = other.client;
+        this.address = other.address;
+    }
 }

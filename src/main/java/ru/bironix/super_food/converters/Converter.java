@@ -2,6 +2,7 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.store.db.models.action.Action;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
 import ru.bironix.super_food.store.db.models.dish.*;
@@ -20,7 +21,6 @@ import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
-import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.store.fileStore.models.DeliveryInformation;
 
 import java.time.LocalDateTime;
@@ -66,6 +66,7 @@ public interface Converter {
 
     DishDto.Base.Full toFullDto(Dish dish);
     DishDto.Base.Small toSmallDto(Dish dish);
+    DishDto.CreateUpdate toCreateUpdateDishDto(Dish dish);
     @Mapping(target="portion", source="dish.basePortion")
     DishDto.Bind toDto(Dish dish);
     Dish fromDto(DishDto.CreateUpdate dishDto);
@@ -80,6 +81,7 @@ public interface Converter {
 
     ActionDto.Base.Small toSmallDto(Action action);
     ActionDto.Base.Full toFullDto(Action action);
+    ActionDto.CreateUpdate toCreteUpdateActionDto(Action action);
 
     Action fromDto(ActionDto.CreateUpdate actionDto);
     Action fromDto(ActionDto.Base.Small actionDto);
@@ -87,6 +89,7 @@ public interface Converter {
 
     OrderDto.Base.Small toSmallDto(Order order);
     OrderDto.Base.Full toFullDto(Order order);
+    OrderDto.CreateUpdate toCreateUpdateOrderDto(Order order);
     Order fromDto(OrderDto.CreateUpdate orderDto);
     Order fromDto(OrderDto.Base.Small orderDto);
     Order fromDto(OrderDto.Base.Full orderDto);
@@ -95,7 +98,11 @@ public interface Converter {
     OrderStatusDto toDto(OrderStatus orderStatus);
     OrderStatus fromDto(OrderStatusDto status);
 
+    CategoryTypeDto toDto(CategoryType categoryType);
+    CategoryType fromDto(CategoryTypeDto categoryTypeDto);
+
     AddonDto.Base toDto(Addon addon);
+    AddonDto.CreateUpdate toCreateUpdateAddonDto(Addon addon);
     Addon fromDto(AddonDto.CreateUpdate addonDto);
     Addon fromDto(AddonDto.Base addonDto);
     Addon fromDto(AddonDto.Bind addonDto);
@@ -110,7 +117,6 @@ public interface Converter {
     default Integer toDto(Favorite favorite){
         return favorite.getDishId();
     }
-
     @Mapping(target="dishId", source="favorite")
     Favorite fromDto(Integer favorite);
 
@@ -128,6 +134,12 @@ public interface Converter {
                 .entrySet().stream()
                 .map(i -> new CategoryDto(i.getKey(), i.getValue()))
                 .collect(Collectors.toList());
+    }
+    default List<Dish> fromCategoriesDto(List<CategoryDto> categoryDtos){
+        return categoryDtos.stream()
+                .flatMap(c-> c.getDishes().stream())
+                .map(this::fromDto)
+                .collect(toList());
     }
 
 

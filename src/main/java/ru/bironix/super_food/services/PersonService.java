@@ -58,13 +58,14 @@ public class PersonService {
     @Transactional
     public Person createPerson(Person person) {
 
-        checkPersonExist(person);
+        var newPerson = new Person(person);
+        checkPersonExist(newPerson);
 
-        person.setId(null);
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        personDao.saveAndFlush(person);
-        entityManager.refresh(person);
-        return person;
+        newPerson.setId(null);
+        newPerson.setPassword(passwordEncoder.encode(newPerson.getPassword()));
+        personDao.saveAndFlush(newPerson);
+        entityManager.refresh(newPerson);
+        return newPerson;
     }
 
     private void checkPersonExist(Person person) {

@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface OrderDao extends JpaRepository<Order, Integer> {
     List<Order> findByClient_IdOrderByCreatedDesc(Integer id);
-    List<Order> findByOrderStatusNot(OrderStatus orderStatus);
+    List<Order> findByStatusNot(OrderStatus orderStatus);
 
-    List<Order> findByOrderStatus(OrderStatus orderStatus);
+    List<Order> findByStatus(OrderStatus orderStatus);
     List<Order> findAllByClientId(int id);
 
 }

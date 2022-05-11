@@ -11,9 +11,13 @@ import java.io.IOException;
 public class ErrorAuthResponse {
 
     public static void addError(HttpServletResponse response, ApiError apiError) throws IOException {
+        addError(response, apiError, HttpServletResponse.SC_UNAUTHORIZED);
+    }
+
+    public static void addError(HttpServletResponse response, ApiError apiError, int status) throws IOException {
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(status);
 
 
         final var errorResponse = ErrorResponseDto.builder()

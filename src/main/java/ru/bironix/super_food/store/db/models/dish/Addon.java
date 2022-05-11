@@ -41,4 +41,12 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
     public int getTotalPrice() {
         return price.getPrice();
     }
+
+    public Addon(Addon other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.picturePath = other.picturePath;
+        this.deleted = other.deleted;
+        this.price = other.price;
+    }
 }

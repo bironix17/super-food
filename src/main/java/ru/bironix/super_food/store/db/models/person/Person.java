@@ -38,4 +38,15 @@ public class Person {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Favorite> favorites;
 
+
+    public Person(Person other) {
+        this.id = other.id;
+        this.email = other.email;
+        this.password = other.password;
+        this.name = other.name;
+        this.role = other.role;
+        this.phoneNumber = other.phoneNumber;
+        this.addresses = other.addresses;
+        this.favorites = other.favorites;
+    }
 }
