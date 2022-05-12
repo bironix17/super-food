@@ -60,7 +60,7 @@ public abstract class DishDto {
             PortionDto.Base basePortion;
         }
 
-        @Schema(description = "Блюдо. Базовая полная", name = "DishDto.Base.Small")
+        @Schema(description = "Блюдо. Базовая полная", name = "DishDto.Base.Full")
         @Data
         @SuperBuilder
         @AllArgsConstructor
