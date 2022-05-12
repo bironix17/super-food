@@ -4,11 +4,14 @@ import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -47,7 +50,7 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addon_id")
     })
-    List<Addon> addons = new ArrayList<>();
+    List<Addon> addons;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinColumns({
@@ -56,33 +59,11 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     })
     List<Dish> dishes;
 
-    @Builder.Default
-    Boolean deleted = false;
+    Boolean deleted;
 
-    @Override
-    public boolean forOrderEquals(Dish dish) {
-        if (dish == null) return false;
 
-        if (!Objects.equals(dish.getId(), getId())) return false;
-        if (!dish.getBasePortion()
-                .forOrderEquals(this.getBasePortion())) return false;
-        if (dish.getAddons() == null) return true;
 
-        return dish.getAddons().stream()
-                .allMatch(a -> getAddons().stream()
-                        .anyMatch(a1 -> a1.forOrderEquals(a)));
-    }
 
-    public List<Addon> getAddons() {
-        if (addons != null) return addons;
-        else return new ArrayList<>();
-    }
-
-    @Override
-    public int getTotalPrice() {
-        return basePortion.getPriceNow().getPrice()
-                + addons.stream().mapToInt(Addon::getTotalPrice).sum();
-    }
 
     public Dish(Dish other) {
         this.id = other.id;
@@ -97,5 +78,35 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
         this.addons = other.addons;
         this.dishes = other.dishes;
         this.deleted = other.deleted;
+    }
+
+    @PrePersist
+    void prePersist() {
+        deleted = defaultIfNull(deleted, false);
+    }
+
+    public List<Addon> getAddons() {
+        if (addons != null) return addons;
+        else return new ArrayList<>();
+    }
+
+    @Override
+    public int getTotalPrice() {
+        return basePortion.getPriceNow().getPrice()
+                + addons.stream().mapToInt(Addon::getTotalPrice).sum();
+    }
+
+    @Override
+    public boolean forOrderEquals(Dish dish) {
+        if (dish == null) return false;
+
+        if (!Objects.equals(dish.getId(), getId())) return false;
+        if (!dish.getBasePortion()
+                .forOrderEquals(this.getBasePortion())) return false;
+        if (dish.getAddons() == null) return true;
+
+        return dish.getAddons().stream()
+                .allMatch(a -> getAddons().stream()
+                        .anyMatch(a1 -> a1.forOrderEquals(a)));
     }
 }

@@ -3,9 +3,12 @@ package ru.bironix.super_food.store.db.models.dish;
 import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -25,11 +28,24 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
     @Column(nullable = false)
     String picturePath;
 
-    @Builder.Default
-    Boolean deleted = false;
+    Boolean deleted;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     Price price;
+
+
+    public Addon(Addon other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.picturePath = other.picturePath;
+        this.deleted = other.deleted;
+        this.price = other.price;
+    }
+
+    @PrePersist
+    void prePersist() {
+        deleted = defaultIfNull(deleted, false);
+    }
 
     @Override
     public boolean forOrderEquals(Addon addon) {
@@ -42,11 +58,4 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
         return price.getPrice();
     }
 
-    public Addon(Addon other) {
-        this.id = other.id;
-        this.name = other.name;
-        this.picturePath = other.picturePath;
-        this.deleted = other.deleted;
-        this.price = other.price;
-    }
 }

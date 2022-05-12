@@ -28,10 +28,8 @@ public abstract class OrderDto {
 
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
-        @Builder.Default
-        private OrderStatusDto status = OrderStatusDto.EXPECTS;
-        @Builder.Default
-        private WayToGetDto wayToGet = WayToGetDto.PICKUP;
+        private OrderStatusDto status;
+        private WayToGetDto wayToGet;
         private Integer totalPrice;
         private List<DishCountDto> dishes;
         private AddressDto address;
@@ -47,10 +45,8 @@ public abstract class OrderDto {
                 TotalPrice, DishesCountes {
 
             private Integer id;
-            @Builder.Default
-            private Date created = new Date();
-            @Builder.Default
-            private OrderStatusDto status = OrderStatusDto.EXPECTS;
+            private Date created;
+            private OrderStatusDto status;
             private Integer totalPrice;
             private List<DishCountDto> dishes;
         }
@@ -66,8 +62,7 @@ public abstract class OrderDto {
 
             @JsonFormat(pattern = "HH:mm")
             private Date deliveryTime;
-            @Builder.Default
-            private WayToGetDto wayToGet = WayToGetDto.PICKUP;
+            private WayToGetDto wayToGet;
             private PersonDto.Base client;
             private AddressDto address;
         }

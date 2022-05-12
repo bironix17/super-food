@@ -2,8 +2,11 @@ package ru.bironix.super_food.store.db.models.dish;
 
 import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -20,11 +23,15 @@ public class DishCount implements GetTotalPrice {
     @OneToOne(cascade = CascadeType.REFRESH)
     Dish dish;
 
-    @Builder.Default
-    Integer count = 1;
+    Integer count;
 
     @Override
     public int getTotalPrice() {
         return dish.getTotalPrice() * count;
+    }
+
+    @PrePersist
+    void prePersist() {
+        count = defaultIfNull(count, 1);
     }
 }

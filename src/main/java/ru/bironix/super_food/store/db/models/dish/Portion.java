@@ -6,6 +6,8 @@ import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+
 @Getter
 @Setter
 @ToString
@@ -29,13 +31,17 @@ public class Portion implements ForOrderEquals<Portion> {
     @JoinColumn(name = "oldPriceId")
     Price oldPrice;
 
-    @Builder.Default
-    Boolean deleted = false;
+    Boolean deleted;
 
     public Portion(String size, Price priceNow, Price oldPrice) {
         this.size = size;
         this.priceNow = priceNow;
         this.oldPrice = oldPrice;
+    }
+
+    @PrePersist
+    void prePersist() {
+        deleted = defaultIfNull(deleted, false);
     }
 
     @Override

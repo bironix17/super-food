@@ -14,8 +14,7 @@ public abstract class PriceDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateUpdate implements Price {
-        @Builder.Default
-        Integer price = 0;
+        Integer price;
     }
 
     @Schema(description = "Цена. Базовая", name = "PriceDto.Base")

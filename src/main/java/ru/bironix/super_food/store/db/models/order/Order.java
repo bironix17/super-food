@@ -4,10 +4,13 @@ import lombok.*;
 import ru.bironix.super_food.store.db.models.dish.DishCount;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -28,13 +31,11 @@ public class Order {
 
     int totalPrice;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    OrderStatus status = OrderStatus.EXPECTS;
+    OrderStatus status;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    WayToGet wayToGet = WayToGet.PICKUP;
+    WayToGet wayToGet;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
@@ -59,5 +60,12 @@ public class Order {
         this.dishes = other.dishes;
         this.client = other.client;
         this.address = other.address;
+    }
+
+    @PrePersist
+    void prePersist() {
+        created = defaultIfNull(created, LocalDateTime.now());
+        status = defaultIfNull(status, OrderStatus.EXPECTS);
+        wayToGet = defaultIfNull(wayToGet,  WayToGet.PICKUP);
     }
 }

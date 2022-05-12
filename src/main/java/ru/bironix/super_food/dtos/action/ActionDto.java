@@ -29,9 +29,7 @@ public abstract class ActionDto {
         String name;
         @NotEmpty
         List<DishDto.Bind> dishes;
-
-        @Builder.Default
-        List<PortionDto.CreateUpdateForAction> portions = new ArrayList<>();
+        List<PortionDto.CreateUpdateForAction> portions;
     }
 
 

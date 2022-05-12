@@ -56,8 +56,7 @@ public abstract class DishDto {
             String name;
             String composition;
             CategoryTypeDto category;
-            @Builder.Default
-            Boolean deleted = false;
+            Boolean deleted;
             PortionDto.Base basePortion;
         }
 

@@ -1,10 +1,13 @@
 package ru.bironix.super_food.store.db.models.person;
 
 import lombok.*;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -25,8 +28,7 @@ public class Person {
     String name;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    Role role = Role.CLIENT;
+    Role role;
 
     String phoneNumber;
 
@@ -38,7 +40,6 @@ public class Person {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Favorite> favorites;
 
-
     public Person(Person other) {
         this.id = other.id;
         this.email = other.email;
@@ -48,5 +49,10 @@ public class Person {
         this.phoneNumber = other.phoneNumber;
         this.addresses = other.addresses;
         this.favorites = other.favorites;
+    }
+
+    @PrePersist
+    void prePersist() {
+        role = defaultIfNull(role, Role.CLIENT);
     }
 }

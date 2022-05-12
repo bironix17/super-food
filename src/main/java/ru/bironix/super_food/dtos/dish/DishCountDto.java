@@ -15,7 +15,6 @@ import ru.bironix.super_food.dtos.interfaces.dish.BindDish;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DishCountDto implements Count, BindDish {
-    @Builder.Default
-    Integer count = 1;
+    Integer count;
     DishDto.Bind dish;
 }

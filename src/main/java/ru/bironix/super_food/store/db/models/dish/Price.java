@@ -2,9 +2,12 @@ package ru.bironix.super_food.store.db.models.dish;
 
 import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
 @Setter
@@ -38,5 +41,10 @@ public class Price implements ForOrderEquals<Price> {
     public boolean forOrderEquals(Price price) {
         if (price == null) return false;
         return Objects.equals(price.getId(), getId());
+    }
+
+    @PrePersist
+    void prePersist() {
+        price = defaultIfNull(price, 0);
     }
 }
