@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CreateUpdateForActionPortions {
 
-    @NotNull List<PortionDto.CreateUpdateForAction> getPortions();
+    List<PortionDto.CreateUpdateForAction> getPortions();
 }
