@@ -23,12 +23,11 @@ public abstract class OrderDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements DeliveryTime, Status,
+    public static class CreateUpdate implements DeliveryTime,
             WayToGet, TotalPrice, Address, DishesCountes {
 
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
-        private OrderStatusDto status;
         private WayToGetDto wayToGet;
         private Integer totalPrice;
         private List<DishCountDto> dishes;
