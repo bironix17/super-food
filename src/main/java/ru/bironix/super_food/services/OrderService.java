@@ -22,6 +22,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -136,7 +137,7 @@ OrderService {
                 .collect(toMap(Addon::getId, p -> p));
 
         var sum = order.getDishes().stream()
-                .map(DishCount::getDish)
+                .flatMap(dc -> Stream.generate(dc::getDish).limit(dc.getCount()))
                 .peek(d -> d.setBasePortion(
                         portionsDb.get(d.getBasePortion().getId())
                 ))
@@ -144,8 +145,7 @@ OrderService {
                         d.getAddons().stream()
                                 .map(a -> addonsDb.get(a.getId()))
                                 .collect(toList()))
-                )
-                .mapToInt(Dish::getTotalPrice)
+                ).mapToInt(Dish::getTotalPrice)
                 .sum();
 
         if (order.getWayToGet() == WayToGet.DELIVERY) {
