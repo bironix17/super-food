@@ -97,13 +97,15 @@ public class OrderController {
         return con.toFullDto(service.getOrder(id));
     }
 
-    @Operation(summary = "Получить мои заказы")
+    @Operation(summary = "Получить мои заказы. Размер страницы равен 10")
     @GetMapping("/client/my/orders")
     @ResponseBody
-    List<OrderDto.Base.Small> getOrdersForMy() {
+    List<OrderDto.Base.Small> getOrdersForMy(@RequestParam(value = "page", defaultValue = "0")
+                                             @Parameter(description = "Запрашиваемый номер страницы")
+                                             Integer pageNumber) {
         var id = getPersonIdFromSecurityContext();
         var person = personService.getPerson(id);
-        return con.toOrdersDto(service.getOrdersForPerson(person));
+        return con.toOrdersDto(service.getOrdersForPerson(person, pageNumber));
     }
 
     @Operation(summary = "Совершить заказ для меня", description = "Корректный пример для поля deliveryTime = 10:20")
@@ -146,8 +148,10 @@ public class OrderController {
     @GetMapping({"/deliveryman/activeOrders",
             "/cook/activeOrders",
             "/admin/activeOrders"})
-    List<OrderDto.Base.Small> getActiveOrders() {
-        return con.toOrdersDto(service.getActiveOrders());
+    List<OrderDto.Base.Small> getActiveOrders(@RequestParam(value = "page", defaultValue = "0")
+                                              @Parameter(description = "Запрашиваемый номер страницы")
+                                              Integer pageNumber) {
+        return con.toOrdersDto(service.getActiveOrders(pageNumber));
     }
 
     @Operation(summary = "Получение заказов по конкретному статусу")
@@ -156,7 +160,10 @@ public class OrderController {
             "/admin/orders/status/{status}"})
     List<OrderDto.Base.Small> getOrdersByStatus(@PathVariable
                                                 @Parameter(description = "статус")
-                                                OrderStatusDto status) {
-        return con.toOrdersDto(service.getOrdersByStatus(con.fromDto(status)));
+                                                OrderStatusDto status,
+                                                @RequestParam(value = "page", defaultValue = "0")
+                                                @Parameter(description = "Запрашиваемый номер страницы")
+                                                Integer pageNumber) {
+        return con.toOrdersDto(service.getOrdersByStatus(con.fromDto(status), pageNumber));
     }
 }

@@ -1,8 +1,10 @@
 package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
+import ru.bironix.super_food.constants.Constants;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
+import static ru.bironix.super_food.constants.Constants.PAGE_SIZE;
 
 @Service
 public class
@@ -56,8 +59,9 @@ OrderService {
         return orderDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Order"));
     }
 
-    public List<Order> getOrdersForPerson(Person person) {
-        return orderDao.findByClient_IdOrderByCreatedDesc(person.getId());
+    public List<Order> getOrdersForPerson(Person person, int pageNumber) {
+        var page = PageRequest.of(pageNumber, PAGE_SIZE);
+        return orderDao.findByClient_IdOrderByCreatedDesc(person.getId(), page);
     }
 
     @Transactional
@@ -180,11 +184,13 @@ OrderService {
         orderDao.delete(order);
     }
 
-    public List<Order> getActiveOrders() {
-        return orderDao.findByStatusNot(OrderStatus.COMPLETED);
+    public List<Order> getActiveOrders(int pageNumber) {
+        var page = PageRequest.of(pageNumber, PAGE_SIZE);
+        return orderDao.findByStatusNot(OrderStatus.COMPLETED, page);
     }
 
-    public List<Order> getOrdersByStatus(OrderStatus status) {
-        return orderDao.findByStatus(status);
+    public List<Order> getOrdersByStatus(OrderStatus status, int pageNumber) {
+        var page = PageRequest.of(pageNumber, PAGE_SIZE);
+        return orderDao.findByStatus(status, page);
     }
 }

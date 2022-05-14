@@ -28,6 +28,7 @@ public class DocumentationConfig {
     }
 
     private static final String authPaths = "/auth/**";
+    private static final String authPathLogin = "/auth/login";
 
 
     @Bean
@@ -42,7 +43,7 @@ public class DocumentationConfig {
     public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
                 .group("admin")
-                .pathsToMatch("/admin/**", authPaths)
+                .pathsToMatch("/admin/**", authPathLogin)
                 .build();
     }
 
@@ -50,7 +51,7 @@ public class DocumentationConfig {
     public GroupedOpenApi deliverymanApi() {
         return GroupedOpenApi.builder()
                 .group("deliveryman")
-                .pathsToMatch("/deliveryman/**", authPaths)
+                .pathsToMatch("/deliveryman/**", authPathLogin)
                 .build();
     }
 
@@ -58,7 +59,7 @@ public class DocumentationConfig {
     public GroupedOpenApi cookApi() {
         return GroupedOpenApi.builder()
                 .group("cook")
-                .pathsToMatch("/cook/**", authPaths)
+                .pathsToMatch("/cook/**", authPathLogin)
                 .build();
     }
 
