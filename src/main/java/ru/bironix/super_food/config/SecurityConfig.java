@@ -49,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/register").permitAll()
                 .antMatchers("/auth/login").permitAll()
 
-                .antMatchers("/client/**").hasAuthority("CLIENT")
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/deliveryman/**").hasAuthority("DELIVERYMAN")
-                .antMatchers("/cook/**").hasAuthority("COOK")
+                .antMatchers("/client/**").hasRole("CLIENT")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/deliveryman/**").hasRole("DELIVERYMAN")
+                .antMatchers("/cook/**").hasRole("COOK")
 
                 .anyRequest()
                 .authenticated()

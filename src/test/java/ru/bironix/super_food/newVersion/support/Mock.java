@@ -8,7 +8,6 @@ import ru.bironix.super_food.store.db.models.common.PicturePaths;
 import ru.bironix.super_food.store.db.models.dish.*;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
-import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.db.models.person.Role;
 
@@ -94,7 +93,7 @@ public class Mock {
         return Person.builder()
                 .email("client@rambler.ru")
                 .password("client")
-                .role(Role.CLIENT)
+                .role(Role.ROLE_CLIENT)
                 .build();
     }
 
@@ -103,7 +102,7 @@ public class Mock {
         return Person.builder()
                 .email("admin@rambler.ru")
                 .password("admin")
-                .role(Role.ADMIN)
+                .role(Role.ROLE_ADMIN)
                 .build();
     }
 
@@ -111,14 +110,14 @@ public class Mock {
         return Person.builder()
                 .email("cook@rambler.ru")
                 .password("cook")
-                .role(Role.COOK)
+                .role(Role.ROLE_COOK)
                 .build();
     }
     public Person getPersonDeliveryman() {
         return Person.builder()
                 .email("deliveryman@rambler.ru")
                 .password("deliveryman")
-                .role(Role.DELIVERYMAN)
+                .role(Role.ROLE_DELIVERYMAN)
                 .build();
     }
 }

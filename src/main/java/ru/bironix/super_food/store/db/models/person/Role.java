@@ -5,10 +5,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 
 public enum Role {
-    CLIENT,
-    ADMIN,
-    DELIVERYMAN,
-    COOK;
+    ROLE_CLIENT,
+    ROLE_ADMIN,
+    ROLE_DELIVERYMAN,
+    ROLE_COOK;
 
     public Set<SimpleGrantedAuthority> getAuthority() {
         return Set.of(new SimpleGrantedAuthority(this.name()));

@@ -1,7 +1,6 @@
 package ru.bironix.super_food.store.db.models.person;
 
 import lombok.*;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -53,6 +52,6 @@ public class Person {
 
     @PrePersist
     void prePersist() {
-        role = defaultIfNull(role, Role.CLIENT);
+        role = defaultIfNull(role, Role.ROLE_CLIENT);
     }
 }
