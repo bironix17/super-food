@@ -1,10 +1,7 @@
 package ru.bironix.super_food.dtos.person;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.interfaces.*;
 
@@ -38,12 +35,15 @@ public abstract class PersonDto {
 
     @Schema(description = "Пользователь. Базовая", name = "PersonDto.Base")
     @Data
-    @EqualsAndHashCode(callSuper = true)
-    @SuperBuilder
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Base extends Update implements Id {
+    public static class Base implements Id, Email, Name, Addresses, PhoneNumber {
         Integer id;
+        String email;
+        String name;
+        List<AddressDto> addresses;
+        String phoneNumber;
     }
 
 

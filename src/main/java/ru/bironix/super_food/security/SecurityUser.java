@@ -25,7 +25,13 @@ public class SecurityUser extends User {
                         boolean accountNonLocked,
                         Collection<? extends GrantedAuthority> authorities,
                         int id) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        super(username,
+                password,
+                enabled,
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
+                authorities);
         this.id = id;
     }
 

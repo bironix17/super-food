@@ -31,6 +31,8 @@ public class Person {
 
     String phoneNumber;
 
+    Boolean banned;
+
     @Valid
     @OneToMany(cascade = CascadeType.ALL)
     List<Address> addresses;
@@ -53,5 +55,6 @@ public class Person {
     @PrePersist
     void prePersist() {
         role = defaultIfNull(role, Role.ROLE_CLIENT);
+        banned = defaultIfNull(banned, false);
     }
 }

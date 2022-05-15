@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Сущность авторизации")
-public class AuthResponseDto {
-
-    @Schema(description = "id пользователя")
-    Integer personId;
+@Schema(description = "Сущность обновления токенов")
+public class TokensDto {
 
     @Schema(description = "Токен авторизации. Для доступа к ресурсам системы данный токен необходимо указывать в " +
             "headers под именем \"Authorization\"")

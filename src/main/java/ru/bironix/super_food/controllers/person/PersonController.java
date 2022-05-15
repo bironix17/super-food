@@ -48,7 +48,6 @@ public class PersonController {
                         @Parameter(description = "id пользователя")
                         @Min(0) int id) {
         var personDto = con.toDto(service.getPerson(id));
-        personDto.setPassword(null);
         return personDto;
     }
 

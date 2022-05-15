@@ -1,6 +1,8 @@
 package ru.bironix.super_food.controllers.error;
 
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ public class AuthenticationEntryPointJwt implements AuthenticationEntryPoint {
 
         if (e instanceof BadCredentialsException) {
             ErrorAuthResponse.addError(response, ApiError.INCORRECT_EMAIL_OR_PASSWORD);
+        } else if (e instanceof DisabledException | e instanceof LockedException) {
+            ErrorAuthResponse.addError(response, ApiError.USER_IS_BANNED);
         } else
             ErrorAuthResponse.addError(response, ApiError.AUTHENTICATION_REQUIRED);
     }

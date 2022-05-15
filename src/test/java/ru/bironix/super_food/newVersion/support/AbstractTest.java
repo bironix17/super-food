@@ -96,7 +96,7 @@ public abstract class AbstractTest {
         return controllers
                 .authController
                 .login(utils.getAuthRequest(person))
-                .getToken();
+                .getAccessToken();
     }
 
     protected Addon getSavedAddon() {

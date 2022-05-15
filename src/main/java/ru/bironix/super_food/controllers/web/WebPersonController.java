@@ -67,8 +67,8 @@ public class WebPersonController {
         model.addAttribute("newAddress", new AddressDto());
     }
 
-    private PersonDto.Base getMockPersonDto() {
-        return PersonDto.Base.builder()
+    private PersonDto.Update getMockPersonDto() {
+        return PersonDto.Update.builder()
                 .email("hello@rambler.ru")
                 .password("Kotopes777")
                 .name("Саня")

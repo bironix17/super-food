@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                true,
+                !p.getBanned(),
                 p.getRole().getAuthority(),
                 p.getId());
     }

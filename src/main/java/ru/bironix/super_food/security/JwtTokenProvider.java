@@ -29,8 +29,8 @@ public class JwtTokenProvider {
     @Value("${jwt.header}")
     private String authorizationHeader;
 
-    @Value("${jwt.expiration}")
-    private long validityInMilliseconds;
+    @Value("${jwt.access_token.expiration}")
+    private long validityInSeconds;
 
     private final String prefixBearer = "Bearer ";
 
@@ -48,7 +48,7 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", person.getId());
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds * 1000);
+        Date validity = new Date(now.getTime() + validityInSeconds * 1000);
 
         return prefixBearer.concat(Jwts.builder()
                 .setClaims(claims)
