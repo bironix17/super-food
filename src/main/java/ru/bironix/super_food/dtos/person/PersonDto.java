@@ -32,6 +32,19 @@ public abstract class PersonDto {
         String phoneNumber;
     }
 
+    @Schema(description = "Пользователь. Обновление для админа", name = "PersonDto.UpdateForAdmin")
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UpdateForAdmin extends Create implements Name, Addresses, PhoneNumber, Banned {
+        String name;
+        List<AddressDto> addresses;
+        String phoneNumber;
+        Boolean banned;
+    }
+
 
     @Schema(description = "Пользователь. Базовая", name = "PersonDto.Base")
     @Data
@@ -44,6 +57,20 @@ public abstract class PersonDto {
         String name;
         List<AddressDto> addresses;
         String phoneNumber;
+    }
+
+    @Schema(description = "Пользователь. Базовая для админа" , name = "PersonDto.BaseForAdmin")
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BaseForAdmin implements Id, Email, Name, Addresses, PhoneNumber, Banned {
+        Integer id;
+        String email;
+        String name;
+        List<AddressDto> addresses;
+        String phoneNumber;
+        Boolean banned;
     }
 
 

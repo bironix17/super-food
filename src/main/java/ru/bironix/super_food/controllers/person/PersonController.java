@@ -44,19 +44,19 @@ public class PersonController {
 
     @Operation(summary = "Получить информацию о пользователе")
     @GetMapping("/persons/{id}")
-    PersonDto.Base getPerson(@PathVariable
+    PersonDto.BaseForAdmin getPerson(@PathVariable
                         @Parameter(description = "id пользователя")
                         @Min(0) int id) {
-        var personDto = con.toDto(service.getPerson(id));
+        var personDto = con.toPersonBaseForAdminDto(service.getPerson(id));
         return personDto;
     }
 
     @Operation(summary = "Обновить информацию о пользователе. Поле id в json можно не заполнять." +
             " Поля которые обновлять не нужно должны быть null")
     @PutMapping("/persons/{id}")
-    PersonDto.Base updatePerson(@RequestBody
+    PersonDto.BaseForAdmin updatePerson(@RequestBody
                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                           PersonDto.Update personDto,
+                           PersonDto.UpdateForAdmin personDto,
                            @PathVariable
                            @Parameter(description = "id пользователя")
                            @Min(0) int id) {
@@ -64,7 +64,7 @@ public class PersonController {
         Person person = con.fromDto(personDto);
         person.setId(id);
         var updatedPerson = service.updatePerson(person);
-        return con.toDto(updatedPerson);
+        return con.toPersonBaseForAdminDto(updatedPerson);
     }
 
     @Operation(summary = "Удалить пользователя")

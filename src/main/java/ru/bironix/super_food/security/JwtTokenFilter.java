@@ -2,6 +2,8 @@ package ru.bironix.super_food.security;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -40,6 +42,10 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (JwtException | IllegalArgumentException e) {
             SecurityContextHolder.clearContext();
             ErrorAuthResponse.addError((HttpServletResponse) response, ApiError.TOKEN_EXPIRED_OR_INVALID);
+        }
+        catch (LockedException | DisabledException e) {
+            SecurityContextHolder.clearContext();
+            ErrorAuthResponse.addError((HttpServletResponse) response, ApiError.USER_IS_BANNED);
         }
         filterChain.doFilter(request, response);
     }

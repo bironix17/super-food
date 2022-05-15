@@ -55,10 +55,13 @@ public interface Converter {
     Price fromDto(PriceDto.Bind priceDto);
 
     PersonDto.Base toDto(Person user);
+    PersonDto.BaseForAdmin toPersonBaseForAdminDto(Person user);
     Person toPerson(AuthRequestDto request);
     Person fromDto(PersonDto.Create personDto);
     Person fromDto(PersonDto.Update personDto);
+    Person fromDto(PersonDto.UpdateForAdmin personDto);
     Person fromDto(PersonDto.Base personDto);
+    Person fromDto(PersonDto.BaseForAdmin personDto);
     Person fromDto(PersonDto.Bind personDto);
 
     AddressDto toDto(Address address);

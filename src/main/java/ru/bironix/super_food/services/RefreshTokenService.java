@@ -2,31 +2,17 @@ package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.ApiException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
-import ru.bironix.super_food.store.UpdateMapper;
-import ru.bironix.super_food.store.db.dao.person.AddressDao;
-import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.store.db.dao.person.PersonDao;
 import ru.bironix.super_food.store.db.dao.person.RefreshTokenDao;
-import ru.bironix.super_food.store.db.models.dish.Dish;
-import ru.bironix.super_food.store.db.models.person.Address;
-import ru.bironix.super_food.store.db.models.person.Favorite;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.db.models.person.RefreshToken;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toSet;
 
 @Service
 public class RefreshTokenService {
@@ -76,7 +62,7 @@ public class RefreshTokenService {
         return token;
     }
 
-    public void deleteByPerson(Person person) {
-        refreshTokenDao.deleteByPerson(person);
+    public void deleteByPerson(Integer personId) {
+        refreshTokenDao.deleteByPerson_Id(personId);
     }
 }

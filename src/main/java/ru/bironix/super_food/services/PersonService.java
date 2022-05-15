@@ -7,6 +7,7 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.store.db.dao.person.AddressDao;
 import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.store.db.dao.person.PersonDao;
+import ru.bironix.super_food.store.db.dao.person.RefreshTokenDao;
 import ru.bironix.super_food.store.db.models.dish.Dish;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Favorite;
@@ -26,6 +27,7 @@ import static java.util.stream.Collectors.toSet;
 public class PersonService {
 
     private final PersonDao personDao;
+    private final RefreshTokenService refreshTokenService;
     private final AddressDao addressDao;
     private final FavoritesDao favoritesDao;
     private final UpdateMapper mapper;
@@ -38,6 +40,7 @@ public class PersonService {
                          AddressDao addressDao,
                          FavoritesDao favoritesDao,
                          UpdateMapper mapper,
+                         RefreshTokenService refreshTokenService,
                          EntityManager entityManager,
                          PasswordEncoder passwordEncoder,
                          DishService dishService) {
@@ -48,6 +51,7 @@ public class PersonService {
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
         this.dishService = dishService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public Person getPersonByUsername(String email) {
@@ -150,6 +154,7 @@ public class PersonService {
 
     @Transactional
     public void deletePerson(int id) {
+        refreshTokenService.deleteByPerson(id);
         personDao.deleteById(id);
     }
 

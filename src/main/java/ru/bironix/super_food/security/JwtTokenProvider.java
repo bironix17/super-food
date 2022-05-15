@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,8 +66,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails details = userDetailsService.loadUserByUsername(getUsername(token));
+        if (!details.isAccountNonLocked()) throw new LockedException("");
         return new UsernamePasswordAuthenticationToken(details, "", details.getAuthorities());
-
     }
 
     public String getUsername(String token) {
