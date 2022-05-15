@@ -1,4 +1,4 @@
-package ru.bironix.super_food.controllers.error;
+package ru.bironix.super_food.security.error;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;

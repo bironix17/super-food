@@ -1,4 +1,4 @@
-package ru.bironix.super_food.controllers.error;
+package ru.bironix.super_food.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;

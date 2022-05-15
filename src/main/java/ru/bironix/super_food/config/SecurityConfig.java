@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.bironix.super_food.controllers.error.AccessDeniedHandlerJwt;
-import ru.bironix.super_food.controllers.error.AuthenticationEntryPointJwt;
+import ru.bironix.super_food.security.error.AccessDeniedHandlerJwt;
+import ru.bironix.super_food.security.error.AuthenticationEntryPointJwt;
 import ru.bironix.super_food.security.JwtChainConfigurer;
 
 @Configuration

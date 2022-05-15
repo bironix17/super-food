@@ -36,7 +36,7 @@ public class JwtTokenProvider {
     private final String prefixBearer = "Bearer ";
 
     @Autowired
-    public JwtTokenProvider(@Qualifier("CustomUserDetailsService") CustomUserDetailsService userDetailsService) {
+    public JwtTokenProvider(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
