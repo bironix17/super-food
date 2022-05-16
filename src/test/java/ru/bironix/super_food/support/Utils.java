@@ -1,10 +1,9 @@
-package ru.bironix.super_food.newVersion.support;
+package ru.bironix.super_food.support;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.AuthRequestDto;
-import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.store.db.models.person.Person;
 

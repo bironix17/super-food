@@ -1,4 +1,4 @@
-package ru.bironix.super_food.newVersion;
+package ru.bironix.super_food;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
-import ru.bironix.super_food.dtos.response.AuthResponseDto;
-import ru.bironix.super_food.newVersion.support.*;
+import ru.bironix.super_food.support.*;
 import ru.bironix.super_food.store.db.models.person.Person;
 
 import javax.transaction.Transactional;

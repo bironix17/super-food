@@ -10,6 +10,7 @@ import ru.bironix.super_food.store.db.dao.person.RefreshTokenDao;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.db.models.person.RefreshToken;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,11 +35,17 @@ public class RefreshTokenService {
         return refreshTokenDao.findByToken(token);
     }
 
-    public RefreshToken create(Person person) {
-        refreshTokenDao.findByPerson(person)
-                .ifPresent(refreshTokenDao::delete);
 
-        var refreshToken = RefreshToken.builder()
+    public RefreshToken create(Person person) {
+        var refreshToken = refreshTokenDao.findByPerson(person).orElse(null);
+
+        if (refreshToken != null) {
+            refreshToken.setToken(UUID.randomUUID().toString());
+            refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(validityInSeconds));
+            return refreshToken;
+        }
+
+        refreshToken = RefreshToken.builder()
                 .person(person)
                 .expiryDate(LocalDateTime.now().plusSeconds(validityInSeconds))
                 .token(UUID.randomUUID().toString())
@@ -46,12 +53,6 @@ public class RefreshTokenService {
 
         refreshToken = refreshTokenDao.save(refreshToken);
         return refreshToken;
-    }
-
-    public RefreshToken deleteAndCreate(RefreshToken deletingRefreshToken) {
-        var newRefreshToken = create(deletingRefreshToken.getPerson());
-        refreshTokenDao.delete(deletingRefreshToken);
-        return newRefreshToken;
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {

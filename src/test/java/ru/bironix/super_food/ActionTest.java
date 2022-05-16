@@ -1,4 +1,4 @@
-package ru.bironix.super_food.newVersion;
+package ru.bironix.super_food;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -7,23 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.action.ActionDto;
-import ru.bironix.super_food.dtos.dish.AddonDto;
-import ru.bironix.super_food.dtos.dish.CategoryDto;
 import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
-import ru.bironix.super_food.newVersion.support.*;
+import ru.bironix.super_food.support.*;
 import ru.bironix.super_food.store.db.models.dish.Dish;
 import ru.bironix.super_food.store.db.models.dish.Portion;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.containsString;
@@ -86,14 +81,15 @@ public class ActionTest extends AbstractTest {
                 .map(Dish::getId)
                 .collect(toList());
 
-        assertTrue(actionDb.get().getDishes().stream()
+        assertTrue(actionDb.get().getDishes().stream() // Все блюда сохранились верно
                 .allMatch(d -> dishesIds.contains(d.getId())));
-        assertTrue(portionsIds.stream()
+
+        assertTrue(portionsIds.stream() // Все порции сохранились верно
                 .allMatch(p -> actionDb.get().getPortions().stream()
                         .map(Portion::getId)
                         .anyMatch(id -> id == p))
         );
-        assertTrue(actionDb.get().getPortions().stream()
+        assertTrue(actionDb.get().getPortions().stream() // Для всех блюд цена правильно изменилась
                 .allMatch(p -> p.getPriceNow().getPrice() == newPrice));
     }
 
@@ -114,7 +110,7 @@ public class ActionTest extends AbstractTest {
 
         var dishResponse = mapper.readValue(jsonResponse, DishDto.Base.Full.class);
 
-        assertTrue(dishResponse.getBasePortion().getPriceNow().getPrice().equals(
+        assertTrue(dishResponse.getBasePortion().getPriceNow().getPrice().equals( // Цена подставилась верно
                         action.getDishes().get(0).getBasePortion().getPriceNow().getPrice()
                 )
         );
@@ -129,16 +125,13 @@ public class ActionTest extends AbstractTest {
         var action = getSavedAction();
         var oldPrice = action.getPortions().get(0).getOldPrice().getPrice();
 
-        var jsonResponse = this.mockMvc.perform(
+        this.mockMvc.perform(
                         sendObjectDto(
                                 con.toCreteUpdateActionDto(action),
                                 addAuth(admin, delete(String.format("/admin/actions/%s", action.getId())))
                         ))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("true")))
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        var actionResponse = mapper.readValue(jsonResponse, ApiActionResponseDto.class);
+                .andExpect(content().string(containsString("true")));
 
         var dishDb = daos.dishDao.findById(action.getDishes().get(0).getId());
         assertTrue(dishDb.isPresent());

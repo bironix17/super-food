@@ -1,4 +1,4 @@
-package ru.bironix.super_food.newVersion.support;
+package ru.bironix.super_food.support;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

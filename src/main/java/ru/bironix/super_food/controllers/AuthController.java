@@ -88,26 +88,25 @@ public class AuthController {
     @Operation(summary = "Обновить access token")
     @PostMapping("/refreshToken")
     public TokensDto updateAccessToken(@RequestBody
-                                 @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "refresh token")
-                                 @Valid TokenDto tokenDto) {
+                                       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "refresh token")
+                                       @Valid TokenDto tokenDto) {
 
         return refreshTokenService.findByToken(tokenDto.getToken())
                 .map(refreshTokenService::verifyExpiration)
-                .map(refreshTokenService::deleteAndCreate)
                 .map(RefreshToken::getPerson)
                 .map(this::generateUpdateTokensResponse)
-                .orElseThrow(()-> new NotFoundSourceException("refresh token"));
+                .orElseThrow(() -> new NotFoundSourceException("refresh token"));
     }
 
     private AuthResponseDto generateAuthResponse(Person person) {
-        String accessToken = jwtTokenProvider.createToken(person.getEmail(), person);
+        String accessToken = jwtTokenProvider.createAccessToken(person);
         RefreshToken refreshToken = refreshTokenService.create(person);
 
         return new AuthResponseDto(person.getId(), accessToken, refreshToken.getToken());
     }
 
     private TokensDto generateUpdateTokensResponse(Person person) {
-        String accessToken = jwtTokenProvider.createToken(person.getEmail(), person);
+        String accessToken = jwtTokenProvider.createAccessToken(person);
         RefreshToken refreshToken = refreshTokenService.create(person);
 
         return new TokensDto(accessToken, refreshToken.getToken());

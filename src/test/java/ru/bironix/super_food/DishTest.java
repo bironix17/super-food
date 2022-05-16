@@ -1,4 +1,4 @@
-package ru.bironix.super_food.newVersion;
+package ru.bironix.super_food;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,7 @@ import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.CategoryDto;
 import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
-import ru.bironix.super_food.newVersion.support.*;
+import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;

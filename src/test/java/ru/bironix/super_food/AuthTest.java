@@ -1,4 +1,4 @@
-package ru.bironix.super_food.newVersion;
+package ru.bironix.super_food;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -10,8 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.dtos.AuthRequestDto;
+import ru.bironix.super_food.dtos.TokenDto;
 import ru.bironix.super_food.dtos.response.AuthResponseDto;
-import ru.bironix.super_food.newVersion.support.*;
+import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
 
@@ -46,9 +48,9 @@ public class AuthTest extends AbstractTest {
     @DisplayName("Регистрация")
     void registrationTest() throws Exception {
         var client = mock.getPersonClient();
-        var jsonResponse = this.mockMvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(utils.getAuthRequest(client)))
+        var jsonResponse = this.mockMvc.perform(
+                        sendObjectDto(client,
+                                post("/auth/register"))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("personId")))
@@ -64,9 +66,9 @@ public class AuthTest extends AbstractTest {
     @DisplayName("Вход")
     void loginTest() throws Exception {
         var client = getRegisteredClient();
-        var jsonResponse = this.mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(utils.getAuthRequest(client)))
+        var jsonResponse = this.mockMvc.perform(
+                        sendObjectDto(client,
+                                post("/auth/login"))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("personId")))
@@ -74,6 +76,26 @@ public class AuthTest extends AbstractTest {
 
         var authResponse = mapper.readValue(jsonResponse, AuthResponseDto.class);
         assertTrue(daos.personDao.existsById(authResponse.getPersonId()));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Обновление токена")
+    void refreshTokenTest() throws Exception {
+        var client = getRegisteredClient();
+        var refreshToken = controllers.authController.login(
+                AuthRequestDto.builder()
+                        .email(client.getEmail())
+                        .password(client.getPassword())
+                        .build()
+        ).getRefreshToken();
+
+        this.mockMvc.perform(
+                        sendObjectDto(new TokenDto(refreshToken),
+                                post("/auth/refreshToken")
+                        ))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("accessToken")));
     }
 
 
