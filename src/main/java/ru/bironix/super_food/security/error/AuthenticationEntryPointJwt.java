@@ -7,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.security.ErrorAuthResponse;
+import ru.bironix.super_food.security.jwt.ErrorAuthResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

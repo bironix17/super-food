@@ -6,13 +6,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
+import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.constraints.Min;
@@ -30,11 +30,15 @@ public class MyPersonController {
 
     private final PersonService service;
     private final Converter con;
+    private final SecurityLogger securityLogger;
 
     @Autowired
-    public MyPersonController(PersonService personService, Converter converter) {
+    public MyPersonController(PersonService personService,
+                              SecurityLogger securityLogger,
+                              Converter converter) {
         this.service = personService;
         this.con = converter;
+        this.securityLogger = securityLogger;
     }
 
 
@@ -43,6 +47,7 @@ public class MyPersonController {
     PersonDto.Base getMy() {
         var id = getPersonIdFromSecurityContext();
         var personDto = con.toDto(service.getPerson(id));
+        securityLogger.getPersonInformation(id, personDto.getId());
         return personDto;
     }
 
@@ -51,13 +56,14 @@ public class MyPersonController {
             "Поля которые обновлять не нужно должны быть null")
     @PutMapping("/my")
     PersonDto.Base updateMy(@RequestBody
-                       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                       PersonDto.Update personDto) {
+                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
+                            PersonDto.Update personDto) {
 
         var id = getPersonIdFromSecurityContext();
         var person = con.fromDto(personDto);
         person.setId(id);
         var updatedPerson = service.updatePerson(person);
+        securityLogger.changePersonInformation(id, updatedPerson.getId());
         return con.toDto(updatedPerson);
     }
 
@@ -69,6 +75,7 @@ public class MyPersonController {
                                @NotBlank String address) {
         var id = getPersonIdFromSecurityContext();
         var newAddress = service.addAddressForPerson(id, address);
+        securityLogger.addAddressForPerson(id, newAddress.getId());
         return con.toDto(newAddress);
     }
 
@@ -79,6 +86,8 @@ public class MyPersonController {
                                             @Parameter(description = "id адреса")
                                             @Min(0) int id) {
         service.deleteAddress(id);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.deleteAddressForPerson(currentPersonId, id);
         return new ApiActionResponseDto(true);
     }
 
@@ -87,6 +96,7 @@ public class MyPersonController {
     @GetMapping("/my/favorites")
     List<Integer> getFavoritesForMy() {
         var id = getPersonIdFromSecurityContext();
+        securityLogger.getFavoritesForPerson(id, id);
         return con.toFavoritesDto(service.getFavoritesForPerson(id));
     }
 
@@ -98,6 +108,7 @@ public class MyPersonController {
                                            @Min(0) int dishId) {
         var id = getPersonIdFromSecurityContext();
         service.addFavoritesForPerson(id, dishId);
+        securityLogger.addFavoriteForPerson(id, id);
         return new ApiActionResponseDto(true);
     }
 
@@ -109,6 +120,7 @@ public class MyPersonController {
                                               @Min(0) int dishId) {
         var id = getPersonIdFromSecurityContext();
         service.deleteFavoritesForPerson(id, dishId);
+        securityLogger.deleteFavoriteForPerson(id, id);
         return new ApiActionResponseDto(true);
     }
 }

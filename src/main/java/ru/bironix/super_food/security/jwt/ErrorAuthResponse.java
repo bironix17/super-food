@@ -1,4 +1,4 @@
-package ru.bironix.super_food.security;
+package ru.bironix.super_food.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

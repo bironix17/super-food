@@ -4,7 +4,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.security.ErrorAuthResponse;
+import ru.bironix.super_food.security.jwt.ErrorAuthResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

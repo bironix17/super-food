@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
@@ -15,6 +16,8 @@ import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+
+import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
 
 @Tag(name = "Пользователь")
 @RestController
@@ -25,19 +28,25 @@ public class PersonController {
 
     private final PersonService service;
     private final Converter con;
+    private final SecurityLogger securityLogger;
 
     @Autowired
-    public PersonController(PersonService personService, Converter converter) {
+    public PersonController(PersonService personService,
+                            SecurityLogger securityLogger,
+                            Converter converter) {
         this.service = personService;
         this.con = converter;
+        this.securityLogger = securityLogger;
     }
 
     @Operation(summary = "Создать пользователя")
     @PostMapping("/persons")
     PersonDto.Base createPerson(@RequestBody
-                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                           @Valid PersonDto.Create personDto) {
+                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
+                                @Valid PersonDto.Create personDto) {
         var person = service.createPerson(con.fromDto(personDto));
+        var currentId = getPersonIdFromSecurityContext();
+        securityLogger.createPerson(currentId, person.getId());
         return con.toDto(person);
     }
 
@@ -45,9 +54,11 @@ public class PersonController {
     @Operation(summary = "Получить информацию о пользователе")
     @GetMapping("/persons/{id}")
     PersonDto.BaseForAdmin getPerson(@PathVariable
-                        @Parameter(description = "id пользователя")
-                        @Min(0) int id) {
+                                     @Parameter(description = "id пользователя")
+                                     @Min(0) int id) {
         var personDto = con.toPersonBaseForAdminDto(service.getPerson(id));
+        var currentId = getPersonIdFromSecurityContext();
+        securityLogger.getPersonInformation(currentId, id);
         return personDto;
     }
 
@@ -55,15 +66,17 @@ public class PersonController {
             " Поля которые обновлять не нужно должны быть null")
     @PutMapping("/persons/{id}")
     PersonDto.BaseForAdmin updatePerson(@RequestBody
-                           @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                           PersonDto.UpdateForAdmin personDto,
-                           @PathVariable
-                           @Parameter(description = "id пользователя")
-                           @Min(0) int id) {
+                                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
+                                        PersonDto.UpdateForAdmin personDto,
+                                        @PathVariable
+                                        @Parameter(description = "id пользователя")
+                                        @Min(0) int id) {
 
         Person person = con.fromDto(personDto);
         person.setId(id);
         var updatedPerson = service.updatePerson(person);
+        var currentId = getPersonIdFromSecurityContext();
+        securityLogger.getPersonInformation(currentId, id);
         return con.toPersonBaseForAdminDto(updatedPerson);
     }
 
@@ -73,6 +86,8 @@ public class PersonController {
                                       @Parameter(description = "id пользователя")
                                       @Min(0) int id) {
         service.deletePerson(id);
+        var currentId = getPersonIdFromSecurityContext();
+        securityLogger.deletePerson(currentId, id);
         return new ApiActionResponseDto(true);
     }
 

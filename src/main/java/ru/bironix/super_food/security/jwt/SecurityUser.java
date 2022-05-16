@@ -1,4 +1,4 @@
-package ru.bironix.super_food.security;
+package ru.bironix.super_food.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

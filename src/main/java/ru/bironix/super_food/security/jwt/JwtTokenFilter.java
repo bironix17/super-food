@@ -1,4 +1,4 @@
-package ru.bironix.super_food.security;
+package ru.bironix.super_food.security.jwt;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;

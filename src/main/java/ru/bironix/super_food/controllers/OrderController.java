@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
@@ -31,12 +32,17 @@ public class OrderController {
     private final OrderService service;
     private final Converter con;
     private final PersonService personService;
+    private final SecurityLogger securityLogger;
 
     @Autowired
-    public OrderController(OrderService service, Converter con, PersonService personService) {
+    public OrderController(OrderService service,
+                           Converter con,
+                           SecurityLogger securityLogger,
+                           PersonService personService) {
         this.service = service;
         this.con = con;
         this.personService = personService;
+        this.securityLogger = securityLogger;
     }
 
     @Operation(summary = "Создать заказ", description = "Корректный пример для поля deliveryTime = 10:20")
@@ -65,7 +71,10 @@ public class OrderController {
     OrderDto.Base.Full getOrder(@PathVariable
                                 @Parameter(description = "id заказа")
                                 @Min(0) int id) {
-        return con.toFullDto(service.getOrder(id));
+        var order = service.getOrder(id);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.getOrder(currentPersonId, id);
+        return con.toFullDto(order);
     }
 
     @Operation(summary = "Изменение заказа")
@@ -78,7 +87,10 @@ public class OrderController {
                                    @Min(0) int id) {
         var order = con.fromDto(orderDto);
         order.setId(id);
-        return con.toFullDto(service.updateOrder(order));
+        var updatedOrder = service.updateOrder(order);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.changeOrder(currentPersonId, id);
+        return con.toFullDto(updatedOrder);
     }
 
     @Operation(summary = "Удаление заказа")
@@ -87,14 +99,19 @@ public class OrderController {
                                      @Parameter(description = "id заказа")
                                      @Min(0) int id) {
         service.deleteOrder(id);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.deleteOrder(currentPersonId, id);
         return new ApiActionResponseDto(true);
     }
 
     @Operation(summary = "Получить мой заказ")
     @GetMapping("/client/my/orders/{id}")
     @ResponseBody
-    OrderDto.Base.Full getOrderForMy(@PathVariable @Parameter(description = "id") @Min(0) int id) {//TODO прикрутить проверку владельца заказа
-        return con.toFullDto(service.getOrder(id));
+    OrderDto.Base.Full getOrderForMy(@PathVariable @Parameter(description = "id") @Min(0) int id) {
+        var order = service.getOrder(id);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.deleteOrder(currentPersonId, id);
+        return con.toFullDto(order);
     }
 
     @Operation(summary = "Получить мои заказы. Размер страницы равен 10")
@@ -105,7 +122,9 @@ public class OrderController {
                                              Integer pageNumber) {
         var id = getPersonIdFromSecurityContext();
         var person = personService.getPerson(id);
-        return con.toOrdersDto(service.getOrdersForPerson(person, pageNumber));
+        var orders = service.getOrdersForPerson(person, pageNumber);
+        securityLogger.getOrders(id, orders);
+        return con.toOrdersDto(orders);
     }
 
     @Operation(summary = "Совершить заказ для меня", description = "Корректный пример для поля deliveryTime = 10:20")
@@ -123,10 +142,11 @@ public class OrderController {
                 .build()));
 
         var createdOrder = service.createOrder(order);
+        securityLogger.createOrder(id, createdOrder.getId());
         return con.toFullDto(createdOrder);
     }
 
-    @Operation(summary = "Изменение статуса блюда")
+    @Operation(summary = "Изменение статуса заказа")
     @PutMapping({"/deliveryman/orders/{id}/status/{status}",
             "/cook/orders/{id}/status/{status}",
             "/admin/orders/{id}/status/{status}"})
@@ -141,7 +161,10 @@ public class OrderController {
                 .status(con.fromDto(status))
                 .build();
 
-        return con.toFullDto(service.updateOrder(order));
+        var updatedOrder = service.updateOrder(order);
+        var currentPersonId = getPersonIdFromSecurityContext();
+        securityLogger.changeOrder(currentPersonId, order.getId());
+        return con.toFullDto(updatedOrder);
     }
 
     @Operation(summary = "Получение незавершённых заказов")
@@ -151,7 +174,10 @@ public class OrderController {
     List<OrderDto.Base.Small> getActiveOrders(@RequestParam(value = "page", defaultValue = "0")
                                               @Parameter(description = "Запрашиваемый номер страницы")
                                               Integer pageNumber) {
-        return con.toOrdersDto(service.getActiveOrders(pageNumber));
+        var orders = service.getActiveOrders(pageNumber);
+        var id = getPersonIdFromSecurityContext();
+        securityLogger.getOrders(id, orders);
+        return con.toOrdersDto(orders);
     }
 
     @Operation(summary = "Получение заказов по конкретному статусу")
@@ -164,6 +190,9 @@ public class OrderController {
                                                 @RequestParam(value = "page", defaultValue = "0")
                                                 @Parameter(description = "Запрашиваемый номер страницы")
                                                 Integer pageNumber) {
-        return con.toOrdersDto(service.getOrdersByStatus(con.fromDto(status), pageNumber));
+        var orders = service.getOrdersByStatus(con.fromDto(status), pageNumber);
+        var id = getPersonIdFromSecurityContext();
+        securityLogger.getOrders(id, orders);
+        return con.toOrdersDto(orders);
     }
 }

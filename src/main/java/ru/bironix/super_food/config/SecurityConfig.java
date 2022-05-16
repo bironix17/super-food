@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.bironix.super_food.security.error.AccessDeniedHandlerJwt;
 import ru.bironix.super_food.security.error.AuthenticationEntryPointJwt;
-import ru.bironix.super_food.security.JwtChainConfigurer;
+import ru.bironix.super_food.security.jwt.JwtChainConfigurer;
 
 @Configuration
 @EnableWebSecurity
