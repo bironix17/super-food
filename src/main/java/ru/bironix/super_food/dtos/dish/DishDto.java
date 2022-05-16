@@ -85,4 +85,13 @@ public abstract class DishDto {
         PortionDto.Bind portion;
         List<AddonDto.Bind> addons;
     }
+
+    @Schema(description = "Блюдо. Связующая для акции", name = "DishDto.BindForAction")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BindForAction implements Id {
+        Integer id;
+    }
 }

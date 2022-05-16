@@ -17,6 +17,7 @@ import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.OrderService;
 import ru.bironix.super_food.services.PersonService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class OrderController {
     @ResponseBody
     OrderDto.Base.Full createOrder(@RequestBody
                                    @io.swagger.v3.oas.annotations.parameters.RequestBody()
-                                   OrderDto.CreateUpdate orderDto,
+                                   @Valid OrderDto.CreateUpdate orderDto,
                                    @PathVariable
                                    @Parameter(description = "id пользователя")
                                    @Min(0) int personId) {
@@ -107,7 +108,9 @@ public class OrderController {
     @Operation(summary = "Получить мой заказ")
     @GetMapping("/client/my/orders/{id}")
     @ResponseBody
-    OrderDto.Base.Full getOrderForMy(@PathVariable @Parameter(description = "id") @Min(0) int id) {
+    OrderDto.Base.Full getOrderForMy(@PathVariable
+                                     @Parameter(description = "id")
+                                     @Min(0) int id) {
         var order = service.getOrder(id);
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.deleteOrder(currentPersonId, id);
@@ -132,7 +135,7 @@ public class OrderController {
     @ResponseBody
     OrderDto.Base.Full createOrderForMy(@RequestBody
                                         @io.swagger.v3.oas.annotations.parameters.RequestBody()
-                                        OrderDto.CreateUpdate orderDto) {
+                                        @Valid OrderDto.CreateUpdate orderDto) {
 
         var id = getPersonIdFromSecurityContext();
         var order = con.fromDto(orderDto);

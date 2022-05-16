@@ -7,6 +7,5 @@ import javax.validation.constraints.NotEmpty;
 
 public interface Address {
     @Valid
-    @NotEmpty
     AddressDto getAddress();
 }

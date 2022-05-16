@@ -15,6 +15,7 @@ import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.DishService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DishController {
     @PostMapping("/admin/dishes")
     DishDto.Base.Full createDish(@RequestBody
                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
-                                 DishDto.CreateUpdate dishDto) {
+                                 @Valid DishDto.CreateUpdate dishDto) {
         var dish = service.createDish(con.fromDto(dishDto));
         return con.toFullDto(dish);
     }
@@ -78,7 +79,7 @@ public class DishController {
     @PostMapping("/admin/addons")
     AddonDto.Base createAddon(@RequestBody
                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Добавка")
-                              AddonDto.CreateUpdate addonDto) {
+                              @Valid AddonDto.CreateUpdate addonDto) {
         var addon = service.createAddon(con.fromDto(addonDto));
         return con.toDto(addon);
     }

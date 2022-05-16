@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.dish.DishCountDto;
 import ru.bironix.super_food.dtos.interfaces.*;
-import ru.bironix.super_food.dtos.interfaces.dish.DishesCountes;
+import ru.bironix.super_food.dtos.interfaces.dish.DishesCounts;
 import ru.bironix.super_food.dtos.interfaces.person.Client;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
@@ -24,7 +24,7 @@ public abstract class OrderDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateUpdate implements DeliveryTime,
-            WayToGet, TotalPrice, Address, DishesCountes {
+            WayToGet, TotalPrice, Address, DishesCounts {
 
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
@@ -41,7 +41,7 @@ public abstract class OrderDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Small implements Id, Created, Status,
-                TotalPrice, DishesCountes {
+                TotalPrice, DishesCounts {
 
             private Integer id;
             private Date created;

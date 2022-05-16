@@ -13,6 +13,7 @@ import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
 import ru.bironix.super_food.services.ActionService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ActionController {
     @PostMapping("/admin/actions")
     ActionDto.Base.Full createAction(@RequestBody
                                      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "акция")
-                                     ActionDto.CreateUpdate actionDto) {
+                                     @Valid ActionDto.CreateUpdate actionDto) {
 
         return con.toFullDto(service.createAction(con.fromDto(actionDto)));
     }

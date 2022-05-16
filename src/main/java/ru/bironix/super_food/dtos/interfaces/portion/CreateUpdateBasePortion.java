@@ -8,5 +8,6 @@ import javax.validation.constraints.NotNull;
 public interface CreateUpdateBasePortion {
 
     @Schema(description = "базовая порция блюда")
-    @NotNull PortionDto.CreateUpdate getBasePortion();
+    @NotNull
+    PortionDto.CreateUpdate getBasePortion();
 }

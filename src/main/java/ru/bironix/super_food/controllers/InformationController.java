@@ -16,6 +16,8 @@ import ru.bironix.super_food.dtos.DeliveryInformationDto;
 import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.services.InformationService;
 
+import javax.validation.Valid;
+
 @Tag(name = "Дополнительная информация")
 @RestController
 @Validated
@@ -44,7 +46,7 @@ public class InformationController {
     @PostMapping({"/admin/information/delivery"})
     DeliveryInformationDto updateDeliveryInformation(@RequestBody
                                                      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Информация о доставке")
-                                                     DeliveryInformationDto deliveryInformationDto) {
+                                                     @Valid DeliveryInformationDto deliveryInformationDto) {
 
         return con.toDto(
                 service.updateDeliveryInformation(

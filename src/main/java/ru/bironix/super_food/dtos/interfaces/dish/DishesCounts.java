@@ -5,7 +5,7 @@ import ru.bironix.super_food.dtos.dish.DishCountDto;
 import javax.validation.Valid;
 import java.util.List;
 
-public interface DishesCountes {
+public interface DishesCounts {
 
     @Valid
     List<DishCountDto> getDishes();

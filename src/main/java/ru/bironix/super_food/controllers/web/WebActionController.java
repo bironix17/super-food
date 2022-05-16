@@ -14,6 +14,7 @@ import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;
 import ru.bironix.super_food.services.ActionService;
 import ru.bironix.super_food.services.DishService;
+import ru.bironix.super_food.store.db.models.dish.Dish;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
@@ -51,8 +52,12 @@ public class WebActionController {
         if (newPrice < 0) return "view/createAction/index";
         if (actionResult.hasErrors()) return "view/createAction/index";
 
-        action.setPortions(action.getDishes().stream()
-                .map(DishDto.Bind::getPortion)
+        var dishesDb = dishService.getDishes(action.getDishes().stream()
+                .map(d -> d.getId())
+                .collect(toSet()));
+
+        action.setPortions(dishesDb.stream()
+                .map(Dish::getBasePortion)
                 .map(p -> PortionDto.CreateUpdateForAction.builder()
                         .id(p.getId())
                         .price(PriceDto.CreateUpdate.builder()

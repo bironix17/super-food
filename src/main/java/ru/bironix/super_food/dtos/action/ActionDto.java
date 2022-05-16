@@ -10,6 +10,7 @@ import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Name;
 import ru.bironix.super_food.dtos.interfaces.PicturePaths;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
+import ru.bironix.super_food.dtos.interfaces.dish.BindDishesForAction;
 import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
 import ru.bironix.super_food.dtos.interfaces.portion.CreateUpdateForActionPortions;
 
@@ -24,11 +25,10 @@ public abstract class ActionDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Name, PicturePaths, BindDishes, CreateUpdateForActionPortions {
+    public static class CreateUpdate implements Name, PicturePaths, BindDishesForAction, CreateUpdateForActionPortions {
         PicturePathsDto picturePaths;
         String name;
-        @NotEmpty
-        List<DishDto.Bind> dishes;
+        List<DishDto.BindForAction> dishes;
         List<PortionDto.CreateUpdateForAction> portions;
     }
 

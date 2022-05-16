@@ -77,6 +77,7 @@ public interface Converter {
     Dish fromDto(DishDto.Base.Small dishDto);
     @Mapping(target="basePortion", source="dishDto.portion")
     Dish fromDto(DishDto.Bind dishDto);
+    Dish fromDto(DishDto.BindForAction dishDto);
 
     DishCountDto toDto(DishCount dishesCount);
     DishCount fromDto(DishCountDto dishCountDto);

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 public class AuthRequestDto {
 
     @NotBlank
+    @Email
     String email;
 
     @NotBlank
