@@ -79,14 +79,14 @@ public class PersonService {
     }
 
     @Transactional
-    public Person updatePerson(Person updatedPerson) {
-        var person = personDao.findById(updatedPerson.getId())
-                .orElseThrow(() -> new NotFoundSourceException(updatedPerson.getId(), "Person"));
+    public Person updatePerson(Person updatingPerson) {
+        var person = personDao.findById(updatingPerson.getId())
+                .orElseThrow(() -> new NotFoundSourceException(updatingPerson.getId(), "Person"));
 
-        if (updatedPerson.getPassword() != null)
-            updatedPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
+        if (updatingPerson.getPassword() != null)
+            updatingPerson.setPassword(passwordEncoder.encode(updatingPerson.getPassword()));
 
-        mapper.map(updatedPerson, person);
+        mapper.map(updatingPerson, person);
         return person;
     }
 
@@ -102,6 +102,7 @@ public class PersonService {
     @Transactional
     public void deleteAddress(int id) {
         if (!addressDao.existsById(id)) throw new NotFoundSourceException(id, "Address");
+        personDao.findByAddresses_Id(id).forEach(p -> p.getAddresses().removeIf(a -> a.getId().equals(id)));
         addressDao.deleteById(id);
     }
 
@@ -155,7 +156,8 @@ public class PersonService {
     @Transactional
     public void deletePerson(int id) {
         refreshTokenService.deleteByPerson(id);
-        personDao.deleteById(id);
+        var person = getPerson(id);
+        personDao.delete(person);
     }
 
     public List<Dish> getFavoriteDishesForPerson(String email) {

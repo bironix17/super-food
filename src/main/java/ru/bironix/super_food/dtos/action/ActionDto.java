@@ -10,12 +10,9 @@ import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Name;
 import ru.bironix.super_food.dtos.interfaces.PicturePaths;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
-import ru.bironix.super_food.dtos.interfaces.dish.BindDishesForAction;
 import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
 import ru.bironix.super_food.dtos.interfaces.portion.CreateUpdateForActionPortions;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ActionDto {
@@ -25,10 +22,10 @@ public abstract class ActionDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Name, PicturePaths, BindDishesForAction, CreateUpdateForActionPortions {
+    public static class CreateUpdate implements Name, PicturePaths, BindDishes, CreateUpdateForActionPortions {
         PicturePathsDto picturePaths;
         String name;
-        List<DishDto.BindForAction> dishes;
+        List<DishDto.Bind> dishes;
         List<PortionDto.CreateUpdateForAction> portions;
     }
 

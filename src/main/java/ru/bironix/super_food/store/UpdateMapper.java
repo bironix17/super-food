@@ -8,6 +8,7 @@ import ru.bironix.super_food.store.db.models.action.Action;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
 import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.fileStore.models.DeliveryInformation;
 
@@ -16,6 +17,9 @@ public interface UpdateMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void map(Person source, @MappingTarget Person target);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void map(Address source, @MappingTarget Address target);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void map(Dish source, @MappingTarget Dish target);

@@ -17,6 +17,7 @@ import ru.bironix.super_food.services.DishService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class DishController {
     @GetMapping({"client/dishes/{id}", "/admin/dishes/{id}"})
     DishDto.Base.Full getDish(@PathVariable
                               @Parameter(description = "id блюда")
-                              @Min(0) int id) {
+                              @NotNull @Min(0) int id) {
         return con.toFullDto(service.getDish(id));
     }
 
@@ -59,7 +60,7 @@ public class DishController {
                                  DishDto.CreateUpdate dishDto,
                                  @PathVariable
                                  @Parameter(description = "id блюда")
-                                 @Min(0) int id) {
+                                 @NotNull @Min(0) int id) {
         var dish = con.fromDto(dishDto);
         dish.setId(id);
         return con.toFullDto(service.updateDish(dish));
@@ -69,7 +70,7 @@ public class DishController {
     @DeleteMapping("/admin/dishes/{id}")
     ApiActionResponseDto deleteDish(@PathVariable
                                     @Parameter(description = "id блюда")
-                                    @Min(0) int id) {
+                                    @NotNull @Min(0) int id) {
         service.deleteDish(id);
         return new ApiActionResponseDto(true);
     }
@@ -88,7 +89,7 @@ public class DishController {
     @GetMapping({"/client/addons/{id}", "/admin/addons/{id}"})
     AddonDto.Base getAddon(@PathVariable
                            @Parameter(description = "id добавки")
-                           @Min(0) int id) {
+                           @NotNull @Min(0) int id) {
         return con.toDto(service.getAddon(id));
     }
 
@@ -99,7 +100,7 @@ public class DishController {
                               AddonDto.CreateUpdate addonDto,
                               @PathVariable
                               @Parameter(description = "id добавки")
-                              @Min(0) int id) {
+                              @NotNull @Min(0) int id) {
 
         var addon = con.fromDto(addonDto);
         addon.setId(id);
@@ -111,16 +112,16 @@ public class DishController {
     @DeleteMapping("/admin/addons/{id}")
     ApiActionResponseDto deleteAddon(@PathVariable
                                      @Parameter(description = "id добавки")
-                                     @Min(0) int id) {
+                                     @NotNull @Min(0) int id) {
         service.deleteAddon(id);
         return new ApiActionResponseDto(true);
     }
 
 
-    @Operation(summary = "Получение всего списка блюд по категориям")
+    @Operation(summary = "Получение всего списка блюд. (С удалёнными блюдами)")
     @GetMapping({"/client/dishes/categories", "/admin/dishes/categories"})
-    List<CategoryDto> getDishesInCategories() {
-        return con.toCategoriesDto(service.getDishes());
+    List<DishDto.Base.Small> getDishesInCategories() {
+        return con.toDishesDto(service.getDishes());
     }
 
     @Operation(summary = "Получение актуального списка блюд по категориям. (Без удалённых)")
@@ -133,7 +134,7 @@ public class DishController {
     @GetMapping({"/client/specificDishes", "/admin/specificDishes"})
     List<DishDto.Base.Small> getSpecificDishes(@RequestParam("ids")
                                                @Parameter(description = "Список id блюд")
-                                               List<@Min(0) Integer> ids) {
+                                               List<@NotNull @Min(0) Integer> ids) {
         return con.toDishesDto(service.getDishes(new HashSet<>(ids)));
     }
 

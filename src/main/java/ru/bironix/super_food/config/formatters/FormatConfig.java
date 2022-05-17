@@ -20,7 +20,15 @@ public class FormatConfig extends WebMvcConfigurerAdapter {
     private final OrderStatusDtoFormatter orderStatusDtoFormatter;
 
     @Autowired
-    public FormatConfig(BindAddonDtoFormatter bindAddonDtoFormatter, FullDishDtoFormatter fullDishDtoFormatter, PortionDtoFormatter portionDtoFormatter, SmallDishDtoFormatter smallDishDtoFormatter, AddressDtoFormatter addressDtoFormatter, BaseAddonDtoFormatter baseAddonDtoFormatter, BindDishDtoFormatter bindDishDtoFormatter, CreateUpdatePortionDtoFormatter createUpdatePortionDtoFormatter, OrderStatusDtoFormatter orderStatusDtoFormatter) {
+    public FormatConfig(BindAddonDtoFormatter bindAddonDtoFormatter,
+                        FullDishDtoFormatter fullDishDtoFormatter,
+                        PortionDtoFormatter portionDtoFormatter,
+                        SmallDishDtoFormatter smallDishDtoFormatter,
+                        AddressDtoFormatter addressDtoFormatter,
+                        BaseAddonDtoFormatter baseAddonDtoFormatter,
+                        BindDishDtoFormatter bindDishDtoFormatter,
+                        CreateUpdatePortionDtoFormatter createUpdatePortionDtoFormatter,
+                        OrderStatusDtoFormatter orderStatusDtoFormatter) {
         this.bindAddonDtoFormatter = bindAddonDtoFormatter;
         this.fullDishDtoFormatter = fullDishDtoFormatter;
         this.portionDtoFormatter = portionDtoFormatter;

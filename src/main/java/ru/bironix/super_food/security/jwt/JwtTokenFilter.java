@@ -41,7 +41,7 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
         } catch (JwtException | IllegalArgumentException e) {
             SecurityContextHolder.clearContext();
-            ErrorAuthResponse.addError((HttpServletResponse) response, ApiError.TOKEN_EXPIRED_OR_INVALID);
+            ErrorAuthResponse.addError((HttpServletResponse) response, ApiError.ACCESS_TOKEN_EXPIRED_OR_INVALID);
         }
         catch (LockedException | DisabledException e) {
             SecurityContextHolder.clearContext();

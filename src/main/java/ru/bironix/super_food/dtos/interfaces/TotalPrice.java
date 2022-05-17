@@ -5,6 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public interface TotalPrice {
-    @Min(0)
+    @NotNull @Min(0)
     Integer getTotalPrice();
 }

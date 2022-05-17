@@ -8,7 +8,7 @@ public enum OrderStatusDto {
     AWAITING_PAYMENT("Ожидается оплата"),
     EXPECTS("Ожидает исполнения"),
     COOK("Готовится"),
-    COOKED("Готово"),
+    COOKED("Приготовлено"),
     DELIVERING("Доставляется"),
     COMPLETED("Завершен"),
     CANCELED("Отменён");

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.dtos.interfaces.Deleted;
 import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Name;
 import ru.bironix.super_food.dtos.interfaces.PicturePath;
@@ -19,10 +20,11 @@ public abstract class AddonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Name, PicturePath, CreateUpdatePrice {
+    public static class CreateUpdate implements Name, PicturePath, CreateUpdatePrice, Deleted {
         String name;
         String picturePath;
         PriceDto.CreateUpdate price;
+        Boolean deleted;
     }
 
 
@@ -31,11 +33,12 @@ public abstract class AddonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Base implements Id, Name, PicturePath, BasePrice {
+    public static class Base implements Id, Name, PicturePath, BasePrice, Deleted {
         Integer id;
         String name;
         String picturePath;
         PriceDto.Base price;
+        Boolean deleted;
     }
 
     @Schema(description = "Добавка. Связующая", name = "AddonDto.Bind")
@@ -43,7 +46,16 @@ public abstract class AddonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Bind implements Id, BindPrice {
+    public static class Bind implements Id {
+        Integer id;
+    }
+
+    @Schema(description = "Добавка. Связующая для заказа", name = "AddonDto.BindForOrder")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BindForOrder implements Id, BindPrice {
         Integer id;
         PriceDto.Bind price;
     }

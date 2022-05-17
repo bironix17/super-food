@@ -80,18 +80,18 @@ public abstract class DishDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Bind implements Id, BindPortion, BindAddons {
+    public static class Bind implements Id {
         Integer id;
-        PortionDto.Bind portion;
-        List<AddonDto.Bind> addons;
     }
 
-    @Schema(description = "Блюдо. Связующая для акции", name = "DishDto.BindForAction")
+    @Schema(description = "Блюдо. Связующая для заказа", name = "DishDto.BindForOrder")
     @Data
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BindForAction implements Id {
+    public static class BindForOrder implements Id, BindPortion, BindAddons {
         Integer id;
+        PortionDto.Bind portion;
+        List<AddonDto.Bind> addons;
     }
 }

@@ -16,6 +16,7 @@ import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
 
@@ -41,13 +42,13 @@ public class PersonController {
 
     @Operation(summary = "Создать пользователя")
     @PostMapping("/persons")
-    PersonDto.Base createPerson(@RequestBody
+    PersonDto.BaseForAdmin createPerson(@RequestBody
                                 @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                                @Valid PersonDto.Create personDto) {
+                                @Valid PersonDto.CreateUpdateForAdmin personDto) {
         var person = service.createPerson(con.fromDto(personDto));
         var currentId = getPersonIdFromSecurityContext();
         securityLogger.createPerson(currentId, person.getId());
-        return con.toDto(person);
+        return con.toPersonBaseForAdminDto(person);
     }
 
 
@@ -55,7 +56,7 @@ public class PersonController {
     @GetMapping("/persons/{id}")
     PersonDto.BaseForAdmin getPerson(@PathVariable
                                      @Parameter(description = "id пользователя")
-                                     @Min(0) int id) {
+                                     @NotNull @Min(0) int id) {
         var personDto = con.toPersonBaseForAdminDto(service.getPerson(id));
         var currentId = getPersonIdFromSecurityContext();
         securityLogger.getPersonInformation(currentId, id);
@@ -67,10 +68,10 @@ public class PersonController {
     @PutMapping("/persons/{id}")
     PersonDto.BaseForAdmin updatePerson(@RequestBody
                                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "пользователь")
-                                        PersonDto.UpdateForAdmin personDto,
+                                        PersonDto.CreateUpdateForAdmin personDto,
                                         @PathVariable
                                         @Parameter(description = "id пользователя")
-                                        @Min(0) int id) {
+                                        @NotNull @Min(0) int id) {
 
         Person person = con.fromDto(personDto);
         person.setId(id);
@@ -84,7 +85,7 @@ public class PersonController {
     @DeleteMapping("/persons/{id}")
     ApiActionResponseDto deletePerson(@PathVariable
                                       @Parameter(description = "id пользователя")
-                                      @Min(0) int id) {
+                                      @NotNull @Min(0) int id) {
         service.deletePerson(id);
         var currentId = getPersonIdFromSecurityContext();
         securityLogger.deletePerson(currentId, id);

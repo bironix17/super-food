@@ -15,6 +15,7 @@ import ru.bironix.super_food.services.ActionService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Tag(name = "Акции")
@@ -45,7 +46,7 @@ public class ActionController {
     @GetMapping({"/client/actions/{id}", "/admin/actions/{id}"})
     ActionDto.Base.Full getAction(@PathVariable
                                   @Parameter(description = "id")
-                                  @Min(0) int id) {
+                                  @NotNull @Min(0) int id) {
         return con.toFullDto(service.getAction(id));
     }
 
@@ -56,7 +57,7 @@ public class ActionController {
                                      ActionDto.CreateUpdate actionDto,
                                      @PathVariable
                                      @Parameter(description = "id")
-                                     @Min(0) int id) {
+                                     @NotNull @Min(0) int id) {
 
         Action action = con.fromDto(actionDto);
         action.setId(id);
@@ -67,7 +68,7 @@ public class ActionController {
     @DeleteMapping({"/admin/actions/{id}",})
     ApiActionResponseDto deleteAction(@PathVariable
                                       @Parameter(description = "id")
-                                      @Min(0) int id) {
+                                      @NotNull @Min(0) int id) {
         service.deleteAction(id);
         return new ApiActionResponseDto(true);
     }

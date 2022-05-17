@@ -19,6 +19,7 @@ import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
@@ -54,7 +55,7 @@ public class OrderController {
                                    @Valid OrderDto.CreateUpdate orderDto,
                                    @PathVariable
                                    @Parameter(description = "id пользователя")
-                                   @Min(0) int personId) {
+                                   @NotNull @Min(0) int personId) {
 
         var order = con.fromDto(orderDto);
         var person = personService.getPerson(personId);
@@ -71,7 +72,7 @@ public class OrderController {
             "/admin/orders/{id}"})
     OrderDto.Base.Full getOrder(@PathVariable
                                 @Parameter(description = "id заказа")
-                                @Min(0) int id) {
+                                @NotNull @Min(0) int id) {
         var order = service.getOrder(id);
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.getOrder(currentPersonId, id);
@@ -85,7 +86,7 @@ public class OrderController {
                                    OrderDto.CreateUpdate orderDto,
                                    @PathVariable
                                    @Parameter(description = "id заказа")
-                                   @Min(0) int id) {
+                                   @NotNull @Min(0) int id) {
         var order = con.fromDto(orderDto);
         order.setId(id);
         var updatedOrder = service.updateOrder(order);
@@ -98,7 +99,7 @@ public class OrderController {
     @DeleteMapping("/admin/orders/{id}")
     ApiActionResponseDto deleteOrder(@PathVariable
                                      @Parameter(description = "id заказа")
-                                     @Min(0) int id) {
+                                     @NotNull @Min(0) int id) {
         service.deleteOrder(id);
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.deleteOrder(currentPersonId, id);
@@ -110,7 +111,7 @@ public class OrderController {
     @ResponseBody
     OrderDto.Base.Full getOrderForMy(@PathVariable
                                      @Parameter(description = "id")
-                                     @Min(0) int id) {
+                                     @NotNull @Min(0) int id) {
         var order = service.getOrder(id);
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.deleteOrder(currentPersonId, id);
@@ -155,7 +156,7 @@ public class OrderController {
             "/admin/orders/{id}/status/{status}"})
     OrderDto.Base.Full updateOrder(@PathVariable
                                    @Parameter(description = "id заказа")
-                                   @Min(0) int id,
+                                   @NotNull @Min(0) int id,
                                    @PathVariable
                                    @Parameter(description = "статус")
                                    OrderStatusDto status) {
@@ -185,11 +186,11 @@ public class OrderController {
 
     @Operation(summary = "Получение заказов по конкретному статусу")
     @GetMapping({"/deliveryman/orders/status/{status}",
-            "/cook/activeOrders",
+            "/cook/orders/status/{status}",
             "/admin/orders/status/{status}"})
     List<OrderDto.Base.Small> getOrdersByStatus(@PathVariable
                                                 @Parameter(description = "статус")
-                                                OrderStatusDto status,
+                                                @NotNull OrderStatusDto status,
                                                 @RequestParam(value = "page", defaultValue = "0")
                                                 @Parameter(description = "Запрашиваемый номер страницы")
                                                 Integer pageNumber) {

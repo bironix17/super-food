@@ -59,7 +59,7 @@ public interface Converter {
     Person toPerson(AuthRequestDto request);
     Person fromDto(PersonDto.Create personDto);
     Person fromDto(PersonDto.Update personDto);
-    Person fromDto(PersonDto.UpdateForAdmin personDto);
+    Person fromDto(PersonDto.CreateUpdateForAdmin personDto);
     Person fromDto(PersonDto.Base personDto);
     Person fromDto(PersonDto.BaseForAdmin personDto);
     Person fromDto(PersonDto.Bind personDto);
@@ -70,14 +70,13 @@ public interface Converter {
     DishDto.Base.Full toFullDto(Dish dish);
     DishDto.Base.Small toSmallDto(Dish dish);
     DishDto.CreateUpdate toCreateUpdateDishDto(Dish dish);
-    @Mapping(target="portion", source="dish.basePortion")
     DishDto.Bind toDto(Dish dish);
     Dish fromDto(DishDto.CreateUpdate dishDto);
     Dish fromDto(DishDto.Base.Full dishDto);
     Dish fromDto(DishDto.Base.Small dishDto);
-    @Mapping(target="basePortion", source="dishDto.portion")
     Dish fromDto(DishDto.Bind dishDto);
-    Dish fromDto(DishDto.BindForAction dishDto);
+    @Mapping(target="basePortion", source="dishDto.portion")
+    Dish fromDto(DishDto.BindForOrder dishDto);
 
     DishCountDto toDto(DishCount dishesCount);
     DishCount fromDto(DishCountDto dishCountDto);

@@ -11,6 +11,9 @@ import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ActionService {
@@ -42,8 +45,9 @@ public class ActionService {
     @Transactional
     public Action createAction(Action action) {
         var newAction = new Action(action);
-        newAction.getPortions()
-                .forEach(dishService::createNewPriceForAction);
+        newAction.setPortions(newAction.getPortions().stream()
+                .map(dishService::createNewPriceForAction)
+                .collect(toList()));
 
         actionDao.saveAndFlush(newAction);
         entityManager.refresh(newAction);

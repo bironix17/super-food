@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.interfaces.Count;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDish;
+import ru.bironix.super_food.dtos.interfaces.dish.BindDishForOrder;
 
 @Schema(description = "Количество блюда")
 @Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DishCountDto implements Count, BindDish {
+public class DishCountDto implements Count, BindDishForOrder {
     Integer count;
-    DishDto.Bind dish;
+    DishDto.BindForOrder dish;
 }

@@ -19,9 +19,11 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Service
 public class DishService {
@@ -86,9 +88,22 @@ public class DishService {
     }
 
     private void checkComboCorrect(Dish dish) {
-        if (dish.getCategory() == CategoryType.COMBO
+        if (dish.getCategory() != CategoryType.COMBO
                 && CollectionUtils.isNotEmpty(dish.getDishes()))
             throw new ApiException(ApiError.ONLY_COMBO_CAN_CONTAIN_DISHES);
+
+        if (dish.getCategory() != CategoryType.COMBO) return;
+
+        if (dish.getCategory() == CategoryType.COMBO
+                && CollectionUtils.isEmpty(dish.getDishes()))
+            throw new ApiException(ApiError.EMPTY_DISHES_IN_COMBO);
+
+        var dishes = getDishes(dish.getDishes().stream()
+                .map(Dish::getId)
+                .collect(toSet()));
+        if (dishes.stream()
+                .map(Dish::getDeleted)
+                .anyMatch(d -> d)) throw new ApiException(ApiError.DELETED_DISH_IN_DISH);
     }
 
     @Transactional
@@ -97,10 +112,9 @@ public class DishService {
         if (!portionDao.existsById(portion.getId()))
             throw new NotFoundSourceException(portion.getId(), "Portion");
 
-        var newPrice = portion.getPriceNow().getPrice();
         var portionDb = getPortion(portion.getId());
-
-        portionDb.setOldPrice(portion.getPriceNow());
+        portionDb.setOldPrice(portionDb.getPriceNow());
+        var newPrice = portion.getPriceNow().getPrice();
         portionDb.setPriceNow(new Price(null, newPrice));
 
         return portionDb;

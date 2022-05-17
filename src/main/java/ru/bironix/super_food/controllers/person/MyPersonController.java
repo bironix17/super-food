@@ -17,6 +17,7 @@ import ru.bironix.super_food.services.PersonService;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
@@ -84,7 +85,7 @@ public class MyPersonController {
     @DeleteMapping("/my/addresses/{id}")
     ApiActionResponseDto deleteAddressForMy(@PathVariable
                                             @Parameter(description = "id адреса")
-                                            @Min(0) int id) {
+                                            @NotNull @Min(0) int id) {
         service.deleteAddress(id);
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.deleteAddressForPerson(currentPersonId, id);
@@ -105,7 +106,7 @@ public class MyPersonController {
     @PostMapping("/my/favorites/{dishId}")
     ApiActionResponseDto addFavoritesForMy(@PathVariable
                                            @Parameter(description = "id блюда")
-                                           @Min(0) int dishId) {
+                                           @NotNull @Min(0) int dishId) {
         var id = getPersonIdFromSecurityContext();
         service.addFavoritesForPerson(id, dishId);
         securityLogger.addFavoriteForPerson(id, id);
@@ -117,7 +118,7 @@ public class MyPersonController {
     @DeleteMapping("/my/favorites/{dishId}")
     ApiActionResponseDto deleteFavoritesForMy(@PathVariable
                                               @Parameter(description = "id блюда")
-                                              @Min(0) int dishId) {
+                                              @NotNull @Min(0) int dishId) {
         var id = getPersonIdFromSecurityContext();
         service.deleteFavoritesForPerson(id, dishId);
         securityLogger.deleteFavoriteForPerson(id, id);

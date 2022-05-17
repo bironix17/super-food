@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.interfaces.*;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import java.util.List;
 
@@ -38,11 +39,12 @@ public abstract class PersonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UpdateForAdmin extends Create implements Name, Addresses, PhoneNumber, Banned {
+    public static class CreateUpdateForAdmin extends Create implements Name, Addresses, PhoneNumber, Banned, PersonRole {
         String name;
         List<AddressDto> addresses;
         String phoneNumber;
         Boolean banned;
+        Role role;
     }
 
 
@@ -64,13 +66,14 @@ public abstract class PersonDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BaseForAdmin implements Id, Email, Name, Addresses, PhoneNumber, Banned {
+    public static class BaseForAdmin implements Id, Email, Name, Addresses, PhoneNumber, Banned, PersonRole {
         Integer id;
         String email;
         String name;
         List<AddressDto> addresses;
         String phoneNumber;
         Boolean banned;
+        Role role;
     }
 
 

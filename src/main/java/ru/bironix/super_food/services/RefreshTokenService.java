@@ -42,6 +42,7 @@ public class RefreshTokenService {
         if (refreshToken != null) {
             refreshToken.setToken(UUID.randomUUID().toString());
             refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(validityInSeconds));
+            refreshTokenDao.save(refreshToken);
             return refreshToken;
         }
 
