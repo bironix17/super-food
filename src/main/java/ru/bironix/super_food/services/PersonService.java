@@ -1,5 +1,6 @@
 package ru.bironix.super_food.services;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,13 @@ public class PersonService {
 
         if (updatingPerson.getPassword() != null)
             updatingPerson.setPassword(passwordEncoder.encode(updatingPerson.getPassword()));
+
+        if (CollectionUtils.isNotEmpty(updatingPerson.getAddresses())) {
+            updatingPerson.getAddresses().forEach(a -> {
+                if (a.getId() == null)
+                    addressDao.save(a);
+            });
+        }
 
         mapper.map(updatingPerson, person);
         return person;

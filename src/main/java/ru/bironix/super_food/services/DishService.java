@@ -115,13 +115,15 @@ public class DishService {
         var portionDb = getPortion(portion.getId());
         portionDb.setOldPrice(portionDb.getPriceNow());
         var newPrice = portion.getPriceNow().getPrice();
-        portionDb.setPriceNow(new Price(null, newPrice));
+        portionDb.setPriceNow(priceDao.save(new Price(null, newPrice)));
 
         return portionDb;
     }
 
     @Transactional
     public Portion deleteNewPriceForAction(Portion portion) {
+
+        if (portion.getOldPrice() == null) return portion;
 
         if (!portionDao.existsById(portion.getId()))
             throw new NotFoundSourceException(portion.getId(), "Portion");
@@ -190,7 +192,17 @@ public class DishService {
     @Transactional
     public Dish updateDish(Dish dish) {
         var dishDb = getDish(dish.getId());
+
+        if (CollectionUtils.isNotEmpty(dish.getPortions())) {
+            dish.getPortions().forEach(p -> {
+                if (p.getId() == null)
+                    portionDao.save(p);
+            });
+        }
+
         updateMapper.map(dish, dishDb);
+        dishDao.saveAndFlush(dishDb);
+        entityManager.refresh(dishDb);
         return dishDb;
     }
 

@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class DishCount implements GetTotalPrice {
+public class DishCount{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +34,9 @@ public class DishCount implements GetTotalPrice {
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addonPrice_id")
     })
-    List<AddonPrice> addonsPrices; // TODO можно использовать при вычислении total price
+    List<AddonPrice> addonsPrices;
 
     Integer count;
-
-    @Override
-    public int getTotalPrice() {
-        return dish.getTotalPrice() * count;
-    }
 
     @PrePersist
     void prePersist() {

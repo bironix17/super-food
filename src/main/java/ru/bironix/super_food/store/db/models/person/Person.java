@@ -34,7 +34,7 @@ public class Person {
     Boolean banned;
 
     @Valid
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true)
     List<Address> addresses;
 
     @Valid

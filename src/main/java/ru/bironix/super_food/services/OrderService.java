@@ -1,10 +1,12 @@
 package ru.bironix.super_food.services;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
+import ru.bironix.super_food.store.db.dao.dish.DishCountDao;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
@@ -33,6 +35,7 @@ OrderService {
     private final DishService dishService;
     private final PersonService personService;
     private final OrderDao orderDao;
+    private final DishCountDao dishCountDao;
     private final UpdateMapper updateMapper;
     private final InformationService informationService;
 
@@ -41,6 +44,7 @@ OrderService {
                         DishService dishService,
                         PersonService personService,
                         InformationService informationService,
+                        DishCountDao dishCountDao,
                         UpdateMapper updateMapper,
                         OrderDao orderDao) {
         this.entityManager = entityManager;
@@ -49,6 +53,7 @@ OrderService {
         this.informationService = informationService;
         this.orderDao = orderDao;
         this.updateMapper = updateMapper;
+        this.dishCountDao = dishCountDao;
     }
 
     public Order getOrder(int id) {
@@ -188,7 +193,17 @@ OrderService {
     @Transactional
     public Order updateOrder(Order order) {
         var orderBd = getOrder(order.getId());
+
+        if (CollectionUtils.isNotEmpty(order.getDishes())) {
+            order.getDishes().forEach(dc -> {
+                if (dc.getId() == null)
+                    dishCountDao.save(dc);
+            });
+        }
+
         updateMapper.map(order, orderBd);
+        orderDao.saveAndFlush(orderBd);
+        entityManager.refresh(orderBd);
         return orderBd;
     }
 

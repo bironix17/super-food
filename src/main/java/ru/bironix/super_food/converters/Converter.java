@@ -176,12 +176,20 @@ public interface Converter {
 
 
     default List<ActionDto.Base.Small> toActionsDto(List<Action> actions) {
+        if (actions == null) {
+            return null;
+        }
+        
         return actions.stream()
                 .map(this::toSmallDto)
                 .collect(toList());
     }
 
     default List<CategoryDto> toCategoriesDto(List<Dish> dishes) {
+        if (dishes == null) {
+            return null;
+        }
+
         return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.groupingBy(DishDto.Base.Small::getCategory))
@@ -191,6 +199,10 @@ public interface Converter {
     }
 
     default List<Dish> fromCategoriesDto(List<CategoryDto> categoryDtos) {
+        if (categoryDtos == null) {
+            return null;
+        }
+
         return categoryDtos.stream()
                 .flatMap(c -> c.getDishes().stream())
                 .map(this::fromDto)
@@ -199,6 +211,10 @@ public interface Converter {
 
 
     default List<DishDto.Base.Small> toDishesDto(List<Dish> dishes) {
+        if (dishes == null) {
+            return null;
+        }
+
         return dishes.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.toList());
@@ -206,6 +222,10 @@ public interface Converter {
 
 
     default List<OrderDto.Base.Small> toOrdersDto(List<Order> orders) {
+        if (orders == null) {
+            return null;
+        }
+
         return orders.stream()
                 .map(this::toSmallDto)
                 .collect(Collectors.toList());
@@ -213,12 +233,20 @@ public interface Converter {
     }
 
     default List<AddonDto.Base> toDto(List<Addon> addons) {
+        if (addons == null) {
+            return null;
+        }
+
         return addons.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     default LocalDateTime toLocalDateTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+
         return date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
@@ -229,6 +257,10 @@ public interface Converter {
     }
 
     default List<Integer> toFavoritesDto(List<Favorite> favorites) {
+        if (favorites == null) {
+            return null;
+        }
+
         return favorites.stream()
                 .map(Favorite::getDishId)
                 .collect(toList());
@@ -239,6 +271,10 @@ public interface Converter {
 
 
     default AddonDto.Base toDto(AddonPrice addonPrice) {
+        if (addonPrice == null) {
+            return null;
+        }
+
         return AddonDto.Base.builder()
                 .id(addonPrice.getId())
                 .price(toDto(addonPrice.getPrice()))
@@ -249,7 +285,7 @@ public interface Converter {
     }
 
     default List<AddonDto.Base> toDtoFromAddonsPrices(List<AddonPrice> addonsPrices) {
-        if ( addonsPrices == null ) {
+        if (addonsPrices == null) {
             return null;
         }
 
@@ -262,6 +298,10 @@ public interface Converter {
     Addon fromDto1(AddonDto.BindForOrder addonDto); //TODO поправить
 
     default AddonPrice fromDto(AddonDto.BindForOrder addonsDtos) {
+        if (addonsDtos == null) {
+            return null;
+        }
+
         return AddonPrice.builder()
                 .price(fromDto(addonsDtos.getPrice()))
                 .addon(fromDto1(addonsDtos))
@@ -270,7 +310,7 @@ public interface Converter {
 
 
     default List<AddonPrice> fromDto(List<AddonDto.BindForOrder> addonsDtos) {
-        if ( addonsDtos == null ) {
+        if (addonsDtos == null) {
             return null;
         }
 
@@ -281,6 +321,10 @@ public interface Converter {
 
 
     default DishCountDto.Base toDto(DishCount dishesCount) {
+        if (dishesCount == null) {
+            return null;
+        }
+
         var dish = toDishForOrderDto(dishesCount.getDish());
 
         dish.setPortion(toDto(dishesCount.getPortion()));
@@ -294,6 +338,10 @@ public interface Converter {
     }
 
     default DishCount fromDto(DishCountDto.CreteUpdate dishCountDto) {
+        if (dishCountDto == null) {
+            return null;
+        }
+
         return DishCount.builder()
                 .count(dishCountDto.getCount())
                 .dish(fromDto(dishCountDto.getDish()))
