@@ -62,9 +62,6 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     Boolean deleted;
 
 
-
-
-
     public Dish(Dish other) {
         this.id = other.id;
         this.picturePaths = other.picturePaths;
@@ -101,8 +98,12 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
         if (dish == null) return false;
 
         if (!Objects.equals(dish.getId(), getId())) return false;
-        if (!dish.getBasePortion()
-                .forOrderEquals(this.getBasePortion())) return false;
+
+        if (this.getPortions().stream()
+                .noneMatch(p -> p.forOrderEquals(dish.getBasePortion()))) {
+            return false;
+        }
+
         if (dish.getAddons() == null) return true;
 
         return dish.getAddons().stream()

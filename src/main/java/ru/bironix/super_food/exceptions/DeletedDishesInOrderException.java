@@ -6,12 +6,13 @@ import ru.bironix.super_food.constants.ApiError;
 import java.util.List;
 
 @Getter
-public class DeletedDishInOrderException extends RuntimeException {
+public class DeletedDishesInOrderException extends RuntimeException {
 
     private List<Integer> deletedIds;
-    private final ApiError apiError = ApiError.RESOURCE_NOT_FOUND;
+    private final ApiError apiError = ApiError.DELETED_DISH_IN_ORDER;
 
-    public DeletedDishInOrderException(List<Integer> deletedIds) {
+
+    public DeletedDishesInOrderException(List<Integer> deletedIds) {
         super(ApiError.DELETED_DISH_IN_ORDER.name());
         this.deletedIds = deletedIds;
     }

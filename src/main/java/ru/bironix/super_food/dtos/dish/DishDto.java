@@ -10,6 +10,7 @@ import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.interfaces.*;
 import ru.bironix.super_food.dtos.interfaces.addon.Addons;
 import ru.bironix.super_food.dtos.interfaces.addon.BindAddons;
+import ru.bironix.super_food.dtos.interfaces.addon.BindForOrderAddons;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
 import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
 import ru.bironix.super_food.dtos.interfaces.portion.*;
@@ -73,6 +74,24 @@ public abstract class DishDto {
             List<AddonDto.Base> addons;
             List<DishDto.Base.Small> dishes;
         }
+
+        @Schema(description = "Блюдо. Базовая для заказа", name = "DishDto.Base.ForOrder")
+        @Data
+        @SuperBuilder
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class ForOrder implements Id, PicturePaths, Name,
+                CategoryType, Deleted, Portion, Addons, Dishes {
+
+            Integer id;
+            PicturePathsDto picturePaths;
+            String name;
+            CategoryTypeDto category;
+            Boolean deleted;
+            PortionDto.Base portion;
+            List<AddonDto.Base> addons;
+            List<DishDto.Base.Small> dishes;
+        }
     }
 
     @Schema(description = "Блюдо. Связующая", name = "DishDto.Bind")
@@ -89,9 +108,9 @@ public abstract class DishDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BindForOrder implements Id, BindPortion, BindAddons {
+    public static class BindForOrder implements Id, BindPortion, BindForOrderAddons {
         Integer id;
         PortionDto.Bind portion;
-        List<AddonDto.Bind> addons;
+        List<AddonDto.BindForOrder> addons;
     }
 }

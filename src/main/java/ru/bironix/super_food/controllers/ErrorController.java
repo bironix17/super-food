@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.dtos.response.ErrorResponseDto;
-import ru.bironix.super_food.exceptions.ApiException;
-import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
+import ru.bironix.super_food.exceptions.*;
 
 import javax.validation.ConstraintViolationException;
 
@@ -79,9 +76,19 @@ public class ErrorController {
     }
 
 
-    @ExceptionHandler(DeletedDishInOrderException.class)
+    @ExceptionHandler(DeletedDishesInOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onDeletedDishInOrderException(DeletedDishInOrderException e) {
+    public ErrorResponseDto onDeletedDishInOrderException(DeletedDishesInOrderException e) {
+        return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
+                .message(e.getMessage())
+                .ids(e.getDeletedIds())
+                .build();
+    }
+
+    @ExceptionHandler(DeletedAddonsInOrderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onDeletedAddonInOrderException(DeletedAddonsInOrderException e) {
         return ErrorResponseDto.builder()
                 .errorCode(e.getApiError())
                 .message(e.getMessage())

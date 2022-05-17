@@ -6,6 +6,8 @@ import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Getter
@@ -22,6 +24,17 @@ public class DishCount implements GetTotalPrice {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     Dish dish;
+    @OneToOne(cascade = CascadeType.REFRESH)
+    Portion portion;
+    @OneToOne(cascade = CascadeType.REFRESH)
+    Price dishPrice;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumns({
+            @JoinColumn(name = "dish_id"),
+            @JoinColumn(name = "addonPrice_id")
+    })
+    List<AddonPrice> addonsPrices; // TODO можно использовать при вычислении total price
 
     Integer count;
 

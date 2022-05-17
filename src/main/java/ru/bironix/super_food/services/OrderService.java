@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
-import ru.bironix.super_food.constants.Constants;
+import ru.bironix.super_food.exceptions.*;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
@@ -15,10 +15,6 @@ import ru.bironix.super_food.store.db.models.order.OrderStatus;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.UpdateMapper;
-import ru.bironix.super_food.exceptions.ApiException;
-import ru.bironix.super_food.exceptions.DeletedDishInOrderException;
-import ru.bironix.super_food.exceptions.InvalidEntitiesOrderException;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -95,10 +91,10 @@ OrderService {
                 .map(Dish::getId)
                 .collect(toSet());
 
-        var dishes = dishService.getDishes(dishesIds);
-        checkActualIds(order, dishes);
-        checkDeleted(dishes);
-        checkTotalPrice(order, dishes);
+        var dishesDb = dishService.getDishes(dishesIds);
+        checkActualIds(order, dishesDb);
+        checkDeleted(order, dishesDb);
+        checkTotalPrice(order, dishesDb);
         checkAddress(order);
     }
 
@@ -120,14 +116,32 @@ OrderService {
     }
 
 
-    private void checkDeleted(List<Dish> dishesDb) {
-        var deletedIds = dishesDb.stream()
+    private void checkDeleted(Order order, List<Dish> dishesDb) {
+        var deletedDishesInOrderIds = dishesDb.stream()
                 .filter(Dish::getDeleted)
                 .map(Dish::getId)
                 .collect(toList());
 
-        if (!deletedIds.isEmpty())
-            throw new DeletedDishInOrderException(deletedIds);
+        if (!deletedDishesInOrderIds.isEmpty())
+            throw new DeletedDishesInOrderException(deletedDishesInOrderIds);
+
+        var orderAddonsIds = order.getDishes().stream()
+                .map(DishCount::getDish)
+                .flatMap(d -> d.getAddons().stream())
+                .map(Addon::getId)
+                .collect(toList());
+
+        var deletedAddonsOnOrderIds = dishesDb.stream()
+                .flatMap(d -> d.getAddons().stream())
+                .filter(Addon::getDeleted)
+                .map(Addon::getId)
+                .filter(orderAddonsIds::contains)
+                .collect(toList());
+
+
+        if (!deletedAddonsOnOrderIds.isEmpty())
+            throw new DeletedAddonsInOrderException(deletedAddonsOnOrderIds);
+
     }
 
     private void checkTotalPrice(Order order, List<Dish> dishesDb) {

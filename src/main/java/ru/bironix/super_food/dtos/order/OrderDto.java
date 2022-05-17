@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.dish.DishCountDto;
 import ru.bironix.super_food.dtos.interfaces.*;
+import ru.bironix.super_food.dtos.interfaces.dish.CreateUpdateDishesCounts;
 import ru.bironix.super_food.dtos.interfaces.dish.DishesCounts;
 import ru.bironix.super_food.dtos.interfaces.person.Client;
 import ru.bironix.super_food.dtos.person.AddressDto;
@@ -24,13 +25,13 @@ public abstract class OrderDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateUpdate implements DeliveryTime,
-            WayToGet, TotalPrice, Address, DishesCounts {
+            WayToGet, TotalPrice, Address, CreateUpdateDishesCounts {
 
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
         private WayToGetDto wayToGet;
         private Integer totalPrice;
-        private List<DishCountDto> dishes;
+        private List<DishCountDto.CreteUpdate> dishes;
         private AddressDto address;
     }
 
@@ -42,12 +43,11 @@ public abstract class OrderDto {
         @NoArgsConstructor
         public static class Small implements Id, Created, Status,
                 TotalPrice, DishesCounts {
-
             private Integer id;
             private Date created;
             private OrderStatusDto status;
             private Integer totalPrice;
-            private List<DishCountDto> dishes;
+            private List<DishCountDto.Base> dishes;
         }
 
         @Schema(description = "Заказ. Базовая, полная", name = "OrderDto.Base.Full")

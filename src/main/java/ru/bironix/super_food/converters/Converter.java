@@ -35,92 +35,143 @@ import static java.util.stream.Collectors.toList;
 public interface Converter {
 
     PicturePathsDto toDto(PicturePaths picturePaths);
+
     PicturePaths fromDto(PicturePathsDto picturePathsDto);
 
     PortionDto.Base toDto(Portion portion);
-    @Mapping(target="price", source="portion.priceNow")
+
+    @Mapping(target = "price", source = "portion.priceNow")
     PortionDto.Bind toBindDto(Portion portion);
-    @Mapping(target="price", source="portion.priceNow")
+
+    @Mapping(target = "price", source = "portion.priceNow")
     PortionDto.CreateUpdateForAction toCreateUpdateForActionDto(Portion portion);
+
     Portion fromDto(PortionDto.CreateUpdate portionDto);
+
     Portion fromDto(PortionDto.Base portionDto);
-    @Mapping(target="priceNow", source="portionDto.price")
+
+    @Mapping(target = "priceNow", source = "portionDto.price")
     Portion fromDto(PortionDto.Bind portionDto);
-    @Mapping(target="priceNow", source="portionDto.price")
+
+    @Mapping(target = "priceNow", source = "portionDto.price")
     Portion fromDto(PortionDto.CreateUpdateForAction portionDto);
 
     PriceDto.Base toDto(Price price);
+
+    PriceDto.Bind toBindDto(Price price);
+
     Price fromDto(PriceDto.CreateUpdate priceDto);
+
     Price fromDto(PriceDto.Base priceDto);
+
     Price fromDto(PriceDto.Bind priceDto);
 
     PersonDto.Base toDto(Person user);
+
     PersonDto.BaseForAdmin toPersonBaseForAdminDto(Person user);
+
     Person toPerson(AuthRequestDto request);
+
     Person fromDto(PersonDto.Create personDto);
+
     Person fromDto(PersonDto.Update personDto);
+
     Person fromDto(PersonDto.CreateUpdateForAdmin personDto);
+
     Person fromDto(PersonDto.Base personDto);
+
     Person fromDto(PersonDto.BaseForAdmin personDto);
+
     Person fromDto(PersonDto.Bind personDto);
 
     AddressDto toDto(Address address);
+
     Address fromDto(AddressDto addressDto);
 
     DishDto.Base.Full toFullDto(Dish dish);
+
     DishDto.Base.Small toSmallDto(Dish dish);
+
+    @Mapping(target = "portion", source = "dish.basePortion")
+    DishDto.Base.ForOrder toDishForOrderDto(Dish dish);
+
     DishDto.CreateUpdate toCreateUpdateDishDto(Dish dish);
+
     DishDto.Bind toDto(Dish dish);
+
+    DishDto.BindForOrder toBindForOrderDto(Dish dish);
+
     Dish fromDto(DishDto.CreateUpdate dishDto);
+
     Dish fromDto(DishDto.Base.Full dishDto);
+
     Dish fromDto(DishDto.Base.Small dishDto);
+
     Dish fromDto(DishDto.Bind dishDto);
-    @Mapping(target="basePortion", source="dishDto.portion")
+
+
+    @Mapping(target = "basePortion", source = "dishDto.portion")
     Dish fromDto(DishDto.BindForOrder dishDto);
 
-    DishCountDto toDto(DishCount dishesCount);
-    DishCount fromDto(DishCountDto dishCountDto);
-
+    @Mapping(target = "basePortion", source = "dishDto.portion")
+    Dish fromDto(DishDto.Base.ForOrder dishDto);
 
     ActionDto.Base.Small toSmallDto(Action action);
+
     ActionDto.Base.Full toFullDto(Action action);
+
     ActionDto.CreateUpdate toCreteUpdateActionDto(Action action);
 
     Action fromDto(ActionDto.CreateUpdate actionDto);
+
     Action fromDto(ActionDto.Base.Small actionDto);
+
     Action fromDto(ActionDto.Base.Full actionDto);
 
     OrderDto.Base.Small toSmallDto(Order order);
+
     OrderDto.Base.Full toFullDto(Order order);
+
     OrderDto.CreateUpdate toCreateUpdateOrderDto(Order order);
+
     Order fromDto(OrderDto.CreateUpdate orderDto);
+
     Order fromDto(OrderDto.Base.Small orderDto);
+
     Order fromDto(OrderDto.Base.Full orderDto);
 
 
     OrderStatusDto toDto(OrderStatus orderStatus);
+
     OrderStatus fromDto(OrderStatusDto status);
 
     CategoryTypeDto toDto(CategoryType categoryType);
+
     CategoryType fromDto(CategoryTypeDto categoryTypeDto);
 
     AddonDto.Base toDto(Addon addon);
+
     AddonDto.CreateUpdate toCreateUpdateAddonDto(Addon addon);
+
     Addon fromDto(AddonDto.CreateUpdate addonDto);
+
     Addon fromDto(AddonDto.Base addonDto);
+
     Addon fromDto(AddonDto.Bind addonDto);
 
-
     WayToGetDto fromDto(WayToGet wayToGet);
+
     WayToGet fromDto(WayToGetDto wayToGetDto);
 
     DeliveryInformationDto toDto(DeliveryInformation deliveryInformation);
+
     DeliveryInformation fromDto(DeliveryInformationDto deliveryInformationDto);
 
-    default Integer toDto(Favorite favorite){
+    default Integer toDto(Favorite favorite) {
         return favorite.getDishId();
     }
-    @Mapping(target="dishId", source="favorite")
+
+    @Mapping(target = "dishId", source = "favorite")
     Favorite fromDto(Integer favorite);
 
 
@@ -138,9 +189,10 @@ public interface Converter {
                 .map(i -> new CategoryDto(i.getKey(), i.getValue()))
                 .collect(Collectors.toList());
     }
-    default List<Dish> fromCategoriesDto(List<CategoryDto> categoryDtos){
+
+    default List<Dish> fromCategoriesDto(List<CategoryDto> categoryDtos) {
         return categoryDtos.stream()
-                .flatMap(c-> c.getDishes().stream())
+                .flatMap(c -> c.getDishes().stream())
                 .map(this::fromDto)
                 .collect(toList());
     }
@@ -160,6 +212,12 @@ public interface Converter {
 
     }
 
+    default List<AddonDto.Base> toDto(List<Addon> addons) {
+        return addons.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
     default LocalDateTime toLocalDateTime(Date date) {
         return date.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -170,10 +228,79 @@ public interface Converter {
         return java.sql.Timestamp.valueOf(localDateTime);
     }
 
-    default List<Integer> toFavoritesDto(List<Favorite> favorites){
+    default List<Integer> toFavoritesDto(List<Favorite> favorites) {
         return favorites.stream()
                 .map(Favorite::getDishId)
                 .collect(toList());
+    }
+
+
+    //TODO поправить весь гавнкод что ниже
+
+
+    default AddonDto.Base toDto(AddonPrice addonPrice) {
+        return AddonDto.Base.builder()
+                .id(addonPrice.getId())
+                .price(toDto(addonPrice.getPrice()))
+                .deleted(addonPrice.getAddon().getDeleted())
+                .name(addonPrice.getAddon().getName())
+                .picturePath(addonPrice.getAddon().getPicturePath())
+                .build();
+    }
+
+    default List<AddonDto.Base> toDtoFromAddonsPrices(List<AddonPrice> addonsPrices) {
+        if ( addonsPrices == null ) {
+            return null;
+        }
+
+        return addonsPrices.stream()
+                .map(this::toDto)
+                .collect(toList());
+    }
+
+
+    Addon fromDto1(AddonDto.BindForOrder addonDto); //TODO поправить
+
+    default AddonPrice fromDto(AddonDto.BindForOrder addonsDtos) {
+        return AddonPrice.builder()
+                .price(fromDto(addonsDtos.getPrice()))
+                .addon(fromDto1(addonsDtos))
+                .build();
+    }
+
+
+    default List<AddonPrice> fromDto(List<AddonDto.BindForOrder> addonsDtos) {
+        if ( addonsDtos == null ) {
+            return null;
+        }
+
+        return addonsDtos.stream()
+                .map(this::fromDto)
+                .collect(toList());
+    }
+
+
+    default DishCountDto.Base toDto(DishCount dishesCount) {
+        var dish = toDishForOrderDto(dishesCount.getDish());
+
+        dish.setPortion(toDto(dishesCount.getPortion()));
+        dish.getPortion().setPriceNow(toDto(dishesCount.getDishPrice()));
+        dish.setAddons(toDtoFromAddonsPrices(dishesCount.getAddonsPrices()));
+
+        return DishCountDto.Base.builder()
+                .count(dishesCount.getCount())
+                .dish(dish)
+                .build();
+    }
+
+    default DishCount fromDto(DishCountDto.CreteUpdate dishCountDto) {
+        return DishCount.builder()
+                .count(dishCountDto.getCount())
+                .dish(fromDto(dishCountDto.getDish()))
+                .dishPrice(fromDto(dishCountDto.getDish().getPortion().getPrice()))
+                .portion(fromDto(dishCountDto.getDish().getPortion()))
+                .addonsPrices(fromDto(dishCountDto.getDish().getAddons()))
+                .build();
     }
 
 

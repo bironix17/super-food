@@ -119,7 +119,7 @@ public class DishController {
 
 
     @Operation(summary = "Получение всего списка блюд. (С удалёнными блюдами)")
-    @GetMapping({"/client/dishes/categories", "/admin/dishes/categories"})
+    @GetMapping({"/client/dishes", "/admin/dishes/categories"})
     List<DishDto.Base.Small> getDishesInCategories() {
         return con.toDishesDto(service.getDishes());
     }
