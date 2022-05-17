@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
+import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.dtos.order.OrderDto;
@@ -112,9 +114,13 @@ public class OrderController {
     OrderDto.Base.Full getOrderForMy(@PathVariable
                                      @Parameter(description = "id")
                                      @NotNull @Min(0) int id) {
-        var order = service.getOrder(id);
         var currentPersonId = getPersonIdFromSecurityContext();
-        securityLogger.deleteOrder(currentPersonId, id);
+        var order = service.getOrder(id);
+
+        if (!order.getClient().getId().equals(currentPersonId)) {
+            throw new ApiException(ApiError.RESOURCE_ACCESS_DENIED);
+        }
+        securityLogger.getOrder(currentPersonId, id);
         return con.toFullDto(order);
     }
 

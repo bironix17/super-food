@@ -16,7 +16,5 @@ import java.io.Serializable;
 @Builder
 public class AddressDto implements Serializable {
     Integer id;
-
-    @NotBlank
     String address;
 }

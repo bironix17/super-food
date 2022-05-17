@@ -163,9 +163,9 @@ OrderService {
 
     private void checkAddress(Order order) {
         if (order.getWayToGet() == WayToGet.DELIVERY &&
-                order.getAddress() == null &&
-                order.getAddress().getId() == null &&
-                order.getAddress().getAddress() == null) {
+                (order.getAddress() == null ||
+                        order.getAddress().getId() == null &&
+                                order.getAddress().getAddress() == null)) {
             throw new ApiException(ApiError.ADDRESS_REQUIRED);
         }
     }
