@@ -26,6 +26,10 @@ public class Action {
     PicturePaths picturePaths;
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
+    @JoinColumns({
+            @JoinColumn(name = "action_id"),
+            @JoinColumn(name = "dish_id", unique = true)
+    })
     List<Dish> dishes;
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
