@@ -1,10 +1,8 @@
 package ru.bironix.super_food.store.db.models.person;
 
 import lombok.*;
-import ru.bironix.super_food.store.db.models.person.Person;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter

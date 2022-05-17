@@ -1,6 +1,5 @@
 package ru.bironix.super_food.store.db.models.person;
 
-import io.swagger.annotations.ApiModel;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;

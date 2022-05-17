@@ -13,7 +13,7 @@ import ru.bironix.super_food.utils.Utils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class SecurityLogger {

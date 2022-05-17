@@ -2,7 +2,6 @@ package ru.bironix.super_food.store.db.models.dish;
 
 import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
-import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.util.Objects;

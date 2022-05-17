@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
-import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.dish.PriceDto;
 import ru.bironix.super_food.services.ActionService;
@@ -17,9 +16,9 @@ import ru.bironix.super_food.services.DishService;
 import ru.bironix.super_food.store.db.models.dish.Dish;
 
 import javax.validation.Valid;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.toPrettyJsonForHtml;
 
 @Controller

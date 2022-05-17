@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
-import ru.bironix.super_food.support.*;
 import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
@@ -51,7 +51,14 @@ public class OrderTest extends AbstractTest {
         var dish = getSavedDish();
         var order = mock.getOrder();
         order.setClient(client);
-        order.setDishes(List.of(new DishCount(null, dish, 1)));
+        order.setDishes(List.of(DishCount.builder()
+                .dishPrice(dish.getBasePortion().getPriceNow())
+                .id(null)
+                .dish(dish)
+                .portion(dish.getBasePortion())
+                .count(1)
+                .addonsPrices(null)
+                .build()));
 
 
         var jsonResponse = this.mockMvc.perform(sendObjectDto(

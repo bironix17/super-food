@@ -5,14 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ru.bironix.super_food.dtos.interfaces.Count;
-import ru.bironix.super_food.dtos.interfaces.Id;
-import ru.bironix.super_food.dtos.interfaces.addon.BindAddons;
-import ru.bironix.super_food.dtos.interfaces.dish.*;
-import ru.bironix.super_food.dtos.interfaces.portion.BindPortion;
-
-import java.util.List;
+import ru.bironix.super_food.dtos.interfaces.dish.BindDishForOrder;
+import ru.bironix.super_food.dtos.interfaces.dish.ForOrderDish;
 
 
 public abstract class DishCountDto {

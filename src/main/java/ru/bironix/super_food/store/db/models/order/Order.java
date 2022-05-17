@@ -4,7 +4,6 @@ import lombok.*;
 import ru.bironix.super_food.store.db.models.dish.DishCount;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
-import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

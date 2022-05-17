@@ -48,7 +48,7 @@ public class WebDishController {
     }
 
     @PostMapping("/createDish")
-    public String createDish(@ModelAttribute("dish") @Valid DishDto.CreateUpdate dish, BindingResult dishResult,
+    public String createDish(@ModelAttribute("dish") @Valid DishDto.Create dish, BindingResult dishResult,
                              @ModelAttribute("newPortion") @Valid PortionDto.CreateUpdate newPortion, BindingResult newPortionResult,
                              Model model) throws JsonProcessingException {
 

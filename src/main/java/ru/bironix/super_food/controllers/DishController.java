@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
@@ -40,7 +39,7 @@ public class DishController {
     @PostMapping("/admin/dishes")
     DishDto.Base.Full createDish(@RequestBody
                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
-                                 @Valid DishDto.CreateUpdate dishDto) {
+                                 @Valid DishDto.Create dishDto) {
         var dish = service.createDish(con.fromDto(dishDto));
         return con.toFullDto(dish);
     }
@@ -57,7 +56,7 @@ public class DishController {
     @PutMapping("/admin/dishes/{id}")
     DishDto.Base.Full updateDish(@RequestBody
                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Блюдо")
-                                 DishDto.CreateUpdate dishDto,
+                                 DishDto.Update dishDto,
                                  @PathVariable
                                  @Parameter(description = "id блюда")
                                  @NotNull @Min(0) int id) {

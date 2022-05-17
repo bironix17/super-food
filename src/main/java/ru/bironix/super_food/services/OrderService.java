@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
+import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.store.db.dao.dish.DishCountDao;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.models.dish.Addon;
@@ -16,7 +17,6 @@ import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.OrderStatus;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Person;
-import ru.bironix.super_food.store.UpdateMapper;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;

@@ -3,15 +3,6 @@ package ru.bironix.super_food.converters;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.bironix.super_food.dtos.AuthRequestDto;
-import ru.bironix.super_food.store.db.models.action.Action;
-import ru.bironix.super_food.store.db.models.common.PicturePaths;
-import ru.bironix.super_food.store.db.models.dish.*;
-import ru.bironix.super_food.store.db.models.order.Order;
-import ru.bironix.super_food.store.db.models.order.OrderStatus;
-import ru.bironix.super_food.store.db.models.order.WayToGet;
-import ru.bironix.super_food.store.db.models.person.Address;
-import ru.bironix.super_food.store.db.models.person.Favorite;
-import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.DeliveryInformationDto;
 import ru.bironix.super_food.dtos.action.ActionDto;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
@@ -21,6 +12,15 @@ import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
+import ru.bironix.super_food.store.db.models.action.Action;
+import ru.bironix.super_food.store.db.models.common.PicturePaths;
+import ru.bironix.super_food.store.db.models.dish.*;
+import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.order.OrderStatus;
+import ru.bironix.super_food.store.db.models.order.WayToGet;
+import ru.bironix.super_food.store.db.models.person.Address;
+import ru.bironix.super_food.store.db.models.person.Favorite;
+import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.fileStore.models.DeliveryInformation;
 
 import java.time.LocalDateTime;
@@ -35,136 +35,86 @@ import static java.util.stream.Collectors.toList;
 public interface Converter {
 
     PicturePathsDto toDto(PicturePaths picturePaths);
-
     PicturePaths fromDto(PicturePathsDto picturePathsDto);
-
     PortionDto.Base toDto(Portion portion);
 
     @Mapping(target = "price", source = "portion.priceNow")
     PortionDto.Bind toBindDto(Portion portion);
-
     @Mapping(target = "price", source = "portion.priceNow")
     PortionDto.CreateUpdateForAction toCreateUpdateForActionDto(Portion portion);
-
     Portion fromDto(PortionDto.CreateUpdate portionDto);
-
     Portion fromDto(PortionDto.Base portionDto);
-
     @Mapping(target = "priceNow", source = "portionDto.price")
     Portion fromDto(PortionDto.Bind portionDto);
-
     @Mapping(target = "priceNow", source = "portionDto.price")
     Portion fromDto(PortionDto.CreateUpdateForAction portionDto);
 
     PriceDto.Base toDto(Price price);
-
     PriceDto.Bind toBindDto(Price price);
-
     Price fromDto(PriceDto.CreateUpdate priceDto);
-
     Price fromDto(PriceDto.Base priceDto);
-
     Price fromDto(PriceDto.Bind priceDto);
 
     PersonDto.Base toDto(Person user);
-
     PersonDto.BaseForAdmin toPersonBaseForAdminDto(Person user);
-
     Person toPerson(AuthRequestDto request);
-
     Person fromDto(PersonDto.Create personDto);
-
     Person fromDto(PersonDto.Update personDto);
-
     Person fromDto(PersonDto.CreateUpdateForAdmin personDto);
-
     Person fromDto(PersonDto.Base personDto);
-
     Person fromDto(PersonDto.BaseForAdmin personDto);
-
     Person fromDto(PersonDto.Bind personDto);
 
     AddressDto toDto(Address address);
-
     Address fromDto(AddressDto addressDto);
 
     DishDto.Base.Full toFullDto(Dish dish);
-
     DishDto.Base.Small toSmallDto(Dish dish);
-
     @Mapping(target = "portion", source = "dish.basePortion")
     DishDto.Base.ForOrder toDishForOrderDto(Dish dish);
-
-    DishDto.CreateUpdate toCreateUpdateDishDto(Dish dish);
-
+    DishDto.Update toUpdateDishDto(Dish dish);
     DishDto.Bind toDto(Dish dish);
-
     DishDto.BindForOrder toBindForOrderDto(Dish dish);
-
-    Dish fromDto(DishDto.CreateUpdate dishDto);
-
+    Dish fromDto(DishDto.Create dishDto);
+    Dish fromDto(DishDto.Update dishDto);
     Dish fromDto(DishDto.Base.Full dishDto);
-
     Dish fromDto(DishDto.Base.Small dishDto);
-
     Dish fromDto(DishDto.Bind dishDto);
-
-
     @Mapping(target = "basePortion", source = "dishDto.portion")
     Dish fromDto(DishDto.BindForOrder dishDto);
-
     @Mapping(target = "basePortion", source = "dishDto.portion")
     Dish fromDto(DishDto.Base.ForOrder dishDto);
 
     ActionDto.Base.Small toSmallDto(Action action);
-
     ActionDto.Base.Full toFullDto(Action action);
-
     ActionDto.CreateUpdate toCreteUpdateActionDto(Action action);
-
     Action fromDto(ActionDto.CreateUpdate actionDto);
-
     Action fromDto(ActionDto.Base.Small actionDto);
-
     Action fromDto(ActionDto.Base.Full actionDto);
 
     OrderDto.Base.Small toSmallDto(Order order);
-
     OrderDto.Base.Full toFullDto(Order order);
-
     OrderDto.CreateUpdate toCreateUpdateOrderDto(Order order);
-
     Order fromDto(OrderDto.CreateUpdate orderDto);
-
     Order fromDto(OrderDto.Base.Small orderDto);
-
     Order fromDto(OrderDto.Base.Full orderDto);
 
-
     OrderStatusDto toDto(OrderStatus orderStatus);
-
     OrderStatus fromDto(OrderStatusDto status);
 
     CategoryTypeDto toDto(CategoryType categoryType);
-
     CategoryType fromDto(CategoryTypeDto categoryTypeDto);
 
     AddonDto.Base toDto(Addon addon);
-
     AddonDto.CreateUpdate toCreateUpdateAddonDto(Addon addon);
-
     Addon fromDto(AddonDto.CreateUpdate addonDto);
-
     Addon fromDto(AddonDto.Base addonDto);
-
     Addon fromDto(AddonDto.Bind addonDto);
 
     WayToGetDto fromDto(WayToGet wayToGet);
-
     WayToGet fromDto(WayToGetDto wayToGetDto);
 
     DeliveryInformationDto toDto(DeliveryInformation deliveryInformation);
-
     DeliveryInformation fromDto(DeliveryInformationDto deliveryInformationDto);
 
     default Integer toDto(Favorite favorite) {
@@ -266,9 +216,16 @@ public interface Converter {
                 .collect(toList());
     }
 
+    default AddonDto.BindForOrder toBindForOrderDto(AddonPrice addonPrice) {
+        if (addonPrice == null) {
+            return null;
+        }
 
-    //TODO поправить весь гавнкод что ниже
-
+        return AddonDto.BindForOrder.builder()
+                .id(addonPrice.getId())
+                .price(toBindDto(addonPrice.getPrice()))
+                .build();
+    }
 
     default AddonDto.Base toDto(AddonPrice addonPrice) {
         if (addonPrice == null) {
@@ -288,14 +245,22 @@ public interface Converter {
         if (addonsPrices == null) {
             return null;
         }
-
         return addonsPrices.stream()
                 .map(this::toDto)
                 .collect(toList());
     }
 
+    default List<AddonDto.BindForOrder> toBindForOrderDtoFromAddonsPrices(List<AddonPrice> addonsPrices) {
+        if (addonsPrices == null) {
+            return null;
+        }
+        return addonsPrices.stream()
+                .map(this::toBindForOrderDto)
+                .collect(toList());
+    }
 
-    Addon fromDto1(AddonDto.BindForOrder addonDto); //TODO поправить
+
+    Addon fromBindForOrderDto(AddonDto.BindForOrder addonDto);
 
     default AddonPrice fromDto(AddonDto.BindForOrder addonsDtos) {
         if (addonsDtos == null) {
@@ -304,7 +269,7 @@ public interface Converter {
 
         return AddonPrice.builder()
                 .price(fromDto(addonsDtos.getPrice()))
-                .addon(fromDto1(addonsDtos))
+                .addon(fromBindForOrderDto(addonsDtos))
                 .build();
     }
 
@@ -324,7 +289,6 @@ public interface Converter {
         if (dishesCount == null) {
             return null;
         }
-
         var dish = toDishForOrderDto(dishesCount.getDish());
 
         dish.setPortion(toDto(dishesCount.getPortion()));
@@ -336,6 +300,24 @@ public interface Converter {
                 .dish(dish)
                 .build();
     }
+
+
+    default DishCountDto.CreteUpdate toCreateUpdateDto(DishCount dishesCount) {
+        if (dishesCount == null) {
+            return null;
+        }
+        var dish = toBindForOrderDto(dishesCount.getDish());
+
+        dish.setPortion(toBindDto(dishesCount.getPortion()));
+        dish.getPortion().setPrice(toBindDto(dishesCount.getDishPrice()));
+        dish.setAddons(toBindForOrderDtoFromAddonsPrices(dishesCount.getAddonsPrices()));
+
+        return DishCountDto.CreteUpdate.builder()
+                .count(dishesCount.getCount())
+                .dish(dish)
+                .build();
+    }
+
 
     default DishCount fromDto(DishCountDto.CreteUpdate dishCountDto) {
         if (dishCountDto == null) {

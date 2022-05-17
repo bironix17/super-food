@@ -77,7 +77,7 @@ public class DishTest extends AbstractTest {
 
         var jsonResponse = this.mockMvc.perform(
                         sendObjectDto(
-                                con.toCreateUpdateDishDto(dish),
+                                con.toUpdateDishDto(dish),
                                 addAuth(admin, post("/admin/dishes"))
                         ))
                 .andExpect(status().isOk())
@@ -190,7 +190,7 @@ public class DishTest extends AbstractTest {
 
         var jsonResponse = this.mockMvc.perform(
                         sendObjectDto(
-                                con.toCreateUpdateDishDto(dish),
+                                con.toUpdateDishDto(dish),
                                 addAuth(admin, put(String.format("/admin/dishes/%s", dish.getId())))
                         ))
                 .andExpect(status().isOk())

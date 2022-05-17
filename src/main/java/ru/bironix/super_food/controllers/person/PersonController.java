@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.bironix.super_food.converters.Converter;
-import ru.bironix.super_food.security.log.SecurityLogger;
-import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
+import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.services.PersonService;
+import ru.bironix.super_food.store.db.models.person.Person;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;

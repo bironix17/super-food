@@ -1,8 +1,6 @@
 package ru.bironix.super_food.config.formatters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.dtos.dish.PortionDto;
@@ -24,7 +22,6 @@ public class CreateUpdatePortionDtoFormatter implements Formatter<PortionDto.Cre
     }
 
 
-    // TODO разобраться почему приходит отрывок "{"id":null"
     @Override
     public PortionDto.CreateUpdate parse(String text, Locale locale) {
         try {

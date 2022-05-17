@@ -4,7 +4,6 @@ import lombok.*;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
-import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -134,7 +134,14 @@ public abstract class AbstractTest {
         var dish = getSavedDish();
         var order = mock.getOrder();
         order.setClient(person);
-        order.setDishes(List.of(new DishCount(null, dish, 1)));
+        order.setDishes(List.of(DishCount.builder()
+                .dishPrice(dish.getBasePortion().getPriceNow())
+                .id(null)
+                .dish(dish)
+                .portion(dish.getBasePortion())
+                .count(1)
+                .addonsPrices(null)
+                .build()));
 
         var newOrder = services
                 .orderService

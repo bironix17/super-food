@@ -11,11 +11,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
-import ru.bironix.super_food.support.*;
 import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
-
 import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.Matchers.containsString;

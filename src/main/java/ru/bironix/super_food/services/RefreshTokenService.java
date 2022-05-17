@@ -10,7 +10,6 @@ import ru.bironix.super_food.store.db.dao.person.RefreshTokenDao;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.db.models.person.RefreshToken;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;

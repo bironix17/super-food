@@ -2,7 +2,6 @@ package ru.bironix.super_food.dtos.dish;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -20,12 +19,12 @@ import java.util.List;
 public abstract class DishDto {
 
 
-    @Schema(description = "Блюдо. Создание, обновление", name = "DishDto.CreateUpdate")
+    @Schema(description = "Блюдо. Создание, обновление", name = "DishDto.Create")
     @Data
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements PicturePaths, Name, Composition,
+    public static class Create implements PicturePaths, Name, Composition,
             CategoryType, Deleted, CreateUpdateBasePortion, Description, Allergens,
             CreateUpdatePortions, BindAddons, BindDishes {
 
@@ -38,6 +37,28 @@ public abstract class DishDto {
         String description;
         String allergens;
         List<PortionDto.CreateUpdate> portions;
+        List<AddonDto.Bind> addons;
+        List<DishDto.Bind> dishes;
+    }
+
+    @Schema(description = "Блюдо. Обновление", name = "DishDto.Update")
+    @Data
+    @SuperBuilder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Update implements PicturePaths, Name, Composition,
+            CategoryType, Deleted, BasePortion, Description, Allergens,
+            Portions, BindAddons, BindDishes {
+
+        PicturePathsDto picturePaths;
+        String name;
+        String composition;
+        CategoryTypeDto category;
+        Boolean deleted = false;
+        PortionDto.Base basePortion;
+        String description;
+        String allergens;
+        List<PortionDto.Base> portions;
         List<AddonDto.Bind> addons;
         List<DishDto.Bind> dishes;
     }
