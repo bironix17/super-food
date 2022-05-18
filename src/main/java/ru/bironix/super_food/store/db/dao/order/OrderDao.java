@@ -19,4 +19,8 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 
     List<Order> findAllByClientId(int id, Pageable pageable);
 
+    List<Order> findByClient_Id(Integer id);
+
+
+
 }

@@ -8,10 +8,13 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import ru.bironix.super_food.store.UpdateMapper;
+import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.dao.person.AddressDao;
 import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.store.db.dao.person.PersonDao;
 import ru.bironix.super_food.store.db.models.dish.Dish;
+import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Favorite;
 import ru.bironix.super_food.store.db.models.person.Person;
@@ -22,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toSet;
+import static ru.bironix.super_food.constants.Constants.DELETED_PERSON_EMAIL;
 
 @Service
 public class PersonService {
@@ -29,6 +33,7 @@ public class PersonService {
     private final PersonDao personDao;
     private final RefreshTokenService refreshTokenService;
     private final AddressDao addressDao;
+    private final OrderDao orderDao;
     private final FavoritesDao favoritesDao;
     private final UpdateMapper mapper;
     private final EntityManager entityManager;
@@ -39,6 +44,7 @@ public class PersonService {
     public PersonService(PersonDao personDao,
                          AddressDao addressDao,
                          FavoritesDao favoritesDao,
+                         OrderDao orderDao,
                          UpdateMapper mapper,
                          RefreshTokenService refreshTokenService,
                          EntityManager entityManager,
@@ -52,6 +58,7 @@ public class PersonService {
         this.passwordEncoder = passwordEncoder;
         this.dishService = dishService;
         this.refreshTokenService = refreshTokenService;
+        this.orderDao = orderDao;
     }
 
     public Person getPersonByUsername(String email) {
@@ -163,8 +170,21 @@ public class PersonService {
     @Transactional
     public void deletePerson(int id) {
         refreshTokenService.deleteByPerson(id);
+        deleteUserForOrders(id);
         var person = getPerson(id);
         personDao.delete(person);
+    }
+
+    @Transactional
+    public void deleteUserForOrders(int id) {
+        var clientOrders = orderDao.findByClient_Id(id);
+        var deletedPerson = getPersonByEmail(DELETED_PERSON_EMAIL).get();
+        clientOrders.forEach(o -> {
+            o.setClient(deletedPerson);
+            if (o.getWayToGet() == WayToGet.DELIVERY) {
+                o.setAddress(deletedPerson.getAddresses().get(0));
+            };
+        });
     }
 
     public List<Dish> getFavoriteDishesForPerson(String email) {
