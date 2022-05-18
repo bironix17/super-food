@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.bironix.super_food.dtos.AuthRequestDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.utils.Utils;
@@ -22,7 +23,7 @@ public class SecurityLogger {
     @Autowired
     private HttpServletRequest request;
 
-    public void attemptRegistryPerson(AuthRequestDto authRequestDto) {
+    public void attemptRegistryPerson(PersonDto.Create authRequestDto) {
         var ip = Utils.getClientIP(request);
         logger.warn(String.format("Attempt registry from ip %s user with id %s", ip, authRequestDto.getEmail()));
     }

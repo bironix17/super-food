@@ -16,9 +16,11 @@ public abstract class PersonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Create implements Email, Password {
+    public static class Create implements Email, Password, Name, PhoneNumber {
         String email;
         String password;
+        String name;
+        String phoneNumber;
     }
 
     @Schema(description = "Пользователь. Обновление", name = "PersonDto.Update")
@@ -61,7 +63,7 @@ public abstract class PersonDto {
         String phoneNumber;
     }
 
-    @Schema(description = "Пользователь. Базовая для админа" , name = "PersonDto.BaseForAdmin")
+    @Schema(description = "Пользователь. Базовая для админа", name = "PersonDto.BaseForAdmin")
     @Data
     @Builder
     @AllArgsConstructor

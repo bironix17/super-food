@@ -14,6 +14,7 @@ import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.dtos.TokenDto;
+import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.AuthResponseDto;
 import ru.bironix.super_food.dtos.response.TokensDto;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
@@ -57,10 +58,10 @@ public class AuthController {
     @PostMapping("/register")
     public AuthResponseDto register(@RequestBody
                                     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Сущность авторизации")
-                                    @Valid AuthRequestDto request) {
+                                    @Valid PersonDto.Create request) {
 
         securityLogger.attemptRegistryPerson(request);
-        var person = service.createPerson(con.toPerson(request));
+        var person = service.createPerson(con.fromDto(request));
         securityLogger.registryPerson(person);
         return generateAuthResponse(person);
     }
