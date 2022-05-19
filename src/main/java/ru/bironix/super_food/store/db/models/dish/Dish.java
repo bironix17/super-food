@@ -38,6 +38,10 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     String description;
     String allergens;
+    Double energyValue;
+    Double protein;
+    Double fat;
+    Double carbohydrates;
 
     @OneToOne(optional = false)
     Portion basePortion;
