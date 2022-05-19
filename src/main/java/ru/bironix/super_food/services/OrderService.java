@@ -4,6 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
 import ru.bironix.super_food.store.UpdateMapper;
@@ -79,9 +80,9 @@ OrderService {
 
             if (newOrder.getAddress().getAddress() != null) {
                 Address address;
-
                 try {
-                    address = personService.addAddressForPerson(newOrder.getClient().getId(),
+                    address = personService.addAddressForPerson(
+                            newOrder.getClient().getId(),
                             newOrder.getAddress().getAddress());
                 } catch (ApiException e) {
                     address = personService.getAddressByAddressValue(newOrder.getAddress().getAddress());
@@ -97,7 +98,7 @@ OrderService {
 
         var createdOrder = orderDao.saveAndFlush(newOrder);
         entityManager.refresh(createdOrder);
-        return orderDao.findById(createdOrder.getId()).get();
+        return createdOrder;
     }
 
     private void checkCorrectOrder(Order order) {

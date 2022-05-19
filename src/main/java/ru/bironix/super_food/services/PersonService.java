@@ -99,7 +99,7 @@ public class PersonService {
         return person;
     }
 
-    @Transactional
+    @Transactional(dontRollbackOn = {NotFoundSourceException.class, ApiException.class})
     public Address addAddressForPerson(Integer personId, String addressName) {
         var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
