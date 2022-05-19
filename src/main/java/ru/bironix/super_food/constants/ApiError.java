@@ -3,7 +3,7 @@ package ru.bironix.super_food.constants;
 import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(enumAsRef = true, name = "Сообщения об ошибках")
+@Schema(enumAsRef = true, description = "Сообщения об ошибках")
 @ApiModel
 public enum ApiError {
     AUTHENTICATION_REQUIRED,
