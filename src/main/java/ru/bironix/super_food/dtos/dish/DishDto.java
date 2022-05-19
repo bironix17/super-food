@@ -31,7 +31,7 @@ public abstract class DishDto {
         PicturePathsDto picturePaths;
         String name;
         String composition;
-        CategoryTypeDto category;
+        String category;
         Boolean deleted = false;
         PortionDto.CreateUpdate basePortion;
         String description;
@@ -53,7 +53,7 @@ public abstract class DishDto {
         PicturePathsDto picturePaths;
         String name;
         String composition;
-        CategoryTypeDto category;
+        String category;
         Boolean deleted = false;
         PortionDto.Base basePortion;
         String description;
@@ -77,7 +77,7 @@ public abstract class DishDto {
             PicturePathsDto picturePaths;
             String name;
             String composition;
-            CategoryTypeDto category;
+            String category;
             Boolean deleted;
             PortionDto.Base basePortion;
         }
@@ -107,7 +107,7 @@ public abstract class DishDto {
             Integer id;
             PicturePathsDto picturePaths;
             String name;
-            CategoryTypeDto category;
+            String category;
             Boolean deleted;
             PortionDto.Base portion;
             List<AddonDto.Base> addons;

@@ -68,22 +68,32 @@ public interface Converter {
     AddressDto toDto(Address address);
     Address fromDto(AddressDto addressDto);
 
+    @Mapping(target = "category", source = "category.name")
     DishDto.Base.Full toFullDto(Dish dish);
+    @Mapping(target = "category", source = "category.name")
     DishDto.Base.Small toSmallDto(Dish dish);
+    @Mapping(target = "category", source = "category.name")
     @Mapping(target = "portion", source = "dish.basePortion")
     DishDto.Base.ForOrder toDishForOrderDto(Dish dish);
+    @Mapping(target = "category", source = "category.name")
     DishDto.Update toUpdateDishDto(Dish dish);
     DishDto.Bind toDto(Dish dish);
     DishDto.BindForOrder toBindForOrderDto(Dish dish);
+    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Create dishDto);
+    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Update dishDto);
+    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Base.Full dishDto);
+    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Base.Small dishDto);
     Dish fromDto(DishDto.Bind dishDto);
     @Mapping(target = "basePortion", source = "dishDto.portion")
     Dish fromDto(DishDto.BindForOrder dishDto);
+    @Mapping(target = "category.name", source = "category")
     @Mapping(target = "basePortion", source = "dishDto.portion")
     Dish fromDto(DishDto.Base.ForOrder dishDto);
+
 
     ActionDto.Base.Small toSmallDto(Action action);
     ActionDto.Base.Full toFullDto(Action action);
@@ -101,9 +111,6 @@ public interface Converter {
 
     OrderStatusDto toDto(OrderStatus orderStatus);
     OrderStatus fromDto(OrderStatusDto status);
-
-    CategoryTypeDto toDto(CategoryType categoryType);
-    CategoryType fromDto(CategoryTypeDto categoryTypeDto);
 
     AddonDto.Base toDto(Addon addon);
     AddonDto.CreateUpdate toCreateUpdateAddonDto(Addon addon);

@@ -1,6 +1,7 @@
 package ru.bironix.super_food.store.db.models.dish;
 
 import lombok.*;
+import ru.bironix.super_food.dtos.interfaces.CategoryType;
 import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
@@ -32,8 +33,8 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     String composition;
 
-    @Enumerated(EnumType.STRING)
-    CategoryType category;
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    Category category;
 
     String description;
     String allergens;

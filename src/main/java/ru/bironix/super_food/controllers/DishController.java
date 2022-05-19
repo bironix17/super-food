@@ -12,13 +12,18 @@ import ru.bironix.super_food.dtos.dish.AddonDto;
 import ru.bironix.super_food.dtos.dish.CategoryDto;
 import ru.bironix.super_food.dtos.dish.DishDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
+import ru.bironix.super_food.dtos.response.CreateCategoryDto;
 import ru.bironix.super_food.services.DishService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Tag(name = "Блюдо")
 @RestController
@@ -135,6 +140,25 @@ public class DishController {
                                                @Parameter(description = "Список id блюд")
                                                List<@NotNull @Min(0) Integer> ids) {
         return con.toDishesDto(service.getDishes(new HashSet<>(ids)));
+    }
+
+    @Operation(summary = "Создание категории")
+    @PostMapping("/admin/categories/{category}")
+    CreateCategoryDto createCategory(@PathVariable
+                                     @Parameter(description = "Категория")
+                                     @NotBlank String category) {
+        var createdCategory = service.createCategory(category);
+        return new CreateCategoryDto(createdCategory.getName());
+    }
+
+    @Operation(summary = "Получение всех категорий")
+    @GetMapping("/admin/categories")
+    List<CreateCategoryDto> getCategories() {
+        var categories = service.getCategories();
+
+        return categories.stream()
+                .map(c -> new CreateCategoryDto(c.getName()))
+                .collect(toList());
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDto {
 
-    CategoryTypeDto categoryTypeDto;
+    String categoryTypeDto;
 
     @Schema(nullable = true)
     List<DishDto.Base.Small> dishes;

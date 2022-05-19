@@ -2,22 +2,23 @@ package ru.bironix.super_food.services;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bironix.super_food.constants.ApiError;
+import ru.bironix.super_food.constants.Constants;
+import ru.bironix.super_food.dtos.interfaces.CategoryType;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import ru.bironix.super_food.store.UpdateMapper;
-import ru.bironix.super_food.store.db.dao.dish.AddonDao;
-import ru.bironix.super_food.store.db.dao.dish.DishDao;
-import ru.bironix.super_food.store.db.dao.dish.PortionDao;
-import ru.bironix.super_food.store.db.dao.dish.PriceDao;
+import ru.bironix.super_food.store.db.dao.dish.*;
 import ru.bironix.super_food.store.db.models.dish.*;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -31,6 +32,7 @@ public class DishService {
     private final AddonDao addonDao;
     private final PortionDao portionDao;
     private final PriceDao priceDao;
+    private final CategoryDao categoryDao;
     private final EntityManager entityManager;
     private final UpdateMapper updateMapper;
 
@@ -39,11 +41,13 @@ public class DishService {
                        AddonDao addonDao,
                        PortionDao portionDao,
                        PriceDao priceDao,
+                       CategoryDao categoryDao,
                        UpdateMapper updateMapper,
                        EntityManager entityManager) {
         this.dishDao = dishDao;
         this.addonDao = addonDao;
         this.portionDao = portionDao;
+        this.categoryDao = categoryDao;
         this.priceDao = priceDao;
         this.entityManager = entityManager;
         this.updateMapper = updateMapper;
@@ -72,6 +76,7 @@ public class DishService {
     @Transactional
     public Dish createDish(Dish dish) {
         var newDish = new Dish(dish);
+        checkCategoryCorrect(dish.getCategory());
         checkComboCorrect(newDish);
 
         var basePortionIndex = IntStream.range(0, newDish.getPortions().size())
@@ -86,14 +91,18 @@ public class DishService {
         return newDish;
     }
 
+    private void checkCategoryCorrect(Category category) {
+        getCategory(category.getName());
+    }
+
     private void checkComboCorrect(Dish dish) {
-        if (dish.getCategory() != CategoryType.COMBO
+        if (!Objects.equals(dish.getCategory().getName(), Constants.COMBO)
                 && CollectionUtils.isNotEmpty(dish.getDishes()))
             throw new ApiException(ApiError.ONLY_COMBO_CAN_CONTAIN_DISHES);
 
-        if (dish.getCategory() != CategoryType.COMBO) return;
+        if (!Objects.equals(dish.getCategory().getName(), Constants.COMBO)) return;
 
-        if (dish.getCategory() == CategoryType.COMBO
+        if (Objects.equals(dish.getCategory().getName(), Constants.COMBO)
                 && CollectionUtils.isEmpty(dish.getDishes()))
             throw new ApiException(ApiError.EMPTY_DISHES_IN_COMBO);
 
@@ -190,6 +199,10 @@ public class DishService {
 
     @Transactional
     public Dish updateDish(Dish dish) {
+
+        if (dish.getCategory() != null)
+            checkCategoryCorrect(dish.getCategory());
+
         var dishDb = getDish(dish.getId());
 
         if (CollectionUtils.isNotEmpty(dish.getPortions())) {
@@ -207,5 +220,17 @@ public class DishService {
 
     public List<Dish> getActualDishes() {
         return dishDao.findByDeleted(false);
+    }
+
+    public Category createCategory(String category) {
+        return categoryDao.save(new Category(category));
+    }
+
+    public Category getCategory(String category) {
+        return categoryDao.findById(category).orElseThrow(() -> new NotFoundSourceException("Category"));
+    }
+
+    public List<Category> getCategories() {
+        return categoryDao.findAll();
     }
 }
