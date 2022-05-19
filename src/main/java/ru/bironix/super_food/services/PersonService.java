@@ -13,7 +13,6 @@ import ru.bironix.super_food.store.db.dao.person.AddressDao;
 import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
 import ru.bironix.super_food.store.db.dao.person.PersonDao;
 import ru.bironix.super_food.store.db.models.dish.Dish;
-import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Favorite;
@@ -187,10 +186,9 @@ public class PersonService {
         });
     }
 
-    public List<Dish> getFavoriteDishesForPerson(String email) {
-        var person = personDao.findByEmail(email)
+    public List<Dish> getFavoriteDishesForPerson(Integer id) {
+        var person = personDao.findById(id)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
-
 
         var favoritesDishesIds = person.getFavorites().stream()
                 .map(Favorite::getDishId)
