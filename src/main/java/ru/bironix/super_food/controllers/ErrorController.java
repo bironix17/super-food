@@ -33,7 +33,9 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        ApiError apiError = resolveApiError(e.getBindingResult().getFieldError().getCode());
+        ApiError apiError = resolveApiError(
+                e.getBindingResult().getFieldError().getCode()
+                        + e.getBindingResult().getFieldError().getField());
 
         return ErrorResponseDto.builder()
                 .errorCode(apiError)
@@ -56,6 +58,10 @@ public class ErrorController {
                 || messageTemplate.contains("NotEmpty")
                 || messageTemplate.contains("NotNull")) {
             return ApiError.MUST_NOT_BE_EMPTY;
+
+        } else if (messageTemplate.contains("Pattern") &&
+                messageTemplate.contains("phoneNumber")) {
+            return ApiError.INVALID_PHONE_NUMBER;
         } else {
             return ApiError.UNDEFINED;
         }
