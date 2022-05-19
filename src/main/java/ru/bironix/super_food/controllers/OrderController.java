@@ -13,7 +13,7 @@ import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.dtos.response.ApiActionResponseDto;
-import ru.bironix.super_food.dtos.response.PageEntitiesWithTotalCountDto;
+import ru.bironix.super_food.dtos.response.PageOrdersWithTotalCountDto;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.services.OrderService;
@@ -128,7 +128,7 @@ public class OrderController {
     @Operation(summary = "Получить мои заказы. Размер страницы равен 10")
     @GetMapping("/client/my/orders")
     @ResponseBody
-    PageEntitiesWithTotalCountDto getOrdersForMy(@RequestParam(value = "page", defaultValue = "0")
+    PageOrdersWithTotalCountDto getOrdersForMy(@RequestParam(value = "page", defaultValue = "0")
                                                  @Parameter(description = "Запрашиваемый номер страницы")
                                                  Integer pageNumber) {
         var id = getPersonIdFromSecurityContext();
@@ -137,7 +137,7 @@ public class OrderController {
 
         securityLogger.getOrders(id, pageOrders.getEntities());
         var ordersDtos = con.toOrdersDto(pageOrders.getEntities());
-        return new PageEntitiesWithTotalCountDto(ordersDtos, pageOrders.getCount());
+        return new PageOrdersWithTotalCountDto(ordersDtos, pageOrders.getCount());
     }
 
     @Operation(summary = "Совершить заказ для меня", description = "Корректный пример для поля deliveryTime = 10:20")

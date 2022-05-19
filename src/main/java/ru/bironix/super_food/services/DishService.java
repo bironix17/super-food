@@ -163,6 +163,7 @@ public class DishService {
                 .portions(dish.getPortions())
                 .basePortion(dish.getBasePortion())
                 .addons(dish.getAddons())
+                .category(dish.getCategory())
                 .name(dish.getName())
                 .deleted(true)
                 .build();

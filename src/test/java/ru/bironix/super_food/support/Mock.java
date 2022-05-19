@@ -2,6 +2,7 @@ package ru.bironix.super_food.support;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.bironix.super_food.constants.Constants;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.store.db.models.action.Action;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
@@ -39,7 +40,7 @@ public class Mock {
                 .picturePaths(getPicturePaths())
                 .name("Пицца")
                 .composition("булочка, 3 сыра")
-                .category(CategoryType.PIZZA)
+                .category(new Category(Constants.PIZZA))
                 .description("Вкусная")
                 .allergens("Молоко")
                 .basePortion(getPortion())
@@ -93,6 +94,8 @@ public class Mock {
         return Person.builder()
                 .email("client@rambler.ru")
                 .password("client")
+                .phoneNumber("+79180101111")
+                .name("Игорь")
                 .role(Role.ROLE_CLIENT)
                 .build();
     }

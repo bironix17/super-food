@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
+import ru.bironix.super_food.dtos.response.PageOrdersWithTotalCountDto;
 import ru.bironix.super_food.store.db.models.dish.DishCount;
 import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -107,8 +107,8 @@ public class OrderTest extends AbstractTest {
                 .andExpect(content().string(containsString("id")))
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        var ordersResponse = Arrays.asList(mapper.readValue(jsonResponse, OrderDto.Base.Small[].class));
-        assertTrue(ordersResponse.stream()
+        var ordersResponse = mapper.readValue(jsonResponse, PageOrdersWithTotalCountDto.class);
+        assertTrue(ordersResponse.getOrders().stream()
                 .anyMatch(o -> o.getId() == order.getId()));
     }
 
