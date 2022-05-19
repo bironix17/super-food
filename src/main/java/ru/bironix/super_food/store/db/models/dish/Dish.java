@@ -65,7 +65,6 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     Boolean deleted;
 
-
     public Dish(Dish other) {
         this.id = other.id;
         this.picturePaths = other.picturePaths;
@@ -74,6 +73,10 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
         this.category = other.category;
         this.description = other.description;
         this.allergens = other.allergens;
+        this.energyValue = other.energyValue;
+        this.protein = other.protein;
+        this.fat = other.fat;
+        this.carbohydrates = other.carbohydrates;
         this.basePortion = other.basePortion;
         this.portions = other.portions;
         this.addons = other.addons;

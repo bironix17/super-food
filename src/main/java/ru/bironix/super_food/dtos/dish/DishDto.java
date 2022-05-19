@@ -26,7 +26,7 @@ public abstract class DishDto {
     @NoArgsConstructor
     public static class Create implements PicturePaths, Name, Composition,
             CategoryType, Deleted, CreateUpdateBasePortion, Description, Allergens,
-            CreateUpdatePortions, BindAddons, BindDishes {
+            CreateUpdatePortions, BindAddons, BindDishes, EnergyValue, Protein, Fat, Carbohydrates {
 
         PicturePathsDto picturePaths;
         String name;
@@ -39,6 +39,10 @@ public abstract class DishDto {
         List<PortionDto.CreateUpdate> portions;
         List<AddonDto.Bind> addons;
         List<DishDto.Bind> dishes;
+        Double energyValue;
+        Double protein;
+        Double fat;
+        Double carbohydrates;
     }
 
     @Schema(description = "Блюдо. Обновление", name = "DishDto.Update")
@@ -48,7 +52,7 @@ public abstract class DishDto {
     @NoArgsConstructor
     public static class Update implements PicturePaths, Name, Composition,
             CategoryType, Deleted, BasePortion, Description, Allergens,
-            Portions, BindAddons, BindDishes {
+            Portions, BindAddons, BindDishes, EnergyValue, Protein, Fat, Carbohydrates {
 
         PicturePathsDto picturePaths;
         String name;
@@ -61,6 +65,10 @@ public abstract class DishDto {
         List<PortionDto.Base> portions;
         List<AddonDto.Bind> addons;
         List<DishDto.Bind> dishes;
+        Double energyValue;
+        Double protein;
+        Double fat;
+        Double carbohydrates;
     }
 
     public static class Base {
@@ -88,12 +96,16 @@ public abstract class DishDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Full extends Small implements Description, Allergens,
-                Portions, Addons, Dishes {
+                Portions, Addons, Dishes, EnergyValue, Protein, Fat, Carbohydrates {
             String description;
             String allergens;
             List<PortionDto.Base> portions;
             List<AddonDto.Base> addons;
             List<DishDto.Base.Small> dishes;
+            Double energyValue;
+            Double protein;
+            Double fat;
+            Double carbohydrates;
         }
 
         @Schema(description = "Блюдо. Базовая для заказа", name = "DishDto.Base.ForOrder")

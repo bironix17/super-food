@@ -69,6 +69,30 @@
     <div style="color: red" th:if="${#fields.hasErrors('allergens')}" th:errors="*{allergens}">error</div>
     <br/>
 
+    <!--energyValue-->
+    <label for="energyValue">Enter energyValue</label>
+    <input type="text" th:field="*{energyValue}" id="energyValue"/>
+    <div style="color: red" th:if="${#fields.hasErrors('energyValue')}" th:errors="*{energyValue}">error</div>
+    <br/>
+
+    <!--protein-->
+    <label for="protein">Enter protein</label>
+    <input type="text" th:field="*{protein}" id="protein"/>
+    <div style="color: red" th:if="${#fields.hasErrors('protein')}" th:errors="*{protein}">error</div>
+    <br/>
+
+    <!--fat-->
+    <label for="fat">Enter fat</label>
+    <input type="text" th:field="*{fat}" id="fat"/>
+    <div style="color: red" th:if="${#fields.hasErrors('fat')}" th:errors="*{fat}">error</div>
+    <br/>
+
+    <!--carbohydrates-->
+    <label for="carbohydrates">Enter carbohydrates</label>
+    <input type="text" th:field="*{carbohydrates}" id="carbohydrates"/>
+    <div style="color: red" th:if="${#fields.hasErrors('carbohydrates')}" th:errors="*{carbohydrates}">error</div>
+    <br/>
+
 
     <!--addons-->
     <label for="addons">addons</label>

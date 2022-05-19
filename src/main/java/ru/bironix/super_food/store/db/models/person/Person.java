@@ -48,6 +48,7 @@ public class Person {
         this.name = other.name;
         this.role = other.role;
         this.phoneNumber = other.phoneNumber;
+        this.banned = other.banned;
         this.addresses = other.addresses;
         this.favorites = other.favorites;
     }
