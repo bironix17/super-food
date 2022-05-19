@@ -103,6 +103,10 @@ public class PersonService {
     public Address addAddressForPerson(Integer personId, String addressName) {
         var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
+
+        if (addressDao.findByAddress(addressName).isPresent())
+            throw new ApiException(ApiError.ENTITY_ALREADY_EXISTS);
+
         var newAddress = addressDao.save(new Address(null, addressName));
         person.getAddresses().add(newAddress);
         return newAddress;
@@ -118,6 +122,11 @@ public class PersonService {
     public Address getAddress(int id) {
         return addressDao.findById(id)
                 .orElseThrow(() -> new NotFoundSourceException(id, "Address"));
+    }
+
+    public Address getAddressByAddressValue(String addressValue) {
+        return addressDao.findByAddress(addressValue)
+                .orElseThrow(() -> new NotFoundSourceException("Address"));
     }
 
     public Optional<Person> getPersonByPhoneNumber(String phoneNumber) {
@@ -178,7 +187,8 @@ public class PersonService {
             o.setClient(deletedPerson);
             if (o.getWayToGet() == WayToGet.DELIVERY) {
                 o.setAddress(deletedPerson.getAddresses().get(0));
-            };
+            }
+            ;
         });
     }
 

@@ -16,6 +16,7 @@ import ru.bironix.super_food.store.db.models.dish.Portion;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.OrderStatus;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
+import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.utilsModel.EntitiesWithCount;
 
@@ -77,9 +78,15 @@ OrderService {
                 && newOrder.getAddress() != null) {
 
             if (newOrder.getAddress().getAddress() != null) {
-                var address =
-                        personService.addAddressForPerson(newOrder.getClient().getId(),
-                                newOrder.getAddress().getAddress());
+                Address address;
+
+                try {
+                    address = personService.addAddressForPerson(newOrder.getClient().getId(),
+                            newOrder.getAddress().getAddress());
+                } catch (ApiException e) {
+                    address = personService.getAddressByAddressValue(newOrder.getAddress().getAddress());
+                }
+
                 newOrder.setAddress(address);
             }
         } else if (newOrder.getWayToGet() == WayToGet.PICKUP) {
