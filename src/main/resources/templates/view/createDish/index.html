@@ -48,15 +48,10 @@
     <div style="color: red" th:if="${#fields.hasErrors('composition')}" th:errors="*{composition}">error</div>
     <br/>
 
-    <!--    Категория-->
+
+    <!--category-->
     <label for="category">Enter category</label>
-    <select name="category" id="category">
-        <option th:each="categoryOpt : ${T(ru.bironix.super_food.dtos.dish.CategoryTypeDto).values()}"
-                th:value="${categoryOpt}"
-                th:text="${categoryOpt.getRusName()}"
-                th:selected=" ${categoryOpt.equals(dish.category)}"
-        ></option>
-    </select>
+    <input type="text" th:field="*{category}" id="category"/>
     <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">error</div>
     <br/>
 

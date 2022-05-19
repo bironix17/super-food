@@ -56,6 +56,17 @@ public class StartApplicationConfig {
             dishService.createCategory(COMBO);
         }
 
+        checkExistsDishCategory(COMBO);
+        checkExistsDishCategory(BURGERS);
+        checkExistsDishCategory(PIZZA);
+        checkExistsDishCategory(SALADS);
+    }
 
+    void checkExistsDishCategory(String name) {
+        try {
+            dishService.getCategory(name);
+        } catch (Exception e) {
+            dishService.createCategory(name);
+        }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.bironix.super_food.constants.Constants;
 import ru.bironix.super_food.controllers.DishController;
 import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.common.PicturePathsDto;
@@ -87,7 +88,7 @@ public class WebDishController {
                 .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
                 .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
                 .allergens("Перец, соус, помидорки")
-//                .category(CategoryTypeDto.PIZZA)
+                .category(Constants.PIZZA)
                 .portions(new ArrayList<>(List.of(PortionDto.Base.builder()
                         .id(null)
                         .size("40 см")
