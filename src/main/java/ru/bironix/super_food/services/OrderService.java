@@ -17,6 +17,7 @@ import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.OrderStatus;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Person;
+import ru.bironix.super_food.store.utilsModel.EntitiesWithCount;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -61,10 +62,12 @@ OrderService {
         return orderDao.findById(id).orElseThrow(() -> new NotFoundSourceException(id, "Order"));
     }
 
-    public List<Order> getOrdersForPerson(Person person, int pageNumber) {
+    public EntitiesWithCount getOrdersForPerson(Person person, int pageNumber) {
         var page = PageRequest.of(pageNumber, PAGE_SIZE);
-        return orderDao.findByClient_IdOrderByCreatedDesc(person.getId(), page);
+        var pageOrders = orderDao.findByClient_IdOrderByCreatedDesc(person.getId(), page);
+        return new EntitiesWithCount<Order>(pageOrders.getContent(), pageOrders.getTotalElements());
     }
+
 
     @Transactional
     public Order createOrder(Order order) {
