@@ -21,7 +21,7 @@ public class Person {
     Integer id;
 
     @Column(unique = true)
-    String email;
+    String phoneNumber;
 
     String password;
     String name;
@@ -29,7 +29,6 @@ public class Person {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    String phoneNumber;
 
     Boolean banned;
 
@@ -43,7 +42,6 @@ public class Person {
 
     public Person(Person other) {
         this.id = other.id;
-        this.email = other.email;
         this.password = other.password;
         this.name = other.name;
         this.role = other.role;

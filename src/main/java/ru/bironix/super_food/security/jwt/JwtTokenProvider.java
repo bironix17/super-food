@@ -45,7 +45,7 @@ public class JwtTokenProvider {
     }
 
     public String createAccessToken(Person person) {
-        Claims claims = Jwts.claims().setSubject(person.getEmail());
+        Claims claims = Jwts.claims().setSubject(person.getPhoneNumber());
         claims.put("id", person.getId());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInSeconds * 1000);

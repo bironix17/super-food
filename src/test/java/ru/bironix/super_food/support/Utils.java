@@ -19,7 +19,7 @@ public class Utils {
 
     public AuthRequestDto getAuthRequest(Person person) {
         return AuthRequestDto.builder()
-                .email(person.getEmail())
+                .phoneNumber(person.getPhoneNumber())
                 .password(person.getPassword())
                 .build();
     }

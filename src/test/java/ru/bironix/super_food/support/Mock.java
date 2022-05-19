@@ -92,7 +92,6 @@ public class Mock {
 
     public Person getPersonClient() {
         return Person.builder()
-                .email("client@rambler.ru")
                 .password("client")
                 .phoneNumber("+79180101111")
                 .name("Игорь")
@@ -103,7 +102,7 @@ public class Mock {
 
     public Person getPersonAdmin() {
         return Person.builder()
-                .email("admin@rambler.ru")
+                .phoneNumber("+79001234567")
                 .password("admin")
                 .role(Role.ROLE_ADMIN)
                 .build();
@@ -111,14 +110,14 @@ public class Mock {
 
     public Person getPersonCook() {
         return Person.builder()
-                .email("cook@rambler.ru")
+                .phoneNumber("+79001234561")
                 .password("cook")
                 .role(Role.ROLE_COOK)
                 .build();
     }
     public Person getPersonDeliveryman() {
         return Person.builder()
-                .email("deliveryman@rambler.ru")
+                .phoneNumber("+79001234562")
                 .password("deliveryman")
                 .role(Role.ROLE_DELIVERYMAN)
                 .build();

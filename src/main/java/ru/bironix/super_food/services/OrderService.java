@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
-import static ru.bironix.super_food.constants.Constants.DELETED_PERSON_EMAIL;
 import static ru.bironix.super_food.constants.Constants.PAGE_SIZE;
 
 @Service

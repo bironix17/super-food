@@ -4,20 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import ru.bironix.super_food.dtos.interfaces.Password;
+import ru.bironix.super_food.dtos.interfaces.PhoneNumber;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequestDto {
+public class AuthRequestDto implements PhoneNumber, Password {
 
-    @NotBlank
-    @Email
-    String email;
-
-    @NotBlank
+    String phoneNumber;
     String password;
 }

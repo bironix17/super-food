@@ -69,7 +69,7 @@ public class WebPersonController {
 
     private PersonDto.Update getMockPersonDto() {
         return PersonDto.Update.builder()
-                .email("hello@rambler.ru")
+                .phoneNumber("+79181112233")
                 .password("Kotopes777")
                 .name("Саня")
                 .build();

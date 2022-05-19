@@ -84,7 +84,7 @@ public class AuthTest extends AbstractTest {
         var client = getRegisteredClient();
         var refreshToken = controllers.authController.login(
                 AuthRequestDto.builder()
-                        .email(client.getEmail())
+                        .phoneNumber(client.getPhoneNumber())
                         .password(client.getPassword())
                         .build()
         ).getRefreshToken();

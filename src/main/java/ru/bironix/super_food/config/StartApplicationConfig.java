@@ -4,14 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import ru.bironix.super_food.services.DishService;
 import ru.bironix.super_food.services.PersonService;
-import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.db.models.person.Role;
-
-import java.util.List;
 
 import static ru.bironix.super_food.constants.Constants.*;
 
@@ -30,9 +26,9 @@ public class StartApplicationConfig {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
 
-        if (!personService.getPersonByEmail(ADMIN_EMAIL).isPresent()) {
+        if (!personService.getPersonByPhoneNumber(ADMIN_PHONE_NUMBER).isPresent()) {
             personService.createPerson(Person.builder()
-                    .email(ADMIN_EMAIL)
+                    .phoneNumber(ADMIN_PHONE_NUMBER)
                     .password("admin")
                     .name("admin")
                     .role(Role.ROLE_ADMIN)
@@ -40,9 +36,9 @@ public class StartApplicationConfig {
         }
 
 
-        if (!personService.getPersonByEmail(DELETED_PERSON_EMAIL).isPresent()) {
+        if (!personService.getPersonByPhoneNumber(DELETED_PERSON_PHONE_NUMBER).isPresent()) {
             var person = personService.createPerson(Person.builder()
-                    .email(DELETED_PERSON_EMAIL)
+                    .phoneNumber(DELETED_PERSON_PHONE_NUMBER)
                     .password("deletedUser")
                     .name("deletedUser")
                     .role(Role.ROLE_CLIENT)

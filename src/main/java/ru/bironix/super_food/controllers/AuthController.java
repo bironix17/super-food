@@ -76,10 +76,10 @@ public class AuthController {
         securityLogger.attemptLoginPerson(request);
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getPhoneNumber(), request.getPassword()));
 
-        Person person = service.getPersonByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_EMAIL_OR_PASSWORD.name()));
+        Person person = service.getPersonByPhoneNumber(request.getPhoneNumber())
+                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_PHONE_NUMBER_OR_PASSWORD.name()));
 
         securityLogger.loginPerson(person);
         return generateAuthResponse(person);

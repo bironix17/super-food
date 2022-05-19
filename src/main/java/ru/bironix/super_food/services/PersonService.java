@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toSet;
-import static ru.bironix.super_food.constants.Constants.DELETED_PERSON_EMAIL;
+import static ru.bironix.super_food.constants.Constants.DELETED_PERSON_PHONE_NUMBER;
 
 @Service
 public class PersonService {
@@ -60,10 +60,6 @@ public class PersonService {
         this.orderDao = orderDao;
     }
 
-    public Person getPersonByUsername(String email) {
-        return personDao.findByEmail(email).orElseThrow(() ->
-                new NotFoundSourceException("Person"));
-    }
 
     @Transactional
     public Person createPerson(Person person) {
@@ -79,7 +75,7 @@ public class PersonService {
     }
 
     private void checkPersonExist(Person person) {
-        var personBd = getPersonByEmail(person.getEmail());
+        var personBd = getPersonByPhoneNumber(person.getPhoneNumber());
         if (personBd.isPresent())
             throw new ApiException(ApiError.USER_ALREADY_EXIST);
     }
@@ -124,8 +120,8 @@ public class PersonService {
                 .orElseThrow(() -> new NotFoundSourceException(id, "Address"));
     }
 
-    public Optional<Person> getPersonByEmail(String email) {
-        return personDao.findByEmail(email);
+    public Optional<Person> getPersonByPhoneNumber(String phoneNumber) {
+        return personDao.findByPhoneNumber(phoneNumber);
     }
 
     public Person getPerson(Integer id) {
@@ -177,7 +173,7 @@ public class PersonService {
     @Transactional
     public void deleteUserForOrders(int id) {
         var clientOrders = orderDao.findByClient_Id(id);
-        var deletedPerson = getPersonByEmail(DELETED_PERSON_EMAIL).get();
+        var deletedPerson = getPersonByPhoneNumber(DELETED_PERSON_PHONE_NUMBER).get();
         clientOrders.forEach(o -> {
             o.setClient(deletedPerson);
             if (o.getWayToGet() == WayToGet.DELIVERY) {

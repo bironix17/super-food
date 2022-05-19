@@ -25,7 +25,7 @@ public class SecurityLogger {
 
     public void attemptRegistryPerson(PersonDto.Create authRequestDto) {
         var ip = Utils.getClientIP(request);
-        logger.warn(String.format("Attempt registry from ip %s user with id %s", ip, authRequestDto.getEmail()));
+        logger.warn(String.format("Attempt registry from ip %s user with id %s", ip, authRequestDto.getPhoneNumber()));
     }
 
     public void registryPerson(Person person) {
@@ -36,7 +36,7 @@ public class SecurityLogger {
 
     public void attemptLoginPerson(AuthRequestDto authRequestDto) {
         var ip = Utils.getClientIP(request);
-        logger.warn(String.format("Attempt login from ip %s user with id %s", ip, authRequestDto.getEmail()));
+        logger.warn(String.format("Attempt login from ip %s user with id %s", ip, authRequestDto.getPhoneNumber()));
     }
 
     public void loginPerson(Person person) {

@@ -56,8 +56,6 @@ public class ErrorController {
                 || messageTemplate.contains("NotEmpty")
                 || messageTemplate.contains("NotNull")) {
             return ApiError.MUST_NOT_BE_EMPTY;
-        } else if (messageTemplate.contains("Email")) {
-            return ApiError.INVALID_EMAIL;
         } else {
             return ApiError.UNDEFINED;
         }

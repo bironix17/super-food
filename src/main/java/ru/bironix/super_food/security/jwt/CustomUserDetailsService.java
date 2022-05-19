@@ -35,14 +35,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (loginAttemptService.isBlocked(ip)) {
             throw new ApiException(ApiError.ALLOWED_NUMBER_OF_LOGIN_ATTEMPTS_EXCEEDED);
         }
-        Person person = personDao.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_EMAIL_OR_PASSWORD.name()));
+        Person person = personDao.findByPhoneNumber(username)
+                .orElseThrow(() -> new UsernameNotFoundException(ApiError.INCORRECT_PHONE_NUMBER_OR_PASSWORD.name()));
         return toSecurityUser(person);
     }
 
 
     private UserDetails toSecurityUser(Person p) {
-        return new SecurityUser(p.getEmail(),
+        return new SecurityUser(p.getPhoneNumber(),
                 p.getPassword(),
                 true,
                 true,

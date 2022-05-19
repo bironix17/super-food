@@ -21,7 +21,7 @@ public class AuthenticationEntryPointJwt implements AuthenticationEntryPoint {
                          AuthenticationException e) throws IOException {
 
         if (e instanceof BadCredentialsException) {
-            ErrorAuthResponse.addError(response, ApiError.INCORRECT_EMAIL_OR_PASSWORD);
+            ErrorAuthResponse.addError(response, ApiError.INCORRECT_PHONE_NUMBER_OR_PASSWORD);
         } else if (e instanceof DisabledException | e instanceof LockedException) {
             ErrorAuthResponse.addError(response, ApiError.USER_IS_BANNED);
         } else

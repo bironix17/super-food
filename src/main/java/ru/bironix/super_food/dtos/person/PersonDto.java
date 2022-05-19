@@ -16,8 +16,7 @@ public abstract class PersonDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Create implements Email, Password, Name, PhoneNumber {
-        String email;
+    public static class Create implements Password, Name, PhoneNumber {
         String password;
         String name;
         String phoneNumber;
@@ -55,12 +54,11 @@ public abstract class PersonDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Base implements Id, Email, Name, Addresses, PhoneNumber {
+    public static class Base implements Id, Name, Addresses, PhoneNumber {
         Integer id;
-        String email;
+        String phoneNumber;
         String name;
         List<AddressDto> addresses;
-        String phoneNumber;
     }
 
     @Schema(description = "Пользователь. Базовая для админа", name = "PersonDto.BaseForAdmin")
@@ -68,9 +66,8 @@ public abstract class PersonDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BaseForAdmin implements Id, Email, Name, Addresses, PhoneNumber, Banned, PersonRole {
+    public static class BaseForAdmin implements Id, Name, Addresses, PhoneNumber, Banned, PersonRole {
         Integer id;
-        String email;
         String name;
         List<AddressDto> addresses;
         String phoneNumber;
