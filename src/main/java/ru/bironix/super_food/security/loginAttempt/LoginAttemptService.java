@@ -3,6 +3,7 @@ package ru.bironix.super_food.security.loginAttempt;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
@@ -11,7 +12,10 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LoginAttemptService {
 
-    private final int MAX_ATTEMPT = 10;
+    @Value("${auth.attempt.count}")
+    private int MAX_ATTEMPT;
+
+
     private LoadingCache<String, Integer> attemptsCache;
 
     public LoginAttemptService() {
