@@ -45,12 +45,15 @@ public abstract class OrderDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Small implements Id, Created, Status,
-                TotalPrice, DishesCounts {
+                TotalPrice, DishesCounts, DeliveryTime, WayToGet {
             private Integer id;
             private Date created;
             private OrderStatusDto status;
             private Integer totalPrice;
             private List<DishCountDto.Base> dishes;
+            @JsonFormat(pattern = "HH:mm")
+            private Date deliveryTime;
+            private WayToGetDto wayToGet;
         }
 
         @Schema(description = "Заказ. Базовая, полная", name = "OrderDto.Base.Full")
@@ -59,12 +62,8 @@ public abstract class OrderDto {
         @SuperBuilder
         @AllArgsConstructor
         @NoArgsConstructor
-        public static class Full extends Small implements DeliveryTime,
-                WayToGet, Client, Address {
-
-            @JsonFormat(pattern = "HH:mm")
-            private Date deliveryTime;
-            private WayToGetDto wayToGet;
+        public static class Full extends Small implements
+               Client, Address {
             private PersonDto.Base client;
             private AddressDto address;
         }
