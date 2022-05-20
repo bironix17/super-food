@@ -29,7 +29,6 @@ public class Person {
     @Enumerated(EnumType.STRING)
     Role role;
 
-
     Boolean banned;
 
     @Valid

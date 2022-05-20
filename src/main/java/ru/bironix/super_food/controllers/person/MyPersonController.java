@@ -94,7 +94,7 @@ public class MyPersonController {
     }
 
 
-    @Operation(summary = "Получить закладки пользователя")
+    @Operation(summary = "Получить избранное пользователя")
     @GetMapping("/my/favorites")
     List<Integer> getFavoritesForMy() {
         var id = getPersonIdFromSecurityContext();
@@ -102,7 +102,7 @@ public class MyPersonController {
         return con.toFavoritesDto(service.getFavoritesForPerson(id));
     }
 
-    @Operation(summary = "Получить блюда в закладках пользователя")
+    @Operation(summary = "Получить блюда в избранном пользователя")
     @GetMapping("/my/favorites/dishes")
     List<DishDto.Base.Small> getFavoritesDishesForMy() {
         var id = getPersonIdFromSecurityContext();
@@ -111,7 +111,7 @@ public class MyPersonController {
     }
 
 
-    @Operation(summary = "Добавить закладку для пользователя")
+    @Operation(summary = "Добавить блюдо в избранное для пользователя")
     @PostMapping("/my/favorites/{dishId}")
     ApiActionResponseDto addFavoritesForMy(@PathVariable
                                            @Parameter(description = "id блюда")
@@ -123,7 +123,7 @@ public class MyPersonController {
     }
 
 
-    @Operation(summary = "Удалить закладку у пользователя")
+    @Operation(summary = "Удалить блюдо и избранного у пользователя")
     @DeleteMapping("/my/favorites/{dishId}")
     ApiActionResponseDto deleteFavoritesForMy(@PathVariable
                                               @Parameter(description = "id блюда")

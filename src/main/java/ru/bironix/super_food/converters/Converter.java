@@ -11,6 +11,7 @@ import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
+import ru.bironix.super_food.dtos.person.FavoriteDto;
 import ru.bironix.super_food.dtos.person.PersonDto;
 import ru.bironix.super_food.store.db.models.action.Action;
 import ru.bironix.super_food.store.db.models.common.PicturePaths;
@@ -67,6 +68,9 @@ public interface Converter {
 
     AddressDto toDto(Address address);
     Address fromDto(AddressDto addressDto);
+
+    FavoriteDto toFavoriteDto(Favorite favorite);
+    Favorite fromDto(FavoriteDto favoriteDto);
 
     @Mapping(target = "category", source = "category.name")
     DishDto.Base.Full toFullDto(Dish dish);

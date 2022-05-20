@@ -54,11 +54,12 @@ public abstract class PersonDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Base implements Id, Name, Addresses, PhoneNumber {
+    public static class Base implements Id, Name, Addresses, PhoneNumber, Favorites {
         Integer id;
         String phoneNumber;
         String name;
         List<AddressDto> addresses;
+        List<FavoriteDto> favorites;
     }
 
     @Schema(description = "Пользователь. Базовая для админа", name = "PersonDto.BaseForAdmin")
