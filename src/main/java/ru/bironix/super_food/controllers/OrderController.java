@@ -83,7 +83,8 @@ public class OrderController {
     }
 
     @Operation(summary = "Изменение заказа")
-    @PutMapping("/admin/orders/{id}")
+    @PutMapping({"/admin/orders/{id}",
+            "/manager/orders/{id}"})
     OrderDto.Base.Full updateOrder(@RequestBody
                                    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Заказ")
                                    OrderDto.CreateUpdate orderDto,
@@ -129,8 +130,8 @@ public class OrderController {
     @GetMapping("/client/my/orders")
     @ResponseBody
     PageOrdersWithTotalCountDto getOrdersForMy(@RequestParam(value = "page", defaultValue = "0")
-                                                 @Parameter(description = "Запрашиваемый номер страницы")
-                                                 Integer pageNumber) {
+                                               @Parameter(description = "Запрашиваемый номер страницы")
+                                               Integer pageNumber) {
         var id = getPersonIdFromSecurityContext();
         var person = personService.getPerson(id);
         var pageOrders = service.getOrdersForPerson(person, pageNumber);
@@ -162,6 +163,7 @@ public class OrderController {
     @Operation(summary = "Изменение статуса заказа")
     @PutMapping({"/deliveryman/orders/{id}/status/{status}",
             "/cook/orders/{id}/status/{status}",
+            "/manager/orders/{id}/status/{status}",
             "/admin/orders/{id}/status/{status}"})
     OrderDto.Base.Full updateOrder(@PathVariable
                                    @Parameter(description = "id заказа")
@@ -183,6 +185,7 @@ public class OrderController {
     @Operation(summary = "Получение незавершённых заказов")
     @GetMapping({"/deliveryman/activeOrders",
             "/cook/activeOrders",
+            "/manager/activeOrders",
             "/admin/activeOrders"})
     List<OrderDto.Base.Small> getActiveOrders(@RequestParam(value = "page", defaultValue = "0")
                                               @Parameter(description = "Запрашиваемый номер страницы")
@@ -196,6 +199,7 @@ public class OrderController {
     @Operation(summary = "Получение заказов по конкретному статусу")
     @GetMapping({"/deliveryman/orders/status/{status}",
             "/cook/orders/status/{status}",
+            "/manager/orders/status/{status}",
             "/admin/orders/status/{status}"})
     List<OrderDto.Base.Small> getOrdersByStatus(@PathVariable
                                                 @Parameter(description = "статус")

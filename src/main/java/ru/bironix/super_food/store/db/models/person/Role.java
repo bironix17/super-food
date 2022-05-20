@@ -9,7 +9,8 @@ public enum Role {
     ROLE_CLIENT,
     ROLE_ADMIN,
     ROLE_DELIVERYMAN,
-    ROLE_COOK;
+    ROLE_COOK,
+    ROLE_MANAGER;
 
     public Set<SimpleGrantedAuthority> getAuthority() {
         return Set.of(new SimpleGrantedAuthority(this.name()));

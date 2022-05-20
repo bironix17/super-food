@@ -64,4 +64,12 @@ public class DocumentationConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi managerApi() {
+        return GroupedOpenApi.builder()
+                .group("manager")
+                .pathsToMatch("/manager/**", authPathLogin, authPathRefreshToken)
+                .build();
+    }
+
 }

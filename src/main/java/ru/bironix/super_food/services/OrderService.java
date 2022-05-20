@@ -213,6 +213,9 @@ OrderService {
         }
 
         updateMapper.map(order, orderBd);
+
+        checkCorrectOrder(orderBd);
+
         orderDao.saveAndFlush(orderBd);
         entityManager.refresh(orderBd);
         return orderBd;

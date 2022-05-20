@@ -28,7 +28,7 @@ public class Order {
     LocalDateTime created;
     LocalDateTime deliveryTime;
 
-    int totalPrice;
+    Integer totalPrice;
 
     @Enumerated(EnumType.STRING)
     OrderStatus status;
