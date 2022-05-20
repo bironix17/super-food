@@ -19,6 +19,7 @@ import ru.bironix.super_food.security.log.SecurityLogger;
 import ru.bironix.super_food.services.OrderService;
 import ru.bironix.super_food.services.PersonService;
 import ru.bironix.super_food.store.db.models.order.Order;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -26,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonIdFromSecurityContext;
+import static ru.bironix.super_food.controllers.utils.ControllerUtils.getPersonRoleFromSecurityContext;
 
 
 @Tag(name = "Заказ")
@@ -77,6 +79,7 @@ public class OrderController {
                                 @Parameter(description = "id заказа")
                                 @NotNull @Min(0) int id) {
         var order = service.getOrder(id);
+        checkRequiredStatusByRole(con.toDto(order.getStatus()), getPersonRoleFromSecurityContext());
         var currentPersonId = getPersonIdFromSecurityContext();
         securityLogger.getOrder(currentPersonId, id);
         return con.toFullDto(order);
@@ -160,10 +163,36 @@ public class OrderController {
         return con.toFullDto(createdOrder);
     }
 
+    @Operation(summary = "Изменение статуса заказа для повара")
+    @PutMapping("/cook/orders/{id}/status/{status}")
+    OrderDto.Base.Full updateOrderForCook(@PathVariable
+                                          @Parameter(description = "id заказа")
+                                          @NotNull @Min(0) int id,
+                                          @PathVariable
+                                          @Parameter(description = "статус")
+                                          OrderStatusDto status) {
+        if (!List.of(OrderStatusDto.COOK, OrderStatusDto.COOKED).contains(status))
+            throw new ApiException(ApiError.RESOURCE_ACCESS_DENIED);
+
+        return updateOrder(id, status);
+    }
+
+    @Operation(summary = "Изменение статуса заказа для доставщика")
+    @PutMapping("/deliveryman/orders/{id}/status/{status}")
+    OrderDto.Base.Full updateOrderForDeliveryMan(@PathVariable
+                                                 @Parameter(description = "id заказа")
+                                                 @NotNull @Min(0) int id,
+                                                 @PathVariable
+                                                 @Parameter(description = "статус")
+                                                 OrderStatusDto status) {
+        if (!List.of(OrderStatusDto.DELIVERING, OrderStatusDto.COMPLETED).contains(status))
+            throw new ApiException(ApiError.RESOURCE_ACCESS_DENIED);
+
+        return updateOrder(id, status);
+    }
+
     @Operation(summary = "Изменение статуса заказа")
-    @PutMapping({"/deliveryman/orders/{id}/status/{status}",
-            "/cook/orders/{id}/status/{status}",
-            "/manager/orders/{id}/status/{status}",
+    @PutMapping({"/manager/orders/{id}/status/{status}",
             "/admin/orders/{id}/status/{status}"})
     OrderDto.Base.Full updateOrder(@PathVariable
                                    @Parameter(description = "id заказа")
@@ -183,9 +212,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Получение незавершённых заказов")
-    @GetMapping({"/deliveryman/activeOrders",
-            "/cook/activeOrders",
-            "/manager/activeOrders",
+    @GetMapping({"/manager/activeOrders",
             "/admin/activeOrders"})
     List<OrderDto.Base.Small> getActiveOrders(@RequestParam(value = "page", defaultValue = "0")
                                               @Parameter(description = "Запрашиваемый номер страницы")
@@ -207,9 +234,29 @@ public class OrderController {
                                                 @RequestParam(value = "page", defaultValue = "0")
                                                 @Parameter(description = "Запрашиваемый номер страницы")
                                                 Integer pageNumber) {
+        checkRequiredStatusByRole(status, getPersonRoleFromSecurityContext());
         var orders = service.getOrdersByStatus(con.fromDto(status), pageNumber);
         var id = getPersonIdFromSecurityContext();
         securityLogger.getOrders(id, orders);
         return con.toOrdersDto(orders);
+    }
+
+    void checkRequiredStatusByRole(OrderStatusDto status, Role role) {
+        switch (role) {
+            case ROLE_COOK:
+                if (!List.of(OrderStatusDto.EXPECTS,
+                        OrderStatusDto.COOK,
+                        OrderStatusDto.COOKED
+                ).contains(status))
+                    throw new ApiException(ApiError.RESOURCE_ACCESS_DENIED);
+                break;
+
+            case ROLE_DELIVERYMAN:
+                if (!List.of(OrderStatusDto.COOKED,
+                        OrderStatusDto.DELIVERING).contains(status))
+                    throw new ApiException(ApiError.RESOURCE_ACCESS_DENIED);
+                break;
+        }
+
     }
 }

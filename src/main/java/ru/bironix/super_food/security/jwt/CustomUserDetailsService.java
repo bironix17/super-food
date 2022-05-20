@@ -48,7 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 !p.getBanned(),
-                p.getRole().getAuthority(),
+                p.getRole(),
                 p.getId());
     }
 }

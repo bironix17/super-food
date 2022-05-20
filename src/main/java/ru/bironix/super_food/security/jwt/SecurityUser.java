@@ -1,21 +1,12 @@
 package ru.bironix.super_food.security.jwt;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-
-import java.util.Collection;
+import ru.bironix.super_food.store.db.models.person.Role;
 
 public class SecurityUser extends User {
 
     private final int id;
-
-    public SecurityUser(String username,
-                        String password,
-                        Collection<? extends GrantedAuthority> authorities,
-                        int id) {
-        super(username, password, authorities);
-        this.id = id;
-    }
+    private final Role role;
 
     public SecurityUser(String username,
                         String password,
@@ -23,7 +14,7 @@ public class SecurityUser extends User {
                         boolean accountNonExpired,
                         boolean credentialsNonExpired,
                         boolean accountNonLocked,
-                        Collection<? extends GrantedAuthority> authorities,
+                        Role role,
                         int id) {
         super(username,
                 password,
@@ -31,12 +22,16 @@ public class SecurityUser extends User {
                 accountNonExpired,
                 credentialsNonExpired,
                 accountNonLocked,
-                authorities);
+                role.getAuthority());
         this.id = id;
+        this.role = role;
     }
 
     public int getId() {
         return id;
     }
 
+    public Role getRole() {
+        return role;
+    }
 }

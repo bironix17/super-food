@@ -229,7 +229,7 @@ OrderService {
 
     public List<Order> getActiveOrders(int pageNumber) {
         var page = PageRequest.of(pageNumber, PAGE_SIZE);
-        return orderDao.findByStatusNot(OrderStatus.COMPLETED, page);
+        return orderDao.findByStatusNotIn(List.of(OrderStatus.COMPLETED, OrderStatus.CANCELED), page);
     }
 
     public List<Order> getOrdersByStatus(OrderStatus status, int pageNumber) {
