@@ -116,7 +116,8 @@ public class PersonService {
     public void deleteAddress(int id) {
         if (!addressDao.existsById(id)) throw new NotFoundSourceException(id, "Address");
         personDao.findByAddresses_Id(id).forEach(p -> p.getAddresses().removeIf(a -> a.getId().equals(id)));
-        addressDao.deleteById(id);
+        if (!orderDao.existsByAddress_Id(id))
+            addressDao.deleteById(id);
     }
 
     public Address getAddress(int id) {
