@@ -26,14 +26,19 @@ public class Order {
 
     @Column(nullable = false)
     LocalDateTime created;
-    LocalDateTime deliveryTime;
 
+    @Column(nullable = false)
+
+    LocalDateTime deliveryTime;
+    @Column(nullable = false)
     Integer totalPrice;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     OrderStatus status;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     WayToGet wayToGet;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -43,7 +48,7 @@ public class Order {
     })
     List<OrderedDish> dishes;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
     Person client;
 
     @OneToOne(cascade = CascadeType.REFRESH)

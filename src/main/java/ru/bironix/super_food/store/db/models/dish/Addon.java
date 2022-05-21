@@ -27,6 +27,7 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
     @Column(nullable = false)
     String picturePath;
 
+    @Column(nullable = false)
     Boolean deleted;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)

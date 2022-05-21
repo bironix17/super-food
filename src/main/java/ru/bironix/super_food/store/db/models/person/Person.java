@@ -20,15 +20,19 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     String phoneNumber;
 
+    @Column(nullable = false)
     String password;
+
     String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     Role role;
 
+    @Column(nullable = false)
     Boolean banned;
 
     @Valid

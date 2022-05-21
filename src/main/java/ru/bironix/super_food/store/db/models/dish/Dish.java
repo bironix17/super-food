@@ -30,13 +30,14 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
 
     @Column(nullable = false)
     String name;
-
     String composition;
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     Category category;
 
+    @Column(nullable = false)
     String description;
+
     String allergens;
     Double energyValue;
     Double protein;
@@ -47,6 +48,7 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     Portion basePortion;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @Column(nullable = false)
     List<Portion> portions;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
@@ -63,6 +65,7 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     })
     List<Dish> dishes;
 
+    @Column(nullable = false)
     Boolean deleted;
 
     public Dish(Dish other) {

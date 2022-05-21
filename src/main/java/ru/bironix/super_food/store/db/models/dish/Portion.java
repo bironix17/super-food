@@ -21,6 +21,7 @@ public class Portion implements ForOrderEquals<Portion> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(nullable = false)
     String size;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
@@ -31,6 +32,7 @@ public class Portion implements ForOrderEquals<Portion> {
     @JoinColumn(name = "oldPriceId")
     Price oldPrice;
 
+    @Column(nullable = false)
     Boolean deleted;
 
     public Portion(String size, Price priceNow, Price oldPrice) {
