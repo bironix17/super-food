@@ -11,7 +11,7 @@ import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
 import ru.bironix.super_food.dtos.response.PageOrdersWithTotalCountDto;
-import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.store.db.models.dish.OrderedDish;
 import ru.bironix.super_food.support.*;
 
 import javax.transaction.Transactional;
@@ -51,7 +51,7 @@ public class OrderTest extends AbstractTest {
         var dish = getSavedDish();
         var order = mock.getOrder();
         order.setClient(client);
-        order.setDishes(List.of(DishCount.builder()
+        order.setDishes(List.of(OrderedDish.builder()
                 .dishPrice(dish.getBasePortion().getPriceNow())
                 .id(null)
                 .dish(dish)

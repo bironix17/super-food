@@ -1,7 +1,7 @@
 package ru.bironix.super_food.store.db.models.order;
 
 import lombok.*;
-import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.store.db.models.dish.OrderedDish;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Person;
 
@@ -41,7 +41,7 @@ public class Order {
             @JoinColumn(name = "order_id"),
             @JoinColumn(name = "dishCount_id")
     })
-    List<DishCount> dishes;
+    List<OrderedDish> dishes;
 
     @OneToOne(cascade = CascadeType.REFRESH)
     Person client;

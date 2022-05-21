@@ -4,7 +4,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
 import ru.bironix.super_food.store.UpdateMapper;
@@ -12,7 +11,7 @@ import ru.bironix.super_food.store.db.dao.dish.DishCountDao;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
-import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.store.db.models.dish.OrderedDish;
 import ru.bironix.super_food.store.db.models.dish.Portion;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.OrderStatus;
@@ -103,7 +102,7 @@ OrderService {
 
     private void checkCorrectOrder(Order order) {
         var dishesIds = order.getDishes().stream()
-                .map(DishCount::getDish)
+                .map(OrderedDish::getDish)
                 .map(Dish::getId)
                 .collect(toSet());
 
@@ -118,7 +117,7 @@ OrderService {
     private void checkActualIds(Order order, List<Dish> dishesDb) {
 
         var invalidDishes = order.getDishes().stream()
-                .map(DishCount::getDish)
+                .map(OrderedDish::getDish)
                 .filter(d -> dishesDb.stream()
                         .noneMatch(dDb -> dDb.forOrderEquals(d)))
                 .collect(toList());
@@ -142,7 +141,7 @@ OrderService {
             throw new DeletedDishesInOrderException(deletedDishesInOrderIds);
 
         var orderAddonsIds = order.getDishes().stream()
-                .map(DishCount::getDish)
+                .map(OrderedDish::getDish)
                 .flatMap(d -> d.getAddons().stream())
                 .map(Addon::getId)
                 .collect(toList());

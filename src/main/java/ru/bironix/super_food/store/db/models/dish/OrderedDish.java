@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class DishCount{
+public class OrderedDish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

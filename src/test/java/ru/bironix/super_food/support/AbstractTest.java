@@ -11,7 +11,7 @@ import ru.bironix.super_food.converters.Converter;
 import ru.bironix.super_food.store.db.models.action.Action;
 import ru.bironix.super_food.store.db.models.dish.Addon;
 import ru.bironix.super_food.store.db.models.dish.Dish;
-import ru.bironix.super_food.store.db.models.dish.DishCount;
+import ru.bironix.super_food.store.db.models.dish.OrderedDish;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.person.Person;
 
@@ -134,7 +134,7 @@ public abstract class AbstractTest {
         var dish = getSavedDish();
         var order = mock.getOrder();
         order.setClient(person);
-        order.setDishes(List.of(DishCount.builder()
+        order.setDishes(List.of(OrderedDish.builder()
                 .dishPrice(dish.getBasePortion().getPriceNow())
                 .id(null)
                 .dish(dish)

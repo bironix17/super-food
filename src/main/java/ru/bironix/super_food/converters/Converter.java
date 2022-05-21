@@ -296,7 +296,7 @@ public interface Converter {
     }
 
 
-    default DishCountDto.Base toDto(DishCount dishesCount) {
+    default DishCountDto.Base toDto(OrderedDish dishesCount) {
         if (dishesCount == null) {
             return null;
         }
@@ -313,7 +313,7 @@ public interface Converter {
     }
 
 
-    default DishCountDto.CreteUpdate toCreateUpdateDto(DishCount dishesCount) {
+    default DishCountDto.CreteUpdate toCreateUpdateDto(OrderedDish dishesCount) {
         if (dishesCount == null) {
             return null;
         }
@@ -330,12 +330,12 @@ public interface Converter {
     }
 
 
-    default DishCount fromDto(DishCountDto.CreteUpdate dishCountDto) {
+    default OrderedDish fromDto(DishCountDto.CreteUpdate dishCountDto) {
         if (dishCountDto == null) {
             return null;
         }
 
-        return DishCount.builder()
+        return OrderedDish.builder()
                 .count(dishCountDto.getCount())
                 .dish(fromDto(dishCountDto.getDish()))
                 .dishPrice(fromDto(dishCountDto.getDish().getPortion().getPrice()))
