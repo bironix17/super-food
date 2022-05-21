@@ -140,7 +140,7 @@ public abstract class AbstractTest {
                 .dish(dish)
                 .portion(dish.getBasePortion())
                 .count(1)
-                .addonsPrices(null)
+                .orderedAddons(null)
                 .build()));
 
         var newOrder = services

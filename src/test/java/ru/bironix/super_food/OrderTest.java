@@ -57,7 +57,7 @@ public class OrderTest extends AbstractTest {
                 .dish(dish)
                 .portion(dish.getBasePortion())
                 .count(1)
-                .addonsPrices(null)
+                .orderedAddons(null)
                 .build()));
 
 

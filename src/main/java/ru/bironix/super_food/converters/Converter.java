@@ -227,32 +227,32 @@ public interface Converter {
                 .collect(toList());
     }
 
-    default AddonDto.BindForOrder toBindForOrderDto(AddonPrice addonPrice) {
-        if (addonPrice == null) {
+    default AddonDto.BindForOrder toBindForOrderDto(OrderedAddon orderedAddon) {
+        if (orderedAddon == null) {
             return null;
         }
 
         return AddonDto.BindForOrder.builder()
-                .id(addonPrice.getId())
-                .price(toBindDto(addonPrice.getPrice()))
+                .id(orderedAddon.getId())
+                .price(toBindDto(orderedAddon.getPrice()))
                 .build();
     }
 
-    default AddonDto.Base toDto(AddonPrice addonPrice) {
-        if (addonPrice == null) {
+    default AddonDto.Base toDto(OrderedAddon orderedAddon) {
+        if (orderedAddon == null) {
             return null;
         }
 
         return AddonDto.Base.builder()
-                .id(addonPrice.getId())
-                .price(toDto(addonPrice.getPrice()))
-                .deleted(addonPrice.getAddon().getDeleted())
-                .name(addonPrice.getAddon().getName())
-                .picturePath(addonPrice.getAddon().getPicturePath())
+                .id(orderedAddon.getId())
+                .price(toDto(orderedAddon.getPrice()))
+                .deleted(orderedAddon.getAddon().getDeleted())
+                .name(orderedAddon.getAddon().getName())
+                .picturePath(orderedAddon.getAddon().getPicturePath())
                 .build();
     }
 
-    default List<AddonDto.Base> toDtoFromAddonsPrices(List<AddonPrice> addonsPrices) {
+    default List<AddonDto.Base> toDtoFromAddonsPrices(List<OrderedAddon> addonsPrices) {
         if (addonsPrices == null) {
             return null;
         }
@@ -261,7 +261,7 @@ public interface Converter {
                 .collect(toList());
     }
 
-    default List<AddonDto.BindForOrder> toBindForOrderDtoFromAddonsPrices(List<AddonPrice> addonsPrices) {
+    default List<AddonDto.BindForOrder> toBindForOrderDtoFromAddonsPrices(List<OrderedAddon> addonsPrices) {
         if (addonsPrices == null) {
             return null;
         }
@@ -273,19 +273,19 @@ public interface Converter {
 
     Addon fromBindForOrderDto(AddonDto.BindForOrder addonDto);
 
-    default AddonPrice fromDto(AddonDto.BindForOrder addonsDtos) {
+    default OrderedAddon fromDto(AddonDto.BindForOrder addonsDtos) {
         if (addonsDtos == null) {
             return null;
         }
 
-        return AddonPrice.builder()
+        return OrderedAddon.builder()
                 .price(fromDto(addonsDtos.getPrice()))
                 .addon(fromBindForOrderDto(addonsDtos))
                 .build();
     }
 
 
-    default List<AddonPrice> fromDto(List<AddonDto.BindForOrder> addonsDtos) {
+    default List<OrderedAddon> fromDto(List<AddonDto.BindForOrder> addonsDtos) {
         if (addonsDtos == null) {
             return null;
         }
@@ -304,7 +304,7 @@ public interface Converter {
 
         dish.setPortion(toDto(dishesCount.getPortion()));
         dish.getPortion().setPriceNow(toDto(dishesCount.getDishPrice()));
-        dish.setAddons(toDtoFromAddonsPrices(dishesCount.getAddonsPrices()));
+        dish.setAddons(toDtoFromAddonsPrices(dishesCount.getOrderedAddons()));
 
         return DishCountDto.Base.builder()
                 .count(dishesCount.getCount())
@@ -321,7 +321,7 @@ public interface Converter {
 
         dish.setPortion(toBindDto(dishesCount.getPortion()));
         dish.getPortion().setPrice(toBindDto(dishesCount.getDishPrice()));
-        dish.setAddons(toBindForOrderDtoFromAddonsPrices(dishesCount.getAddonsPrices()));
+        dish.setAddons(toBindForOrderDtoFromAddonsPrices(dishesCount.getOrderedAddons()));
 
         return DishCountDto.CreteUpdate.builder()
                 .count(dishesCount.getCount())
@@ -340,7 +340,7 @@ public interface Converter {
                 .dish(fromDto(dishCountDto.getDish()))
                 .dishPrice(fromDto(dishCountDto.getDish().getPortion().getPrice()))
                 .portion(fromDto(dishCountDto.getDish().getPortion()))
-                .addonsPrices(fromDto(dishCountDto.getDish().getAddons()))
+                .orderedAddons(fromDto(dishCountDto.getDish().getAddons()))
                 .build();
     }
 

@@ -31,7 +31,7 @@ public class OrderedDish {
             @JoinColumn(name = "dish_id"),
             @JoinColumn(name = "addonPrice_id")
     })
-    List<AddonPrice> addonsPrices;
+    List<OrderedAddon> orderedAddons;
 
     Integer count;
 

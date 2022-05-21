@@ -10,12 +10,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class AddonPrice {
+public class OrderedAddon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
 
     @OneToOne(cascade = CascadeType.REFRESH, optional = true)
     Addon addon;
