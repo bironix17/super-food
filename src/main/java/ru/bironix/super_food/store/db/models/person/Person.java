@@ -36,7 +36,11 @@ public class Person {
     Boolean banned;
 
     @Valid
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumns({
+            @JoinColumn(name = "person_id"),
+            @JoinColumn(name = "address_id")
+    })
     List<Address> addresses;
 
     @Valid

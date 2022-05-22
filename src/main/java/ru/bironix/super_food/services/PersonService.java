@@ -104,10 +104,15 @@ public class PersonService {
         var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
 
-        if (addressDao.findByAddress(addressName).isPresent())
+        if (person.getAddresses().stream()
+                .anyMatch(a -> a.getAddress().equals(addressName)))
             throw new ApiException(ApiError.ENTITY_ALREADY_EXISTS);
 
-        var newAddress = addressDao.save(new Address(null, addressName));
+        var newAddress = addressDao.findByAddress(addressName).orElse(null);
+        if (newAddress == null) {
+            newAddress = addressDao.save(new Address(null, addressName));
+        }
+
         person.getAddresses().add(newAddress);
         return newAddress;
     }
