@@ -171,13 +171,23 @@ public interface Converter {
     }
 
 
-    default List<DishDto.Base.Small> toDishesDto(List<Dish> dishes) {
+    default List<DishDto.Base.Small> toSmallDishesDto(List<Dish> dishes) {
         if (dishes == null) {
             return null;
         }
 
         return dishes.stream()
                 .map(this::toSmallDto)
+                .collect(Collectors.toList());
+    }
+
+    default List<DishDto.Base.Full> toFullDishesDto(List<Dish> dishes) {
+        if (dishes == null) {
+            return null;
+        }
+
+        return dishes.stream()
+                .map(this::toFullDto)
                 .collect(Collectors.toList());
     }
 

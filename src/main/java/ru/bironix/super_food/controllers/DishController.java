@@ -21,7 +21,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -125,7 +124,7 @@ public class DishController {
     @Operation(summary = "Получение всего списка блюд. (С удалёнными блюдами)")
     @GetMapping({"/client/dishes", "/admin/dishes/categories"})
     List<DishDto.Base.Small> getDishesInCategories() {
-        return con.toDishesDto(service.getDishes());
+        return con.toSmallDishesDto(service.getDishes());
     }
 
     @Operation(summary = "Получение актуального списка блюд по категориям. (Без удалённых)")
@@ -136,10 +135,10 @@ public class DishController {
 
     @Operation(summary = "Получение запрошенного списка блюд")
     @GetMapping({"/client/specificDishes", "/admin/specificDishes"})
-    List<DishDto.Base.Small> getSpecificDishes(@RequestParam("ids")
+    List<DishDto.Base.Full> getSpecificDishes(@RequestParam("ids")
                                                @Parameter(description = "Список id блюд")
                                                List<@NotNull @Min(0) Integer> ids) {
-        return con.toDishesDto(service.getDishes(new HashSet<>(ids)));
+        return con.toFullDishesDto(service.getDishes(new HashSet<>(ids)));
     }
 
     @Operation(summary = "Создание категории")

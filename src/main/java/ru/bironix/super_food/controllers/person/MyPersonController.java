@@ -107,7 +107,7 @@ public class MyPersonController {
     List<DishDto.Base.Small> getFavoritesDishesForMy() {
         var id = getPersonIdFromSecurityContext();
         securityLogger.getFavoritesForPerson(id, id);
-        return con.toDishesDto(service.getFavoriteDishesForPerson(id));
+        return con.toSmallDishesDto(service.getFavoriteDishesForPerson(id));
     }
 
 
