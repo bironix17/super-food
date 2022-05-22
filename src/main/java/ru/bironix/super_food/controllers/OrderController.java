@@ -74,6 +74,7 @@ public class OrderController {
     @Operation(summary = "Получение заказа")
     @GetMapping({"/deliveryman/orders/{id}",
             "/cook/orders/{id}",
+            "/manager/orders/{id}",
             "/admin/orders/{id}"})
     OrderDto.Base.Full getOrder(@PathVariable
                                 @Parameter(description = "id заказа")
