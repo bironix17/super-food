@@ -64,7 +64,16 @@ public class DishService {
 
     public Addon createAddon(Addon addon) {
         var newAddon = new Addon(addon);
-        return addonDao.save(addon);
+        var priceNowIndex = IntStream.range(0, newAddon.getPrices().size())
+                .filter(userInd -> newAddon.getPrices().get(userInd).getPrice().equals(newAddon.getPriceNow().getPrice()))
+                .findFirst()
+                .orElse(0);
+
+        priceDao.saveAll(newAddon.getPrices());
+        newAddon.setPriceNow(newAddon.getPrices().get(priceNowIndex));
+        addonDao.saveAndFlush(newAddon);
+        entityManager.refresh(newAddon);
+        return newAddon;
     }
 
     public List<Addon> getAddons() {

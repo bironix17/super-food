@@ -5,6 +5,7 @@ import ru.bironix.super_food.store.db.interfaces.ForOrderEquals;
 import ru.bironix.super_food.store.db.interfaces.GetTotalPrice;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
@@ -30,8 +31,12 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
     @Column(nullable = false)
     Boolean deleted;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    Price price;
+    @OneToOne(optional = false)
+    Price priceNow;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @Column(nullable = false)
+    List<Price> prices;
 
 
     public Addon(Addon other) {
@@ -39,7 +44,8 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
         this.name = other.name;
         this.picturePath = other.picturePath;
         this.deleted = other.deleted;
-        this.price = other.price;
+        this.priceNow = other.priceNow;
+        this.prices = other.prices;
     }
 
     @PrePersist
@@ -55,7 +61,7 @@ public class Addon implements GetTotalPrice, ForOrderEquals<Addon> {
 
     @Override
     public int getTotalPrice() {
-        return price.getPrice();
+        return priceNow.getPrice();
     }
 
 }

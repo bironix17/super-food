@@ -116,9 +116,13 @@ public interface Converter {
     OrderStatusDto toDto(OrderStatus orderStatus);
     OrderStatus fromDto(OrderStatusDto status);
 
+    @Mapping(target = "price", source = "addon.priceNow")
     AddonDto.Base toDto(Addon addon);
+    @Mapping(target = "price", source = "addon.priceNow")
     AddonDto.CreateUpdate toCreateUpdateAddonDto(Addon addon);
+    @Mapping(target = "priceNow", source = "addonDto.price")
     Addon fromDto(AddonDto.CreateUpdate addonDto);
+    @Mapping(target = "priceNow", source = "addonDto.price")
     Addon fromDto(AddonDto.Base addonDto);
     Addon fromDto(AddonDto.Bind addonDto);
 
