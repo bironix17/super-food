@@ -11,7 +11,7 @@ import ru.bironix.super_food.dtos.interfaces.addon.Addons;
 import ru.bironix.super_food.dtos.interfaces.addon.BindAddons;
 import ru.bironix.super_food.dtos.interfaces.addon.BindForOrderAddons;
 import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
-import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
+import ru.bironix.super_food.dtos.interfaces.dish.SmallDishes;
 import ru.bironix.super_food.dtos.interfaces.portion.*;
 
 import java.util.List;
@@ -96,7 +96,7 @@ public abstract class DishDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Full extends Small implements Description, Allergens,
-                Portions, Addons, Dishes, EnergyValue, Protein, Fat, Carbohydrates {
+                Portions, Addons, SmallDishes, EnergyValue, Protein, Fat, Carbohydrates {
             String description;
             String allergens;
             List<PortionDto.Base> portions;
@@ -114,7 +114,7 @@ public abstract class DishDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class ForOrder implements Id, PicturePaths, Name,
-                CategoryType, Deleted, Portion, Addons, Dishes {
+                CategoryType, Deleted, Portion, Addons, SmallDishes {
 
             Integer id;
             PicturePathsDto picturePaths;

@@ -5,7 +5,7 @@ import ru.bironix.super_food.dtos.dish.DishDto;
 import javax.validation.Valid;
 import java.util.List;
 
-public interface Dishes {
+public interface SmallDishes {
 
     @Valid
     List<DishDto.Base.Small> getDishes();

@@ -243,4 +243,8 @@ public class DishService {
     public List<Category> getCategories() {
         return categoryDao.findAll();
     }
+
+    public List<Dish> getDishesByPortions(List<Portion> portions) {
+        return dishDao.findByPortionsIsIn(portions);
+    }
 }

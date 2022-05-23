@@ -51,19 +51,19 @@ public class WebActionController {
         if (newPrice < 0) return "view/createAction/index";
         if (actionResult.hasErrors()) return "view/createAction/index";
 
-        var dishesDb = dishService.getDishes(action.getDishes().stream()
-                .map(d -> d.getId())
-                .collect(toSet()));
+//        var dishesDb = dishService.getDishes(action.getDishes().stream()
+//                .map(d -> d.getId())
+//                .collect(toSet()));
 
-        action.setPortions(dishesDb.stream()
-                .map(Dish::getBasePortion)
-                .map(p -> PortionDto.CreateUpdateForAction.builder()
-                        .id(p.getId())
-                        .price(PriceDto.CreateUpdate.builder()
-                                .price(newPrice)
-                                .build())
-                        .build())
-                .collect(toList()));
+//        action.setPortions(dishesDb.stream()
+//                .map(Dish::getBasePortion)
+//                .map(p -> PortionDto.CreateUpdateForAction.builder()
+//                        .id(p.getId())
+//                        .price(PriceDto.CreateUpdate.builder()
+//                                .price(newPrice)
+//                                .build())
+//                        .build())
+//                .collect(toList()));
 
         var createdAction = actionService.createAction(con.fromDto(action));
         var createdDishString = toPrettyJsonForHtml(con.toFullDto(createdAction));
@@ -78,7 +78,7 @@ public class WebActionController {
         var create = getMockFullActionDto();
 
         create.setDishes(dishService.getDishes().stream()
-                .map(i -> con.toSmallDto(i))
+                .map(i -> con.toFullDto(i))
                 .collect(toList()));
 
         model.addAttribute("action", create);

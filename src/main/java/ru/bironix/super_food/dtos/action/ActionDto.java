@@ -12,8 +12,8 @@ import ru.bironix.super_food.dtos.dish.PortionDto;
 import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Name;
 import ru.bironix.super_food.dtos.interfaces.PicturePaths;
-import ru.bironix.super_food.dtos.interfaces.dish.BindDishes;
-import ru.bironix.super_food.dtos.interfaces.dish.Dishes;
+import ru.bironix.super_food.dtos.interfaces.dish.FullDishes;
+import ru.bironix.super_food.dtos.interfaces.dish.SmallDishes;
 import ru.bironix.super_food.dtos.interfaces.portion.CreateUpdateForActionPortions;
 
 import java.util.List;
@@ -25,10 +25,9 @@ public abstract class ActionDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements Name, PicturePaths, BindDishes, CreateUpdateForActionPortions {
+    public static class CreateUpdate implements Name, PicturePaths, CreateUpdateForActionPortions {
         PicturePathsDto picturePaths;
         String name;
-        List<DishDto.Bind> dishes;
         List<PortionDto.CreateUpdateForAction> portions;
     }
 
@@ -52,8 +51,8 @@ public abstract class ActionDto {
         @SuperBuilder
         @AllArgsConstructor
         @NoArgsConstructor
-        public static class Full extends Small implements Dishes {
-            List<DishDto.Base.Small> dishes;
+        public static class Full extends Small implements FullDishes {
+            List<DishDto.Base.Full> dishes;
         }
     }
 }

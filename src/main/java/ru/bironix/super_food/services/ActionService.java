@@ -47,10 +47,14 @@ public class ActionService {
     @Transactional
     public Action createAction(Action action) {
         var newAction = new Action(action);
-        checkAction(action);
+
+        newAction.setDishes(dishService.getDishesByPortions(action.getPortions()));
+        checkAction(newAction);
         newAction.setPortions(newAction.getPortions().stream()
                 .map(dishService::createNewPriceForAction)
                 .collect(toList()));
+
+
 
         actionDao.saveAndFlush(newAction);
         entityManager.refresh(newAction);
@@ -66,13 +70,14 @@ public class ActionService {
     public Action updateAction(Action action) {
         var actionDb = getAction(action.getId());
 
-        if (CollectionUtils.isNotEmpty(action.getDishes())) {
+        if (CollectionUtils.isNotEmpty(action.getPortions())) {
             actionDb.getPortions().forEach(dishService::deleteNewPriceForAction);
         }
 
         updateMapper.map(action, actionDb);
 
-        if (CollectionUtils.isNotEmpty(action.getDishes())) {
+        if (CollectionUtils.isNotEmpty(action.getPortions())) {
+            actionDb.setDishes(dishService.getDishesByPortions(action.getPortions()));
             actionDb.setPortions(actionDb.getPortions().stream()
                     .map(dishService::createNewPriceForAction)
                     .collect(toList()));
