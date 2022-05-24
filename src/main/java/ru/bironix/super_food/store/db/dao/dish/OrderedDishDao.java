@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.bironix.super_food.store.db.models.dish.OrderedDish;
 
 @Repository
-public interface DishCountDao extends JpaRepository<OrderedDish, Integer> {
+public interface OrderedDishDao extends JpaRepository<OrderedDish, Integer> {
 
 }

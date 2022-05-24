@@ -10,7 +10,7 @@ import ru.bironix.super_food.exceptions.NotFoundSourceException;
 import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.store.db.dao.order.OrderDao;
 import ru.bironix.super_food.store.db.dao.person.AddressDao;
-import ru.bironix.super_food.store.db.dao.person.FavoritesDao;
+import ru.bironix.super_food.store.db.dao.person.FavoriteDao;
 import ru.bironix.super_food.store.db.dao.person.PersonDao;
 import ru.bironix.super_food.store.db.models.dish.Dish;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
@@ -33,7 +33,7 @@ public class PersonService {
     private final RefreshTokenService refreshTokenService;
     private final AddressDao addressDao;
     private final OrderDao orderDao;
-    private final FavoritesDao favoritesDao;
+    private final FavoriteDao favoriteDao;
     private final UpdateMapper mapper;
     private final EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +42,7 @@ public class PersonService {
     @Autowired
     public PersonService(PersonDao personDao,
                          AddressDao addressDao,
-                         FavoritesDao favoritesDao,
+                         FavoriteDao favoriteDao,
                          OrderDao orderDao,
                          UpdateMapper mapper,
                          RefreshTokenService refreshTokenService,
@@ -51,7 +51,7 @@ public class PersonService {
                          DishService dishService) {
         this.personDao = personDao;
         this.addressDao = addressDao;
-        this.favoritesDao = favoritesDao;
+        this.favoriteDao = favoriteDao;
         this.mapper = mapper;
         this.entityManager = entityManager;
         this.passwordEncoder = passwordEncoder;
@@ -158,7 +158,7 @@ public class PersonService {
                 .anyMatch(f -> f.getDishId() == dishId))
             throw new ApiException(ApiError.ENTITY_ALREADY_EXISTS);
 
-        var newFavorite = favoritesDao.save(new Favorite(null, dishId));
+        var newFavorite = favoriteDao.save(new Favorite(null, dishId));
         person.getFavorites().add(newFavorite);
         return newFavorite;
     }
