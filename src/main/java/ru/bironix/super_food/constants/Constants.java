@@ -10,4 +10,6 @@ public class Constants {
     public static final String BURGERS = "Бургеры";
     public static final String PIZZA = "Пицца";
     public static final String SALADS = "Салаты";
+
+    public static final String PATH_OF_CUSTOM_FILESTORE = "src/main/java/ru/bironix/super_food/store/fileStore/saveFiles/delivery_information.json";
 }

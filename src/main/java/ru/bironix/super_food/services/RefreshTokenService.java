@@ -17,16 +17,13 @@ import java.util.UUID;
 @Service
 public class RefreshTokenService {
 
-    private final PersonDao personDao;
     private final RefreshTokenDao refreshTokenDao;
 
     @Value("${jwt.refresh_token.expiration}")
     private long validityInSeconds;
 
     @Autowired
-    public RefreshTokenService(PersonDao personDao,
-                               RefreshTokenDao refreshTokenDao) {
-        this.personDao = personDao;
+    public RefreshTokenService(RefreshTokenDao refreshTokenDao) {
         this.refreshTokenDao = refreshTokenDao;
     }
 

@@ -61,9 +61,7 @@ public class PersonService {
     }
 
 
-    @Transactional
     public Person createPerson(Person person) {
-
         var newPerson = new Person(person);
         checkPersonExist(newPerson);
 
@@ -179,9 +177,11 @@ public class PersonService {
 
     @Transactional
     public void deletePerson(int id) {
+        var person = getPerson(id);
+        if (person.getPhoneNumber().equals(DELETED_PERSON_PHONE_NUMBER))
+            throw new ApiException(ApiError.FORBIDDEN_TO_DELETE);
         refreshTokenService.deleteByPerson(id);
         deleteUserForOrders(id);
-        var person = getPerson(id);
         personDao.delete(person);
     }
 
@@ -194,7 +194,6 @@ public class PersonService {
             if (o.getWayToGet() == WayToGet.DELIVERY) {
                 o.setAddress(deletedPerson.getAddresses().get(0));
             }
-            ;
         });
     }
 

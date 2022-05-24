@@ -2,6 +2,7 @@ package ru.bironix.super_food.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.bironix.super_food.constants.Constants;
 import ru.bironix.super_food.store.UpdateMapper;
 import ru.bironix.super_food.store.fileStore.models.DeliveryInformation;
 import ru.bironix.super_food.utils.Utils;
@@ -17,7 +18,7 @@ public class InformationService {
 
     private final UpdateMapper updateMapper;
     final private Path deliveryFilePath =
-            Paths.get("src/main/java/ru/bironix/super_food/store/fileStore/saveFiles/delivery_information.json");
+            Paths.get(Constants.PATH_OF_CUSTOM_FILESTORE);
     private DeliveryInformation deliveryInformation;
 
     @Autowired
@@ -42,13 +43,12 @@ public class InformationService {
     }
 
     public DeliveryInformation updateDeliveryInformation(DeliveryInformation delInfo) {
-         updateMapper.map(delInfo, deliveryInformation);
+        updateMapper.map(delInfo, deliveryInformation);
         try {
             Utils.customMapper.writeValue(new File(String.valueOf(deliveryFilePath)), deliveryInformation);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return deliveryInformation;
     }
 }
