@@ -16,6 +16,17 @@ import javax.validation.ConstraintViolationException;
 @ResponseBody
 public class ErrorController {
 
+    @ExceptionHandler(NotFoundSourceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto onNotFoundSourceException(NotFoundSourceException e) {
+        return ErrorResponseDto.builder()
+                .errorCode(e.getApiError())
+                .message(e.getMessage())
+                .entityName(e.getEntityName())
+                .ids(e.getNotFoundIds())
+                .build();
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto onConstraintValidationException(ConstraintViolationException e) {
@@ -44,7 +55,6 @@ public class ErrorController {
                 .build();
     }
 
-
     private ApiError resolveApiError(String messageTemplate) {
 
         if (messageTemplate == null)
@@ -68,16 +78,7 @@ public class ErrorController {
     }
 
 
-    @ExceptionHandler(NotFoundSourceException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDto onNotFoundSourceException(NotFoundSourceException e) {
-        return ErrorResponseDto.builder()
-                .errorCode(e.getApiError())
-                .message(e.getMessage())
-                .entityName(e.getEntityName())
-                .ids(e.getNotFoundIds())
-                .build();
-    }
+
 
 
     @ExceptionHandler(DeletedDishesInOrderException.class)

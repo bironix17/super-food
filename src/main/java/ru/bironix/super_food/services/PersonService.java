@@ -60,7 +60,7 @@ public class PersonService {
         this.orderDao = orderDao;
     }
 
-
+    @Transactional
     public Person createPerson(Person person) {
         var newPerson = new Person(person);
         checkPersonExist(newPerson);

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import ru.bironix.super_food.dtos.interfaces.Deleted;
 import ru.bironix.super_food.dtos.interfaces.Id;
 import ru.bironix.super_food.dtos.interfaces.Size;
 import ru.bironix.super_food.dtos.interfaces.price.*;
@@ -28,11 +29,12 @@ public abstract class PortionDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Base implements Id, Size, PriceNow, OldPrice {
+    public static class Base implements Id, Size, PriceNow, OldPrice, Deleted {
         Integer id;
         String size;
         PriceDto.Base priceNow;
         PriceDto.Base oldPrice;
+        Boolean deleted;
     }
 
 

@@ -35,7 +35,6 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     Category category;
 
-    @Column(nullable = false)
     String description;
 
     String allergens;
@@ -91,6 +90,7 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     void prePersist() {
         deleted = defaultIfNull(deleted, false);
     }
+
 
     public List<Addon> getAddons() {
         if (addons != null) return addons;

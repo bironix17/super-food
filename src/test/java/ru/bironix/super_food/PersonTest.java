@@ -44,7 +44,7 @@ public class PersonTest extends AbstractTest {
 
     @Test
     @Transactional
-    @DisplayName("Получение своего пользователя")
+    @DisplayName("Получение своего аккаунта (пользователя)")
     void getPersonMyTest() throws Exception {
         var client = getRegisteredClient();
         this.mockMvc.perform(addAuth(client, get("/client/my"))
@@ -56,7 +56,7 @@ public class PersonTest extends AbstractTest {
 
     @Test
     @Transactional
-    @DisplayName("Изменение своего пользователя")
+    @DisplayName("Изменение своего аккаунта (пользователя)")
     void updatePersonTest() throws Exception {
         var client = getRegisteredClient();
         var name = "Vladimir";

@@ -160,4 +160,29 @@ public class OrderTest extends AbstractTest {
         assertTrue(orderDb.get().getStatus().equals(con.fromDto(newStatus)));
     }
 
+
+    @Test
+    @Transactional
+    @DisplayName("Изменение статуса заказа менеджером")
+    void changeOrderStatusByManagerTest() throws Exception {
+        var manager = getRegisteredManager();
+        var client = getRegisteredClient();
+        var order = getSavedOrder(client);
+        var newStatus = OrderStatusDto.COOK;
+
+        var jsonResponse = this.mockMvc.perform(
+                        addAuth(manager, put(String.format("/manager/orders/%s/status/%s", order.getId(), newStatus)))
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("id")))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        var orderResponse = mapper.readValue(jsonResponse, OrderDto.Base.Full.class);
+        assertTrue(orderResponse.getStatus().equals(newStatus));
+
+        var orderDb = daos.orderDao.findById(orderResponse.getId());
+        assertTrue(orderDb.isPresent());
+        assertTrue(orderDb.get().getStatus().equals(con.fromDto(newStatus)));
+    }
+
 }

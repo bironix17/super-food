@@ -79,6 +79,7 @@ public class Mock {
         return Portion.builder()
                 .size("100 грамм")
                 .priceNow(getPrice())
+                .deleted(false)
                 .build();
     }
 
@@ -86,7 +87,8 @@ public class Mock {
         return Addon.builder()
                 .name("Морковь")
                 .picturePath(PICTURE_PATH)
-                .price(getPrice())
+                .priceNow(getPrice())
+                .prices(List.of(getPrice()))
                 .build();
     }
 
@@ -115,11 +117,19 @@ public class Mock {
                 .role(Role.ROLE_COOK)
                 .build();
     }
+
     public Person getPersonDeliveryman() {
         return Person.builder()
                 .phoneNumber("+79001234562")
                 .password("deliveryman")
                 .role(Role.ROLE_DELIVERYMAN)
+                .build();
+    }
+    public Person getPersonManager() {
+        return Person.builder()
+                .phoneNumber("+79031234562")
+                .password("manager")
+                .role(Role.ROLE_MANAGER)
                 .build();
     }
 }

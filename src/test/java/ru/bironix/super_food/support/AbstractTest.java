@@ -66,6 +66,10 @@ public abstract class AbstractTest {
         return getRegisteredPerson(mock.getPersonDeliveryman());
     }
 
+    protected Person getRegisteredManager() {
+        return getRegisteredPerson(mock.getPersonManager());
+    }
+
     private Person getRegisteredPerson(Person person){
         var newPerson = services
                 .personService

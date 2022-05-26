@@ -89,7 +89,7 @@ public class CustomHttpLogFormatter implements HttpLogFormatter {
                     output.append(value);
                     output.append(", ");
                 }
-                output.setLength(output.length() - 2); // discard last comma
+                output.setLength(output.length() - 2);
             }
             output.append('\n');
         }
@@ -100,7 +100,7 @@ public class CustomHttpLogFormatter implements HttpLogFormatter {
             output.append('\n');
             output.append(body);
         } else {
-            output.setLength(output.length() - 1); // discard last newline
+            output.setLength(output.length() - 1);
         }
     }
 
@@ -115,18 +115,16 @@ public class CustomHttpLogFormatter implements HttpLogFormatter {
             } catch (JsonProcessingException ignored) {
             }
         } else {
-            output.setLength(output.length() - 1); // discard last newline
+            output.setLength(output.length() - 1);
         }
     }
 
     public boolean isValidJSON(final String json) {
         try {
             objectMapper.readTree(json);
-
         } catch (JsonProcessingException jpe) {
             return false;
         }
-
         return true;
     }
 }
