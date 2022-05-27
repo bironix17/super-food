@@ -83,12 +83,12 @@ public class WebDishController {
 
     private DishDto.Base.Full getMockDishDto() {
         return DishDto.Base.Full.builder()
-                .picturePaths(new PicturePathsDto("https://srokigodnosti.ru/wp-content/uploads/2022/01/191-e1620542426741.jpg"))
-                .name("Маргарита")
-                .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
-                .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
-                .allergens("Перец, соус, помидорки")
-                .category(Constants.PIZZA)
+//                .picturePaths(new PicturePathsDto("https://srokigodnosti.ru/wp-content/uploads/2022/01/191-e1620542426741.jpg"))
+//                .name("Маргарита")
+//                .composition("Тесто, куриная грудка, грибы, помидорки, болгарский перчик, соус кисло-сладкий")
+//                .description("Попробуйте легендарную супер-вкусную пиццу, названную в честь другой вкусной пиццы")
+//                .allergens("Перец, соус, помидорки")
+//                .category(Constants.PIZZA)
 //                .portions(new ArrayList<>(List.of(PortionDto.Base.builder()
 //                        .id(null)
 //                        .size("40 см")
