@@ -16,10 +16,12 @@ public class PicturePaths {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(length=600)
     String small;
 
+    @Column(length=600)
     String medium;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length=600)
     String large;
 }

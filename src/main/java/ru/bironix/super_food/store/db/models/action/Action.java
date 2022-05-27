@@ -20,6 +20,7 @@ public class Action {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(length=500)
     String name;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)

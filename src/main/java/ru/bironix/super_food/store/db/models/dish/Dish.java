@@ -31,12 +31,15 @@ public class Dish implements GetTotalPrice, ForOrderEquals<Dish> {
     @Column(nullable = false)
     String name;
 
+    @Column(length=500)
     String composition;
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     Category category;
 
+    @Column(length=500)
     String description;
+    @Column(length=500)
     String allergens;
     Double energyValue;
     Double protein;
