@@ -172,15 +172,20 @@ OrderService {
                 .collect(toMap(Addon::getId, p -> p));
 
         var sum = order.getDishes().stream()
-                .flatMap(dc -> Stream.generate(dc::getDish).limit(dc.getCount()))
-                .peek(d -> d.setBasePortion(
-                        portionsDb.get(d.getBasePortion().getId())
-                ))
-                .peek(d -> d.setAddons(
-                        d.getAddons().stream()
-                                .map(a -> addonsDb.get(a.getId()))
-                                .collect(toList()))
-                ).mapToInt(Dish::getTotalPrice)
+                .flatMap(dc -> Stream.generate(() -> {
+
+                            var dish = dc.getDish();
+                            dish.setBasePortion(
+                                    portionsDb.get(dc.getPortion().getId()));
+
+                            dish.setAddons(
+                                    dish.getAddons().stream()
+                                            .map(a -> addonsDb.get(a.getId()))
+                                            .collect(toList()));
+                            return dish;
+                        }
+                ).limit(dc.getCount()))
+                .mapToInt(Dish::getTotalPrice)
                 .sum();
 
         if (order.getWayToGet() == WayToGet.DELIVERY) {
