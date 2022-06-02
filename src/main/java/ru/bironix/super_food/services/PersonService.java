@@ -4,6 +4,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.ApiException;
 import ru.bironix.super_food.exceptions.NotFoundSourceException;
@@ -19,7 +21,7 @@ import ru.bironix.super_food.store.db.models.person.Favorite;
 import ru.bironix.super_food.store.db.models.person.Person;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+//import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +101,8 @@ public class PersonService {
         return person;
     }
 
-    @Transactional(dontRollbackOn = {NotFoundSourceException.class, ApiException.class})
+    @Transactional(noRollbackFor = {NotFoundSourceException.class, ApiException.class},
+            isolation = Isolation.REPEATABLE_READ)
     public Address addAddressForPerson(Integer personId, String addressName) {
         var person = personDao.findById(personId)
                 .orElseThrow(() -> new NotFoundSourceException("Person"));
@@ -107,7 +110,7 @@ public class PersonService {
         if (addressDao.findByAddress(addressName).isPresent())
             throw new ApiException(ApiError.ENTITY_ALREADY_EXISTS);
 
-        var newAddress = addressDao.save(new Address(null, addressName));
+        var newAddress = addressDao.saveAndFlush(new Address(null, addressName));
         person.getAddresses().add(newAddress);
         return newAddress;
     }

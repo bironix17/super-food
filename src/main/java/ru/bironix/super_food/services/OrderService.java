@@ -4,7 +4,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
 import ru.bironix.super_food.store.UpdateMapper;
@@ -22,7 +23,7 @@ import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.utilsModel.EntitiesWithCount;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+//import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -70,7 +71,7 @@ OrderService {
     }
 
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Order createOrder(Order order) {
         var newOrder = new Order(order);
         checkCorrectOrder(newOrder);
@@ -81,7 +82,7 @@ OrderService {
             if (newOrder.getAddress().getAddress() != null) {
                 Address address;
                 try {
-                    address = personService.addAddressForPerson(
+                    address = personService.addAddressForPerson( //TODO починить транзакции
                             newOrder.getClient().getId(),
                             newOrder.getAddress().getAddress());
                 } catch (ApiException e) {

@@ -21,10 +21,10 @@ public class DocumentationConfig {
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()
-                .info(new Info().title("Super-food API"))
-                .externalDocs(new ExternalDocumentation()
-                        .description("Порождение моделей")
-                        .url("/view/"));
+                .info(new Info().title("Super-food API"));
+//                .externalDocs(new ExternalDocumentation()
+//                        .description("Порождение моделей")
+//                        .url("/view/"));
     }
 
     private static final String authPaths = "/auth/**";
