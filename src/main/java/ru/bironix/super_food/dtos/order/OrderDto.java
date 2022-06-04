@@ -27,8 +27,8 @@ public abstract class OrderDto {
     @SuperBuilder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateUpdate implements DeliveryTime,
-            WayToGet, TotalPrice, Address, CreateUpdateDishesCounts {
+    public static class CreateUpdate implements DeliveryTime, Comment,
+            WayToGet, TotalPrice, Address, CreateUpdateDishesCounts, PaymentMethod {
 
         @JsonFormat(pattern = "HH:mm")
         private Date deliveryTime;
@@ -36,6 +36,8 @@ public abstract class OrderDto {
         private Integer totalPrice;
         private List<DishCountDto.CreteUpdate> dishes;
         private AddressDto address;
+        private String comment;
+        private PaymentMethodDto paymentMethod;
     }
 
     public static class Base {
@@ -63,9 +65,11 @@ public abstract class OrderDto {
         @AllArgsConstructor
         @NoArgsConstructor
         public static class Full extends Small implements
-               Client, Address {
+                Client, Address, Comment, PaymentMethod {
             private PersonDto.Base client;
             private AddressDto address;
+            private String comment;
+            private PaymentMethodDto paymentMethod;
         }
     }
 }

@@ -9,6 +9,7 @@ import ru.bironix.super_food.dtos.common.PicturePathsDto;
 import ru.bironix.super_food.dtos.dish.*;
 import ru.bironix.super_food.dtos.order.OrderDto;
 import ru.bironix.super_food.dtos.order.OrderStatusDto;
+import ru.bironix.super_food.dtos.order.PaymentMethodDto;
 import ru.bironix.super_food.dtos.order.WayToGetDto;
 import ru.bironix.super_food.dtos.person.AddressDto;
 import ru.bironix.super_food.dtos.person.FavoriteDto;
@@ -18,6 +19,7 @@ import ru.bironix.super_food.store.db.models.common.PicturePaths;
 import ru.bironix.super_food.store.db.models.dish.*;
 import ru.bironix.super_food.store.db.models.order.Order;
 import ru.bironix.super_food.store.db.models.order.OrderStatus;
+import ru.bironix.super_food.store.db.models.order.PaymentMethod;
 import ru.bironix.super_food.store.db.models.order.WayToGet;
 import ru.bironix.super_food.store.db.models.person.Address;
 import ru.bironix.super_food.store.db.models.person.Favorite;
@@ -126,8 +128,11 @@ public interface Converter {
     Addon fromDto(AddonDto.Base addonDto);
     Addon fromDto(AddonDto.Bind addonDto);
 
-    WayToGetDto fromDto(WayToGet wayToGet);
+    WayToGetDto toDto(WayToGet wayToGet);
     WayToGet fromDto(WayToGetDto wayToGetDto);
+
+    PaymentMethodDto toDto(PaymentMethod paymentMethod);
+    PaymentMethod fromDto(PaymentMethodDto paymentMethodDto);
 
     DeliveryInformationDto toDto(DeliveryInformation deliveryInformation);
     DeliveryInformation fromDto(DeliveryInformationDto deliveryInformationDto);

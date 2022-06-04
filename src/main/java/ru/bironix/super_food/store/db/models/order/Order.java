@@ -41,6 +41,11 @@ public class Order {
     @Column(nullable = false)
     WayToGet wayToGet;
 
+    String comment;
+
+    @Enumerated(EnumType.STRING)
+    PaymentMethod PaymentMethod;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "order_id"),
@@ -61,6 +66,8 @@ public class Order {
         this.totalPrice = other.totalPrice;
         this.status = other.status;
         this.wayToGet = other.wayToGet;
+        this.comment = other.comment;
+        this.PaymentMethod = other.PaymentMethod;
         this.dishes = other.dishes;
         this.client = other.client;
         this.address = other.address;
