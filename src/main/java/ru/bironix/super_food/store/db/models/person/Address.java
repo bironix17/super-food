@@ -16,6 +16,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(nullable = false)
+    @Column(length=500, unique = true, nullable = false)
     String address;
+
 }

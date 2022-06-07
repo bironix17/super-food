@@ -95,8 +95,16 @@ public abstract class DishDto {
         @SuperBuilder
         @AllArgsConstructor
         @NoArgsConstructor
-        public static class Full extends Small implements Description, Allergens,
+        public static class Full implements Id, PicturePaths, Name, Composition,
+                CategoryType, Deleted, BasePortion, Description, Allergens,
                 Portions, Addons, SmallDishes, EnergyValue, Protein, Fat, Carbohydrates {
+            Integer id;
+            PicturePathsDto picturePaths;
+            String name;
+            String composition;
+            String category;
+            Boolean deleted;
+            PortionDto.Base basePortion;
             String description;
             String allergens;
             List<PortionDto.Base> portions;

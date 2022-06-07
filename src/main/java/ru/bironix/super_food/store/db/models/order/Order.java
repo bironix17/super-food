@@ -28,8 +28,8 @@ public class Order {
     LocalDateTime created;
 
     @Column(nullable = false)
-
     LocalDateTime deliveryTime;
+
     @Column(nullable = false)
     Integer totalPrice;
 

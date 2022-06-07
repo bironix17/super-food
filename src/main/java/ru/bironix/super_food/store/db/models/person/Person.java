@@ -20,7 +20,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 12)
     String phoneNumber;
 
     @Column(nullable = false)

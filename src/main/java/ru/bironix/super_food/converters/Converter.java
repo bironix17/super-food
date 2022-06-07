@@ -2,6 +2,7 @@ package ru.bironix.super_food.converters;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import ru.bironix.super_food.dtos.AuthRequestDto;
 import ru.bironix.super_food.dtos.DeliveryInformationDto;
 import ru.bironix.super_food.dtos.action.ActionDto;
@@ -74,24 +75,16 @@ public interface Converter {
     FavoriteDto toFavoriteDto(Favorite favorite);
     Favorite fromDto(FavoriteDto favoriteDto);
 
-    @Mapping(target = "category", source = "category.name")
     DishDto.Base.Full toFullDto(Dish dish);
-    @Mapping(target = "category", source = "category.name")
     DishDto.Base.Small toSmallDto(Dish dish);
-    @Mapping(target = "category", source = "category.name")
     @Mapping(target = "portion", source = "dish.basePortion")
     DishDto.Base.ForOrder toDishForOrderDto(Dish dish);
-    @Mapping(target = "category", source = "category.name")
     DishDto.Update toUpdateDishDto(Dish dish);
     DishDto.Bind toDto(Dish dish);
     DishDto.BindForOrder toBindForOrderDto(Dish dish);
-    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Create dishDto);
-    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Update dishDto);
-    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Base.Full dishDto);
-    @Mapping(target = "category.name", source = "category")
     Dish fromDto(DishDto.Base.Small dishDto);
     Dish fromDto(DishDto.Bind dishDto);
     @Mapping(target = "basePortion", source = "dishDto.portion")
@@ -149,7 +142,7 @@ public interface Converter {
         if (actions == null) {
             return null;
         }
-        
+
         return actions.stream()
                 .map(this::toSmallDto)
                 .collect(toList());
@@ -180,13 +173,23 @@ public interface Converter {
     }
 
 
-    default List<DishDto.Base.Small> toDishesDto(List<Dish> dishes) {
+    default List<DishDto.Base.Small> toSmallDishesDto(List<Dish> dishes) {
         if (dishes == null) {
             return null;
         }
 
         return dishes.stream()
                 .map(this::toSmallDto)
+                .collect(Collectors.toList());
+    }
+
+    default List<DishDto.Base.Full> toFullDishesDto(List<Dish> dishes) {
+        if (dishes == null) {
+            return null;
+        }
+
+        return dishes.stream()
+                .map(this::toFullDto)
                 .collect(Collectors.toList());
     }
 
@@ -353,5 +356,20 @@ public interface Converter {
                 .build();
     }
 
+    default Category fromDto(String categoryName) {
+        if (categoryName == null) {
+            return null;
+        }
 
+        Category.CategoryBuilder category = Category.builder();
+        category.name(categoryName);
+        return category.build();
+    }
+
+    default String toStringCategoryDto(Category category) {
+        if (category == null) {
+            return null;
+        }
+        return category.getName();
+    }
 }

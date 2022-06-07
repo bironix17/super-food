@@ -4,6 +4,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bironix.super_food.constants.ApiError;
 import ru.bironix.super_food.exceptions.*;
 import ru.bironix.super_food.store.UpdateMapper;
@@ -21,7 +23,6 @@ import ru.bironix.super_food.store.db.models.person.Person;
 import ru.bironix.super_food.store.utilsModel.EntitiesWithCount;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -69,7 +70,7 @@ OrderService {
     }
 
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Order createOrder(Order order) {
         var newOrder = new Order(order);
         checkCorrectOrder(newOrder);
@@ -170,15 +171,20 @@ OrderService {
                 .collect(toMap(Addon::getId, p -> p));
 
         var sum = order.getDishes().stream()
-                .flatMap(dc -> Stream.generate(dc::getDish).limit(dc.getCount()))
-                .peek(d -> d.setBasePortion(
-                        portionsDb.get(d.getBasePortion().getId())
-                ))
-                .peek(d -> d.setAddons(
-                        d.getAddons().stream()
-                                .map(a -> addonsDb.get(a.getId()))
-                                .collect(toList()))
-                ).mapToInt(Dish::getTotalPrice)
+                .flatMap(dc -> Stream.generate(() -> {
+
+                            var dish = dc.getDish();
+                            dish.setBasePortion(
+                                    portionsDb.get(dc.getPortion().getId()));
+
+                            dish.setAddons(
+                                    dish.getAddons().stream()
+                                            .map(a -> addonsDb.get(a.getId()))
+                                            .collect(toList()));
+                            return dish;
+                        }
+                ).limit(dc.getCount()))
+                .mapToInt(Dish::getTotalPrice)
                 .sum();
 
         if (order.getWayToGet() == WayToGet.DELIVERY) {
