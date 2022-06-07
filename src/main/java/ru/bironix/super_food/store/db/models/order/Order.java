@@ -41,10 +41,11 @@ public class Order {
     @Column(nullable = false)
     WayToGet wayToGet;
 
+    @Column(length=500)
     String comment;
 
     @Enumerated(EnumType.STRING)
-    PaymentMethod PaymentMethod;
+    PaymentMethod paymentMethod;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
@@ -67,7 +68,7 @@ public class Order {
         this.status = other.status;
         this.wayToGet = other.wayToGet;
         this.comment = other.comment;
-        this.PaymentMethod = other.PaymentMethod;
+        this.paymentMethod = other.paymentMethod;
         this.dishes = other.dishes;
         this.client = other.client;
         this.address = other.address;
