@@ -16,10 +16,10 @@ public class OrderedAddon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Addon addon;
 
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Price price;
 
 }

@@ -19,11 +19,11 @@ public class OrderedDish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Dish dish;
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Portion portion;
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Price dishPrice;
 
     @ManyToMany(cascade = CascadeType.ALL)

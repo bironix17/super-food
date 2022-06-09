@@ -54,7 +54,7 @@ public class Order {
     })
     List<OrderedDish> dishes;
 
-    @OneToOne(cascade = CascadeType.REFRESH, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH)
     Person client;
 
     @OneToOne(cascade = CascadeType.REFRESH)
