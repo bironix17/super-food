@@ -122,7 +122,7 @@ public class OrderTest extends AbstractTest {
         var newStatus = OrderStatusDto.COOKED;
 
         var jsonResponse = this.mockMvc.perform(
-                        addAuth(cook, put(String.format("/cook/orders/%s/status/%s", order.getId(), newStatus.getRusName())))
+                        addAuth(cook, put(String.format("/cook/orders/%s/status/%s", order.getId(), newStatus)))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("id")))
