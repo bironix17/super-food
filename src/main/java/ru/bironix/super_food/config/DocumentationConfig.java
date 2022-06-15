@@ -22,9 +22,6 @@ public class DocumentationConfig {
     public OpenAPI customOpenApi() {
         return new OpenAPI()
                 .info(new Info().title("Боярин API"));
-//                .externalDocs(new ExternalDocumentation()
-//                        .description("Порождение моделей")
-//                        .url("/view/"));
     }
 
     private static final String authPaths = "/auth/**";

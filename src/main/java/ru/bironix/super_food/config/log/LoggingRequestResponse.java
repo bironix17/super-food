@@ -17,9 +17,6 @@ public class LoggingRequestResponse {
     public Logbook logbook() {
         Logbook logbook = Logbook.builder()
                 .condition(exclude(
-                        requestTo("/view/**"),
-                        requestTo("/styles/**"),
-
                         requestTo("/swagger-ui/**"),
                         requestTo("/swagger-resources/**"),
                         requestTo("/v3/api-docs/**")
